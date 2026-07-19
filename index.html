@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Freedom — Investor Prototype v2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1A2F; --navy2:#122642; --teal:#0FB8A4; --blue:#1A6DFF;
+  --orange:#FF8A3D; --white:#fff; --grey:#F5F7FA; --line:#E7ECF2;
+  --dim:#6B7A90; --red:#E45858; --gold:#F5B23D;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;font-family:'Inter',sans-serif;
+  background:
+    radial-gradient(circle at 12% 8%, #10233d 0%, transparent 45%),
+    radial-gradient(circle at 88% 92%, #0b1e35 0%, transparent 50%),
+    var(--navy);
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  padding:36px 16px 60px;
+}
+.stage-header{text-align:center;color:#fff;margin-bottom:26px;max-width:560px;}
+.stage-header .eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(15,184,164,.12);border:1px solid rgba(15,184,164,.35);
+  color:var(--teal);font-size:12px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:14px;
+}
+.stage-header h1{font-size:28px;font-weight:900;margin:0 0 8px;letter-spacing:-.02em;}
+.stage-header p{color:#9FB0C6;font-size:14px;line-height:1.6;margin:0;}
+.layout{display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap;justify-content:center;}
+
+/* PHONE */
+.phone{
+  width:375px;height:812px;background:#000;border-radius:52px;padding:14px;
+  box-shadow:0 40px 90px -20px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.06);
+  position:relative;flex-shrink:0;
+}
+.notch{position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  width:120px;height:26px;background:#000;border-radius:0 0 18px 18px;z-index:40;}
+.screen{width:100%;height:100%;background:var(--grey);border-radius:38px;overflow:hidden;
+  position:relative;display:flex;flex-direction:column;}
+.statusbar{height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
+  padding:0 26px;font-size:13px;font-weight:600;z-index:15;position:relative;}
+.statusbar.dark{color:#fff;} .statusbar.light{color:var(--navy);}
+.sbody{flex:1;overflow-y:auto;scrollbar-width:none;position:relative;}
+.sbody::-webkit-scrollbar{display:none;}
+.homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  width:134px;height:5px;background:rgba(0,0,0,.25);border-radius:10px;z-index:40;}
+.homebar.lt{background:rgba(255,255,255,.5);}
+
+/* NAV */
+.bnav{flex-shrink:0;display:flex;background:#fff;border-top:1px solid var(--line);
+  padding:8px 4px 20px;position:relative;}
+.nitem{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:10px;font-weight:700;color:#A6B2C3;cursor:pointer;background:none;border:none;
+  font-family:inherit;padding:4px 0;}
+.nitem.active{color:var(--teal);}
+.nitem svg{width:22px;height:22px;}
+.nitem.fab-slot{position:relative;}
+.fab{
+  position:absolute;top:-26px;left:50%;transform:translateX(-50%);
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 22px -6px rgba(15,184,164,.55);
+  border:4px solid var(--grey);cursor:pointer;
+}
+.fab svg{width:24px;height:24px;}
+.fab-label{margin-top:26px;font-size:10px;font-weight:700;color:#A6B2C3;}
+.nitem.fab-slot.active .fab-label{color:var(--teal);}
+
+/* SIDE PANEL */
+.sidepanel{width:320px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);
+  border-radius:20px;padding:22px;color:#D7E0EB;position:sticky;top:36px;}
+.sidepanel h3{color:#fff;font-size:14px;margin:0 0 12px;display:flex;align-items:center;gap:8px;}
+.rolebar{display:flex;background:rgba(255,255,255,.06);border-radius:12px;padding:4px;margin-bottom:18px;}
+.rolebtn{flex:1;text-align:center;padding:9px 0;border-radius:9px;font-size:12.5px;font-weight:800;
+  color:#8FA2BA;cursor:pointer;transition:all .15s;}
+.rolebtn.on{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;}
+.step{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;cursor:pointer;
+  font-size:12.5px;font-weight:600;color:#9FB0C6;margin-bottom:3px;transition:background .15s;}
+.step:hover{background:rgba(255,255,255,.05);}
+.step.active{background:linear-gradient(90deg,rgba(26,109,255,.18),rgba(15,184,164,.18));color:#fff;}
+.step .num{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
+.step.active .num{background:var(--teal);color:var(--navy);}
+.note{margin-top:16px;font-size:11.5px;line-height:1.65;color:#7C8CA3;
+  border-top:1px solid rgba(255,255,255,.08);padding-top:13px;}
+.note b{color:#B9C6D8;}
+.newtag{font-size:8.5px;font-weight:900;background:var(--orange);color:#fff;
+  padding:2px 6px;border-radius:100px;margin-left:auto;letter-spacing:.04em;}
+
+/* GENERIC */
+.pad{padding:22px 20px;}
+.fade{animation:fi .3s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.card{background:#fff;border-radius:18px;padding:16px 18px;margin-bottom:12px;
+  box-shadow:0 6px 18px -8px rgba(10,26,47,.12);}
+.seclabel{font-size:13px;font-weight:800;color:var(--navy);margin:20px 0 10px;padding:0 2px;
+  display:flex;justify-content:space-between;align-items:center;}
+.seclabel a{font-size:11.5px;color:var(--teal);font-weight:700;text-decoration:none;cursor:pointer;}
+.pill{font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:100px;}
+.pill.pos{background:rgba(15,184,164,.12);color:var(--teal);}
+.pill.warn{background:rgba(255,138,61,.13);color:var(--orange);}
+.pill.blue{background:rgba(26,109,255,.1);color:var(--blue);}
+.btn{width:100%;border:none;padding:14px;border-radius:13px;font-weight:800;font-size:14.5px;
+  font-family:inherit;cursor:pointer;transition:transform .1s;}
+.btn:active{transform:scale(.98);}
+.btn.teal{background:var(--teal);color:#fff;}
+.btn.navy{background:var(--navy);color:#fff;}
+.btn.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--navy);}
+.btn.white{background:#fff;color:var(--navy);box-shadow:0 10px 24px -8px rgba(0,0,0,.35);}
+
+/* TOAST + CONFETTI */
+.toast{position:absolute;bottom:104px;left:50%;transform:translateX(-50%) translateY(16px);
+  background:var(--navy);color:#fff;padding:11px 20px;border-radius:100px;font-size:12.5px;
+  font-weight:700;box-shadow:0 10px 24px -8px rgba(0,0,0,.45);opacity:0;pointer-events:none;
+  transition:all .25s ease;z-index:60;white-space:nowrap;display:flex;align-items:center;gap:8px;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.confetti-piece{position:absolute;width:8px;height:8px;border-radius:2px;z-index:70;pointer-events:none;
+  animation:cf 1.4s ease-out forwards;}
+@keyframes cf{0%{transform:translateY(0) rotate(0);opacity:1;}100%{transform:translateY(360px) rotate(540deg);opacity:0;}}
+
+/* ONBOARDING */
+.ob-grad{min-height:100%;background:linear-gradient(160deg,var(--blue),var(--teal));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0 30px;text-align:center;color:#fff;}
+.ob-grad h1{font-size:26px;font-weight:900;margin:0 0 10px;line-height:1.25;}
+.ob-grad p{font-size:14px;opacity:.92;margin:0 0 40px;font-weight:500;}
+.dots{display:flex;gap:7px;margin-bottom:28px;}
+.dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.35);}
+.dots span.on{background:#fff;width:22px;border-radius:100px;}
+.stat-strip{display:flex;gap:10px;margin:0 0 34px;}
+.stat-chip{background:rgba(255,255,255,.14);backdrop-filter:blur(4px);
+  border-radius:14px;padding:12px 14px;flex:1;}
+.stat-chip .v{font-size:17px;font-weight:900;}
+.stat-chip .l{font-size:9.5px;font-weight:700;opacity:.85;margin-top:2px;text-transform:uppercase;letter-spacing:.03em;}
+.field-label{font-size:11.5px;font-weight:800;color:var(--navy);margin:0 0 6px;
+  text-transform:uppercase;letter-spacing:.04em;}
+.field{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--line);
+  background:#fff;font-size:14px;font-family:inherit;margin-bottom:14px;outline:none;transition:border-color .15s;}
+.field:focus{border-color:var(--teal);}
+.trustrow{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.trustbadge{font-size:10px;font-weight:800;color:var(--dim);background:var(--grey);
+  border:1px solid var(--line);padding:5px 10px;border-radius:100px;display:flex;align-items:center;gap:5px;}
+.cardviz{
+  height:150px;border-radius:20px;margin:6px 0 18px;padding:18px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--navy) 0%,#1d3a5f 60%,#0FB8A4 160%);color:#fff;
+  box-shadow:0 16px 32px -12px rgba(10,26,47,.5);
+}
+.cardviz .chip{width:36px;height:26px;border-radius:6px;background:linear-gradient(135deg,#F5B23D,#e09a20);}
+.cardviz .num{font-size:16px;letter-spacing:3px;font-weight:600;margin-top:26px;}
+.cardviz .brand{position:absolute;right:18px;bottom:14px;font-weight:900;font-style:italic;font-size:15px;opacity:.9;}
+
+/* DASHBOARD */
+.dhead{background:linear-gradient(135deg,var(--navy) 0%,#16324F 100%);padding:18px 20px 58px;color:#fff;position:relative;}
+.dhead .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.greet{font-size:17px;font-weight:800;}
+.greet span{opacity:.6;font-weight:500;font-size:12px;display:block;margin-bottom:1px;}
+.hicons{display:flex;gap:8px;}
+.hbtn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;}
+.hbtn .dot{position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--orange);border:1.5px solid var(--navy);}
+.wb-wrap{display:flex;align-items:center;gap:14px;}
+.wb-num{font-size:32px;font-weight:900;line-height:1;}
+.wb-lab{font-size:11.5px;color:var(--teal);font-weight:800;margin-top:3px;}
+.wb-sub{font-size:11px;color:#9FB0C6;margin-top:1px;}
+.streak-chip{margin-left:auto;background:rgba(255,138,61,.15);border:1px solid rgba(255,138,61,.35);
+  border-radius:100px;padding:6px 12px;font-size:11.5px;font-weight:800;color:var(--orange);display:flex;gap:5px;align-items:center;}
+
+.herocard{
+  margin:-42px 18px 0;background:#fff;border-radius:22px;padding:18px 20px;
+  box-shadow:0 14px 34px -12px rgba(10,26,47,.25);position:relative;z-index:5;
+}
+.herocard .lbl{font-size:11px;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;}
+.herocard .amt{font-size:29px;font-weight:900;color:var(--navy);margin:4px 0 2px;}
+.herocard .delta{font-size:12px;font-weight:800;color:var(--teal);}
+.hero-stats{display:flex;margin-top:14px;border-top:1px solid var(--line);padding-top:12px;gap:6px;}
+.hstat{flex:1;text-align:center;}
+.hstat .v{font-size:14.5px;font-weight:900;color:var(--navy);}
+.hstat .l{font-size:9px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.03em;margin-top:2px;}
+.hstat + .hstat{border-left:1px solid var(--line);}
+
+.qa-row{display:flex;gap:10px;margin:16px 0 4px;overflow-x:auto;padding:2px;}
+.qa{flex-shrink:0;background:#fff;border:1.5px solid var(--line);padding:9px 14px;border-radius:100px;
+  font-size:12px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;}
+.qa.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+.feed-item{display:flex;gap:12px;align-items:center;background:#fff;border-radius:15px;
+  padding:12px 14px;margin-bottom:8px;box-shadow:0 3px 12px -7px rgba(10,26,47,.12);}
+.feed-ic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:17px;flex-shrink:0;}
+.feed-main{flex:1;min-width:0;}
+.feed-t{font-size:12.5px;font-weight:800;color:var(--navy);}
+.feed-s{font-size:10.5px;color:var(--dim);font-weight:600;margin-top:1px;}
+.feed-amt{font-size:12.5px;font-weight:900;text-align:right;}
+.feed-amt small{display:block;font-size:9.5px;font-weight:700;color:var(--dim);}
+.feed-item.new{animation:slideIn .4s ease;}
+@keyframes slideIn{from{opacity:0;transform:translateX(-14px);}to{opacity:1;transform:translateX(0);}}
+
+/* GOAL RING CARD */
+.goalcard{display:flex;align-items:center;gap:14px;}
+.goalcard .info{flex:1;}
+.goalcard .t{font-size:13px;font-weight:800;color:var(--navy);}
+.goalcard .s{font-size:11px;color:var(--dim);font-weight:600;margin-top:2px;line-height:1.5;}
+
+/* LOAN */
+.loanhero{background:var(--navy);color:#fff;padding:20px 20px 24px;}
+.loanhero .lbl{font-size:11.5px;color:#9FB0C6;font-weight:700;}
+.loanhero .amt{font-size:30px;font-weight:900;margin-top:2px;}
+.loanhero .amt span{font-size:14px;color:var(--teal);font-weight:800;margin-left:8px;}
+.fbox{background:linear-gradient(135deg,rgba(26,109,255,.07),rgba(15,184,164,.09));
+  border:1px solid rgba(15,184,164,.25);border-radius:18px;padding:17px;margin-top:4px;}
+.fbox h4{font-size:13px;font-weight:900;color:var(--navy);margin:0 0 3px;}
+.fbox p{font-size:11.5px;color:var(--dim);margin:0 0 13px;}
+.srow{display:flex;align-items:center;gap:12px;}
+input[type=range]{-webkit-appearance:none;flex:1;height:6px;border-radius:10px;background:var(--line);outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+  background:var(--teal);box-shadow:0 3px 8px rgba(15,184,164,.5);cursor:pointer;border:3px solid #fff;}
+.sval{font-size:13px;font-weight:900;color:var(--teal);min-width:56px;text-align:right;}
+.fres{display:flex;gap:10px;margin-top:14px;}
+.fstat{flex:1;background:#fff;border-radius:12px;padding:12px;text-align:center;}
+.fstat .v{font-size:16.5px;font-weight:900;}
+.fstat .l{font-size:9.5px;color:var(--dim);font-weight:700;margin-top:2px;}
+.trow{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:14px;
+  padding:13px 15px;margin-bottom:9px;box-shadow:0 4px 12px -7px rgba(10,26,47,.12);}
+.trow .tt{font-size:13px;font-weight:800;color:var(--navy);}
+.trow .ts{font-size:10.5px;color:var(--dim);margin-top:2px;font-weight:600;}
+.switch{width:44px;height:26px;border-radius:100px;background:var(--line);position:relative;
+  cursor:pointer;flex-shrink:0;transition:background .2s;}
+.switch.on{background:var(--teal);}
+.switch .knob{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;
+  background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:left .2s;}
+.switch.on .knob{left:21px;}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);}
+.brow:last-child{border:none;}
+.brow .bl{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--navy);}
+.dot{width:10px;height:10px;border-radius:3px;}
+.brow .ba{font-size:13px;font-weight:800;color:var(--navy);}
+
+/* OFFERS / MARKETPLACE */
+.offer-tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding:2px;}
+.otab{flex-shrink:0;padding:8px 15px;border-radius:100px;font-size:12px;font-weight:800;cursor:pointer;
+  background:#fff;color:var(--dim);border:1.5px solid var(--line);}
+.otab.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+.offer{display:flex;gap:13px;background:#fff;border-radius:16px;padding:14px;margin-bottom:10px;
+  box-shadow:0 4px 14px -8px rgba(10,26,47,.12);cursor:pointer;align-items:center;}
+.offer .logo{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;
+  justify-content:center;font-size:21px;flex-shrink:0;}
+.offer .om{flex:1;min-width:0;}
+.offer .ot{font-size:13px;font-weight:800;color:var(--navy);}
+.offer .os{font-size:10.5px;color:var(--dim);font-weight:600;margin-top:2px;}
+.offer .cb{font-size:13px;font-weight:900;color:var(--teal);text-align:right;flex-shrink:0;}
+.offer .cb small{display:block;font-size:9px;font-weight:700;color:var(--dim);}
+.qrmodal{position:absolute;inset:0;background:rgba(10,26,47,.65);z-index:80;
+  display:flex;align-items:flex-end;animation:fi .2s ease;}
+.qrsheet{background:#fff;border-radius:26px 26px 0 0;width:100%;padding:24px 22px 40px;text-align:center;
+  animation:up .28s ease;}
+@keyframes up{from{transform:translateY(60px);}to{transform:translateY(0);}}
+.qrgrid{width:150px;height:150px;margin:16px auto;border-radius:14px;background:
+  repeating-conic-gradient(var(--navy) 0% 25%, #fff 0% 50%) 0 0 / 20px 20px;border:8px solid #fff;
+  outline:1.5px solid var(--line);}
+
+/* PBSA */
+.pbsa{background:#fff;border-radius:18px;overflow:hidden;margin-bottom:14px;
+  box-shadow:0 6px 18px -8px rgba(10,26,47,.14);cursor:pointer;}
+.pbsa .img{height:106px;position:relative;display:flex;align-items:flex-end;padding:12px;}
+.pbsa .img .tag{background:rgba(255,255,255,.92);border-radius:100px;padding:5px 11px;
+  font-size:10.5px;font-weight:900;color:var(--navy);display:flex;gap:5px;align-items:center;}
+.pbsa .body{padding:13px 16px 15px;}
+.pbsa .n{font-size:14px;font-weight:900;color:var(--navy);}
+.pbsa .d{font-size:11px;color:var(--dim);font-weight:600;margin-top:2px;}
+.pbsa .impact{margin-top:10px;background:rgba(15,184,164,.08);border:1px solid rgba(15,184,164,.25);
+  border-radius:11px;padding:9px 12px;font-size:11.5px;font-weight:800;color:var(--teal);
+  display:flex;align-items:center;gap:7px;}
+
+/* COMMUNITY */
+.levelcard{background:linear-gradient(135deg,var(--navy),#16324F);color:#fff;border-radius:20px;
+  padding:19px;margin-bottom:14px;position:relative;overflow:hidden;}
+.levelcard .lbl{font-size:10.5px;color:#9FB0C6;font-weight:800;text-transform:uppercase;letter-spacing:.05em;}
+.levelcard h3{font-size:18px;font-weight:900;margin:4px 0 13px;}
+.ptrack{height:8px;background:rgba(255,255,255,.12);border-radius:10px;overflow:hidden;margin-bottom:7px;}
+.pfill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:10px;transition:width .6s ease;}
+.lfoot{display:flex;justify-content:space-between;font-size:10.5px;color:#9FB0C6;font-weight:700;}
+.chal{background:#fff;border-radius:16px;padding:15px 16px;margin-bottom:10px;
+  box-shadow:0 4px 14px -8px rgba(10,26,47,.12);}
+.chal .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.chal .t{font-size:13px;font-weight:900;color:var(--navy);display:flex;gap:8px;align-items:center;}
+.chal .meta{font-size:10.5px;color:var(--dim);font-weight:700;margin-bottom:9px;}
+.chal .bar{height:7px;background:var(--line);border-radius:10px;overflow:hidden;}
+.chal .barf{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:10px;transition:width .5s;}
+.joinbtn{font-size:11px;font-weight:900;background:var(--teal);color:#fff;border:none;
+  border-radius:100px;padding:7px 14px;font-family:inherit;cursor:pointer;}
+.joinbtn.joined{background:rgba(15,184,164,.12);color:var(--teal);}
+.lbtabs{display:flex;background:#fff;border-radius:12px;padding:4px;margin-bottom:10px;
+  box-shadow:0 3px 10px -6px rgba(10,26,47,.1);}
+.lbtab{flex:1;text-align:center;padding:8px 0;border-radius:9px;font-size:11.5px;font-weight:800;
+  color:var(--dim);cursor:pointer;}
+.lbtab.on{background:var(--navy);color:#fff;}
+.lbrow{display:flex;align-items:center;gap:11px;background:#fff;border-radius:14px;padding:10px 13px;
+  margin-bottom:7px;box-shadow:0 3px 10px -6px rgba(10,26,47,.1);}
+.lbrank{width:22px;text-align:center;font-weight:900;font-size:13px;color:var(--dim);}
+.lbrank.g{color:var(--gold);} 
+.lbav{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:11.5px;flex-shrink:0;}
+.lbn{flex:1;font-size:12.5px;font-weight:800;color:var(--navy);}
+.lbn small{display:block;font-weight:600;color:var(--dim);font-size:10px;}
+.lbs{font-size:13px;font-weight:900;color:var(--teal);}
+.lbrow.me{border:1.5px solid var(--teal);}
+.prize{background:linear-gradient(135deg,#2b1a4d,#0A1A2F);border-radius:18px;padding:17px;color:#fff;
+  margin-bottom:14px;position:relative;overflow:hidden;}
+.prize .t{font-size:14px;font-weight:900;}
+.prize .s{font-size:11px;color:#B9AEDC;font-weight:600;margin-top:3px;line-height:1.5;}
+.prize .cd{display:flex;gap:8px;margin-top:12px;}
+.cdbox{background:rgba(255,255,255,.1);border-radius:10px;padding:8px 0;flex:1;text-align:center;}
+.cdbox .v{font-size:16px;font-weight:900;}
+.cdbox .l{font-size:8.5px;font-weight:700;opacity:.7;text-transform:uppercase;margin-top:1px;}
+.badgegrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+.badge{background:#fff;border-radius:14px;padding:10px 5px;text-align:center;
+  box-shadow:0 3px 10px -6px rgba(10,26,47,.1);}
+.badge .ic{font-size:20px;} .badge .n{font-size:8.5px;font-weight:800;color:var(--navy);margin-top:4px;line-height:1.25;}
+.badge.locked{opacity:.35;}
+
+/* AI CHAT */
+.aihead{background:linear-gradient(135deg,var(--blue),var(--teal));padding:16px 20px 18px;color:#fff;
+  display:flex;align-items:center;gap:12px;}
+.aiorb{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 0 0 5px rgba(255,255,255,.1);animation:pulse 2.4s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 5px rgba(255,255,255,.1);}50%{box-shadow:0 0 0 9px rgba(255,255,255,.06);}}
+.aihead .t{font-size:15.5px;font-weight:900;}
+.aihead .s{font-size:11px;opacity:.9;font-weight:600;margin-top:1px;}
+.chatarea{padding:16px 16px 8px;}
+.msg{max-width:82%;padding:12px 15px;border-radius:18px;font-size:12.5px;line-height:1.55;
+  margin-bottom:10px;font-weight:600;animation:fi .3s ease;}
+.msg.ai{background:#fff;color:var(--navy);border-bottom-left-radius:5px;
+  box-shadow:0 3px 12px -7px rgba(10,26,47,.15);}
+.msg.me{background:var(--navy);color:#fff;margin-left:auto;border-bottom-right-radius:5px;}
+.msg .hl{color:var(--teal);font-weight:900;}
+.msg .act{margin-top:10px;display:inline-block;background:var(--teal);color:#fff;font-size:11px;
+  font-weight:900;padding:8px 14px;border-radius:100px;cursor:pointer;}
+.typing{display:flex;gap:4px;padding:14px 16px;background:#fff;border-radius:18px;width:60px;
+  border-bottom-left-radius:5px;box-shadow:0 3px 12px -7px rgba(10,26,47,.15);margin-bottom:10px;}
+.typing span{width:7px;height:7px;border-radius:50%;background:#B9C6D8;animation:tb 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;} .typing span:nth-child(3){animation-delay:.4s;}
+@keyframes tb{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
+.prompts{display:flex;flex-direction:column;gap:8px;padding:4px 16px 16px;}
+.prompt{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 15px;
+  font-size:12px;font-weight:800;color:var(--navy);cursor:pointer;display:flex;justify-content:space-between;
+  align-items:center;transition:border-color .15s;}
+.prompt:hover{border-color:var(--teal);}
+.prompt span{color:var(--teal);}
+
+/* PARENT MODE */
+.parenthero{background:linear-gradient(135deg,#3D2A78 0%,#1A6DFF 120%);padding:18px 20px 58px;color:#fff;position:relative;}
+.impactnum{font-size:38px;font-weight:900;letter-spacing:-.02em;}
+.familyrow{display:flex;gap:10px;margin-top:4px;}
+.famchip{display:flex;align-items:center;gap:8px;background:#fff;border-radius:100px;
+  padding:7px 13px 7px 7px;box-shadow:0 3px 10px -5px rgba(10,26,47,.15);font-size:11.5px;font-weight:800;color:var(--navy);}
+.famav{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:#fff;font-weight:900;}
+
+/* SETTINGS */
+.profiletop{display:flex;align-items:center;gap:14px;padding:8px 2px 20px;}
+.pav{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:19px;}
+.pname{font-size:16px;font-weight:900;color:var(--navy);}
+.psub{font-size:11.5px;color:var(--dim);margin-top:2px;font-weight:600;}
+.sgroup{background:#fff;border-radius:16px;overflow:hidden;margin-bottom:14px;
+  box-shadow:0 4px 14px -8px rgba(10,26,47,.1);}
+.srow2{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line);
+  font-size:13px;font-weight:700;color:var(--navy);cursor:pointer;}
+.srow2:last-child{border:none;}
+.srow2 .ic{width:30px;height:30px;border-radius:9px;background:var(--grey);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;}
+.srow2 .ch{margin-left:auto;color:#C2CCD9;font-weight:900;}
+
+/* NOTIFICATION DRAWER */
+.ndrawer{position:absolute;inset:0;background:rgba(10,26,47,.55);z-index:80;animation:fi .2s;}
+.nsheet{position:absolute;top:0;right:0;bottom:0;width:86%;background:var(--grey);
+  border-radius:26px 0 0 26px;padding:56px 18px 20px;overflow-y:auto;animation:slideL .25s ease;}
+@keyframes slideL{from{transform:translateX(60px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.nitem2{display:flex;gap:11px;background:#fff;border-radius:14px;padding:13px 14px;margin-bottom:9px;
+  box-shadow:0 3px 10px -6px rgba(10,26,47,.1);align-items:flex-start;}
+.nitem2 .ic{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;}
+.nitem2 .t{font-size:12px;font-weight:800;color:var(--navy);line-height:1.45;}
+.nitem2 .s{font-size:10px;color:var(--dim);font-weight:600;margin-top:2px;}
+
+@media (max-width:780px){
+  .layout{flex-direction:column-reverse;align-items:center;}
+  .sidepanel{width:100%;max-width:375px;position:relative;top:0;}
+}
+</style>
+</head>
+<body>
+
+<div class="stage-header">
+  <div class="eyebrow">● Interactive Prototype · v2</div>
+  <h1>Student Freedom</h1>
+  <p>From Debt to Direction and Wellbeing. A working walkthrough of the full ecosystem — cashback-to-debt engine, AI coach, PBSA finder, marketplace, gamification, and the Parent experience.</p>
+</div>
+
+<div class="layout">
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="screen" id="screen"></div>
+  </div>
+
+  <div class="sidepanel">
+    <h3>👥 Experience</h3>
+    <div class="rolebar">
+      <div class="rolebtn" id="roleStudent">🎓 Student</div>
+      <div class="rolebtn" id="roleParent">👨‍👩‍👧 Parent</div>
+    </div>
+    <h3>🧭 Screens</h3>
+    <div id="stepList"></div>
+    <div class="note" id="sideNote"></div>
+  </div>
+</div>
+
+<script>
+/* ============================= STATE ============================= */
+let S = {
+  role:'student',
+  screen:'ob1',
+  balance:27350,
+  cashbackMonth:23.40,
+  interestSaved:412,
+  monthsShaved:4,
+  wellbeing:78,
+  streak:6,
+  reduceAmt:30,
+  roundUp:true, autoCashback:true, smartOptimise:false,
+  offersTab:'retail',
+  lbTab:'uni',
+  challenges:{c1:true,c2:false,c3:false},
+  chalProg:{c1:64,c2:0,c3:0},
+  boostUsed:false,
+  notifOpen:false,
+  qrOpen:null,
+  chat:[{who:'ai', html:`Hi Amara 👋 I'm your <span class="hl">Freedom Coach</span>. I've been watching your spending and loan — you're on track, and I've spotted <span class="hl">3 ways to save £61 this month</span>. Ask me anything, or tap a suggestion below.`}],
+  aiBusy:false,
+  parentGoal:68,
+};
+
+const studentScreens = [
+  {k:'ob1', n:'Welcome', num:1},
+  {k:'ob2', n:'Sign up', num:2},
+  {k:'ob3', n:'Link your card', num:3, isnew:true},
+  {k:'dashboard', n:'Dashboard + Live feed', num:4, isnew:true},
+  {k:'loan', n:'Loan Tools', num:5},
+  {k:'offers', n:'Cashback & Marketplace', num:6, isnew:true},
+  {k:'pbsa', n:'Accommodation (PBSA)', num:7, isnew:true},
+  {k:'community', n:'Challenges & Leaderboards', num:8},
+  {k:'ai', n:'Freedom AI Coach', num:9, isnew:true},
+  {k:'settings', n:'Profile & Settings', num:10},
+];
+const parentScreens = [
+  {k:'pdash', n:'Parent Dashboard', num:1, isnew:true},
+  {k:'pgoals', n:'Shared Goals', num:2, isnew:true},
+  {k:'pboard', n:'Parent Leaderboard', num:3},
+];
+
+const notes = {
+  student:`<b>New in v2 (beyond the docs):</b> Freedom AI Coach with contextual actions · live cashback→debt activity feed with animated balance · one-tap Boost with celebration · QR local-trader redemption · PBSA finder ranked by debt-reduction impact · smart round-up optimiser toggle.<br><br><b>Try:</b> on the Dashboard, tap <b>⚡ Boost £25</b>. On Loan Tools drag the slider. In Offers, open a local trader for the QR sheet. Ask the AI coach anything.`,
+  parent:`<b>Parent Mode</b> — the docs identify parents as the highest-value users. This experience answers one question instantly: <i>"what impact is my spending having on my child's debt?"</i> — plus shared goals and the parent leaderboard.<br><br><b>Try:</b> tap <b>Add £20 to goal</b> on Shared Goals.`,
+};
+
+const screenEl = document.getElementById('screen');
+const fmt = n => '£' + n.toLocaleString('en-GB',{maximumFractionDigits:0});
+const fmt2 = n => '£' + n.toFixed(2);
+
+/* ============================= HELPERS ============================= */
+function toast(msg){
+  let host = screenEl;
+  let t = document.createElement('div');
+  t.className='toast'; t.innerHTML=msg;
+  host.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},1900);
+}
+function confetti(){
+  const colors=['#0FB8A4','#1A6DFF','#FF8A3D','#F5B23D','#fff'];
+  for(let i=0;i<26;i++){
+    let c=document.createElement('div');
+    c.className='confetti-piece';
+    c.style.left=(20+Math.random()*60)+'%';
+    c.style.top=(90+Math.random()*80)+'px';
+    c.style.background=colors[i%colors.length];
+    c.style.animationDelay=(Math.random()*0.25)+'s';
+    c.style.width=c.style.height=(6+Math.random()*6)+'px';
+    screenEl.appendChild(c);
+    setTimeout(()=>c.remove(),1700);
+  }
+}
+function countUp(el, from, to, prefix='£', dur=700){
+  const start=performance.now();
+  function f(now){
+    const p=Math.min(1,(now-start)/dur);
+    const e=1-Math.pow(1-p,3);
+    el.textContent=prefix+Math.round(from+(to-from)*e).toLocaleString('en-GB');
+    if(p<1) requestAnimationFrame(f);
+  }
+  requestAnimationFrame(f);
+}
+
+const ICONS = {
+  home:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>`,
+  tag:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12l-8 8-9-9V4h7l10 8z"/><circle cx="7.5" cy="7.5" r="1.4"/></svg>`,
+  trophy:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 21h8M12 17v4M7 4h10v6a5 5 0 01-10 0V4z"/><path d="M7 6H4a3 3 0 003 4M17 6h3a3 3 0 01-3 4"/></svg>`,
+  user:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>`,
+  spark:`<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4L12 2z"/></svg>`,
+  bell:`<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M6 8a6 6 0 0112 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10 20a2 2 0 004 0"/></svg>`,
+};
+
+function shell(dark, body, nav){
+  return `
+    <div class="statusbar ${dark?'dark':'light'}"><span>9:41</span><span>●●●●&nbsp; Wi-Fi&nbsp; 🔋</span></div>
+    <div class="sbody fade">${body}</div>
+    ${nav!==false ? bottomNav(nav) : ''}
+    <div class="homebar ${dark?'lt':''}"></div>
+    ${S.notifOpen ? notifDrawer() : ''}
+    ${S.qrOpen ? qrModal() : ''}
+  `;
+}
+function bottomNav(active){
+  if(S.role==='parent'){
+    return `<div class="bnav">
+      <button class="nitem ${active==='pdash'?'active':''}" data-nav="pdash">${ICONS.home}<span>Impact</span></button>
+      <button class="nitem ${active==='pgoals'?'active':''}" data-nav="pgoals">${ICONS.tag}<span>Goals</span></button>
+      <button class="nitem ${active==='pboard'?'active':''}" data-nav="pboard">${ICONS.trophy}<span>Leaderboard</span></button>
+    </div>`;
+  }
+  return `<div class="bnav">
+    <button class="nitem ${active==='dashboard'?'active':''}" data-nav="dashboard">${ICONS.home}<span>Home</span></button>
+    <button class="nitem ${active==='offers'?'active':''}" data-nav="offers">${ICONS.tag}<span>Offers</span></button>
+    <button class="nitem fab-slot ${active==='ai'?'active':''}" data-nav="ai">
+      <div class="fab">${ICONS.spark}</div><div class="fab-label">Coach</div>
+    </button>
+    <button class="nitem ${active==='community'?'active':''}" data-nav="community">${ICONS.trophy}<span>Community</span></button>
+    <button class="nitem ${active==='settings'?'active':''}" data-nav="settings">${ICONS.user}<span>Profile</span></button>
+  </div>`;
+}
+
+/* ============================= SCREENS ============================= */
+
+function rOb1(){
+  return shell(true, `
+    <div class="ob-grad">
+      <svg width="76" height="76" viewBox="0 0 100 100" fill="none" style="margin-bottom:18px;">
+        <path d="M20 35 Q20 20 40 20 L60 20" stroke="white" stroke-width="9" stroke-linecap="round" opacity=".95"/>
+        <path d="M18 62 L45 40 L82 20" stroke="white" stroke-width="9" stroke-linecap="round"/>
+        <path d="M70 20 L82 20 L82 32" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="dots"><span class="on"></span><span></span><span></span></div>
+      <h1>Every purchase<br/>shrinks your loan</h1>
+      <p>Cashback from your everyday spending goes straight to your student debt — automatically.</p>
+      <div class="stat-strip">
+        <div class="stat-chip"><div class="v">£412</div><div class="l">Avg interest saved / yr</div></div>
+        <div class="stat-chip"><div class="v">4 mo</div><div class="l">Avg time shaved</div></div>
+        <div class="stat-chip"><div class="v">60s</div><div class="l">To get started</div></div>
+      </div>
+      <button class="btn white" data-goto="ob2">Get Started</button>
+      <button style="margin-top:14px;background:none;border:none;color:rgba(255,255,255,.85);font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;text-decoration:underline;" data-goto="ob2">I already have an account</button>
+    </div>
+  `, false);
+}
+
+function rOb2(){
+  return shell(false, `
+    <div class="pad">
+      <div class="dots" style="margin:4px 0 20px;"><span></span><span class="on" style="background:var(--teal);"></span><span></span></div>
+      <div style="font-size:22px;font-weight:900;color:var(--navy);line-height:1.25;">Start reducing your<br/>student loan today</div>
+      <div style="font-size:13px;color:var(--dim);margin:6px 0 22px;font-weight:600;">60 seconds. No bank account required.</div>
+      <div class="field-label">University</div>
+      <select class="field"><option>University of Manchester</option><option>King's College London</option><option>University of Leeds</option><option>University of Bristol</option></select>
+      <div class="field-label">Course</div>
+      <select class="field"><option>BSc Computer Science</option><option>BA Economics</option><option>LLB Law</option></select>
+      <div class="field-label">Accommodation (optional)</div>
+      <select class="field"><option>Vita Student — First Street</option><option>Unite Students</option><option>Private / other</option></select>
+      <div class="field-label">Email</div>
+      <input class="field" placeholder="you@student.ac.uk"/>
+      <button class="btn teal" data-goto="ob3">Continue</button>
+      <button class="btn ghost" style="margin-top:10px;" data-goto="ob3">Continue with University Login</button>
+      <div class="trustrow"><div class="trustbadge">🔒 We never share your data</div><div class="trustbadge">🇬🇧 SLC-aware</div></div>
+    </div>
+  `, false);
+}
+
+function rOb3(){
+  return shell(false, `
+    <div class="pad">
+      <div class="dots" style="margin:4px 0 20px;"><span></span><span></span><span class="on" style="background:var(--teal);"></span></div>
+      <div style="font-size:22px;font-weight:900;color:var(--navy);">Link your card</div>
+      <div style="font-size:13px;color:var(--dim);margin:6px 0 16px;font-weight:600;line-height:1.55;">Every time you spend, cashback flows straight to your loan. Takes ~20 seconds via Open Banking.</div>
+      <div class="cardviz">
+        <div class="chip"></div>
+        <div class="num">••••&nbsp;&nbsp;••••&nbsp;&nbsp;••••&nbsp;&nbsp;4471</div>
+        <div style="font-size:10.5px;font-weight:700;opacity:.75;margin-top:10px;">AMARA MENSAH</div>
+        <div class="brand">VISA</div>
+      </div>
+      <button class="btn teal" id="linkBtn">Link card securely</button>
+      <button class="btn ghost" style="margin-top:10px;" data-goto="dashboard">Skip for now</button>
+      <div class="trustrow">
+        <div class="trustbadge">🛡️ FCA-aligned</div>
+        <div class="trustbadge">🔐 256-bit encrypted</div>
+        <div class="trustbadge">🏦 Open Banking</div>
+      </div>
+      <div style="font-size:10.5px;color:var(--dim);text-align:center;margin-top:14px;line-height:1.6;font-weight:600;">We only read transaction data to award cashback.<br/>We can never move money without your say-so.</div>
+    </div>
+  `, false);
+}
+
+function rDashboard(){
+  return shell(true, `
+    <div class="dhead">
+      <div class="top">
+        <div class="greet"><span>Good afternoon</span>Hi, Amara 👋</div>
+        <div class="hicons">
+          <div class="hbtn" id="notifBtn">${ICONS.bell}<div class="dot"></div></div>
+        </div>
+      </div>
+      <div class="wb-wrap">
+        <svg width="60" height="60" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="7"/>
+          <circle cx="32" cy="32" r="27" fill="none" stroke="url(#g1)" stroke-width="7" stroke-linecap="round"
+            stroke-dasharray="${2*Math.PI*27}" stroke-dashoffset="${2*Math.PI*27*(1-S.wellbeing/100)}" transform="rotate(-90 32 32)"/>
+          <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1A6DFF"/><stop offset="100%" stop-color="#0FB8A4"/></linearGradient></defs>
+        </svg>
+        <div>
+          <div class="wb-num">${S.wellbeing}</div>
+          <div class="wb-lab">Wellbeing Score</div>
+          <div class="wb-sub">+4 this week</div>
+        </div>
+        <div class="streak-chip">🔥 ${S.streak}-day streak</div>
+      </div>
+    </div>
+
+    <div class="herocard">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div class="lbl">Loan balance</div>
+          <div class="amt" id="balNum">${fmt(S.balance)}</div>
+          <div class="delta">▼ £340 this month · faster than 82% of your uni</div>
+        </div>
+        <span class="pill pos">On track</span>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><div class="v" style="color:var(--teal);">${fmt2(S.cashbackMonth)}</div><div class="l">Cashback this mo</div></div>
+        <div class="hstat"><div class="v">${fmt(S.interestSaved)}</div><div class="l">Interest saved</div></div>
+        <div class="hstat"><div class="v" style="color:var(--blue);">${S.monthsShaved} mo</div><div class="l">Time shaved</div></div>
+      </div>
+    </div>
+
+    <div class="pad" style="padding-top:14px;">
+      <div class="qa-row">
+        <div class="qa" data-action="boost">⚡ Boost £25 now</div>
+        <div class="qa ${S.roundUp?'on':''}" data-action="roundup">↻ Round-ups ${S.roundUp?'on':'off'}</div>
+        <div class="qa" data-nav="loan">📉 Loan tools</div>
+        <div class="qa" data-nav="ai">✨ Ask Coach</div>
+      </div>
+
+      <div class="seclabel">Live activity <a data-action="simulate">▶ Simulate a purchase</a></div>
+      <div id="feed">
+        ${feedItem('🛒','#0FB8A415','Sainsbury\'s Local','Groceries · 2h ago','+£0.86','to your loan','var(--teal)')}
+        ${feedItem('☕','#1A6DFF12','Grind Coffee — partner','Local trader · 5h ago','+£0.45','to your loan','var(--teal)')}
+        ${feedItem('↻','#FF8A3D15','Round-up applied','£3.20 → £4.00 · yesterday','+£0.80','to your loan','var(--orange)')}
+        ${feedItem('🎓','#0FB8A415','SLC balance synced','Official balance updated','−£340','this month','var(--navy)')}
+      </div>
+
+      <div class="seclabel">This month's goal</div>
+      <div class="card goalcard">
+        <svg width="58" height="58" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="26" fill="none" stroke="var(--line)" stroke-width="8"/>
+          <circle cx="32" cy="32" r="26" fill="none" stroke="var(--teal)" stroke-width="8" stroke-linecap="round"
+            stroke-dasharray="${2*Math.PI*26}" stroke-dashoffset="${2*Math.PI*26*(1-0.68)}" transform="rotate(-90 32 32)"/>
+          <text x="32" y="37" text-anchor="middle" font-size="14" font-weight="900" fill="var(--navy)" font-family="Inter">68%</text>
+        </svg>
+        <div class="info">
+          <div class="t">Reduce £50 this month</div>
+          <div class="s">£34 of £50 done. Your cashback pace will finish this by the 24th — 6 days early.</div>
+        </div>
+      </div>
+      <div style="height:6px;"></div>
+    </div>
+  `, 'dashboard');
+}
+function feedItem(ic,bg,t,s,amt,sub,color){
+  return `<div class="feed-item"><div class="feed-ic" style="background:${bg};">${ic}</div>
+    <div class="feed-main"><div class="feed-t">${t}</div><div class="feed-s">${s}</div></div>
+    <div class="feed-amt" style="color:${color};">${amt}<small>${sub}</small></div></div>`;
+}
+
+function rLoan(){
+  const m=S.reduceAmt, isv=Math.round(m*14.2), msh=Math.max(1,Math.round(m/5));
+  return shell(true, `
+    <div class="loanhero">
+      <div class="lbl">Current loan balance · synced with SLC</div>
+      <div class="amt">${fmt(S.balance)} <span>▼ £340 this month</span></div>
+      <svg width="100%" height="66" viewBox="0 0 331 66" preserveAspectRatio="none" style="margin-top:12px;">
+        <polyline points="0,18 40,24 80,22 120,32 160,28 200,40 240,36 280,48 331,44" fill="none" stroke="#0FB8A4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="0,18 40,24 80,22 120,32 160,28 200,40 240,36 280,48 331,44 331,66 0,66" fill="rgba(15,184,164,.12)"/>
+        <polyline points="240,36 280,42 331,34" fill="none" stroke="#FF8A3D" stroke-width="2.5" stroke-dasharray="5 5" stroke-linecap="round"/>
+      </svg>
+      <div style="font-size:10px;color:#9FB0C6;font-weight:700;">— actual &nbsp;&nbsp;<span style="color:var(--orange);">- - without Student Freedom</span></div>
+    </div>
+    <div class="pad" style="padding-top:16px;">
+      <div class="card" style="padding:8px 18px;">
+        <div class="brow"><div class="bl"><div class="dot" style="background:#1A6DFF;"></div>Tuition</div><div class="ba">£18,900</div></div>
+        <div class="brow"><div class="bl"><div class="dot" style="background:#0FB8A4;"></div>Maintenance</div><div class="ba">£7,200</div></div>
+        <div class="brow"><div class="bl"><div class="dot" style="background:#FF8A3D;"></div>Interest</div><div class="ba">£1,250</div></div>
+      </div>
+      <div style="font-size:10.5px;color:var(--dim);margin:6px 4px 0;font-weight:600;">Your loan is managed by the Student Loans Company (a UK government body).</div>
+
+      <div class="seclabel">Payoff forecast</div>
+      <div class="fbox">
+        <h4>If you reduce your loan by...</h4>
+        <p>Drag to model the impact of extra monthly payments</p>
+        <div class="srow">
+          <input type="range" min="0" max="150" step="5" value="${m}" id="reduceSlider"/>
+          <div class="sval">£${m}/mo</div>
+        </div>
+        <div class="fres">
+          <div class="fstat"><div class="v" style="color:var(--teal);">£${isv.toLocaleString()}</div><div class="l">Interest saved</div></div>
+          <div class="fstat"><div class="v" style="color:var(--blue);">${msh} mo</div><div class="l">Time shaved off</div></div>
+          <div class="fstat"><div class="v" style="color:var(--navy);">${(2031-Math.floor(msh/12))}</div><div class="l">Debt-free year</div></div>
+        </div>
+      </div>
+
+      <div class="seclabel">Automation</div>
+      <div class="trow"><div><div class="tt">Round-up payments</div><div class="ts">Round purchases to the nearest £1</div></div>
+        <div class="switch ${S.roundUp?'on':''}" data-toggle="roundUp"><div class="knob"></div></div></div>
+      <div class="trow"><div><div class="tt">Auto-apply cashback</div><div class="ts">Cashback goes straight to your balance</div></div>
+        <div class="switch ${S.autoCashback?'on':''}" data-toggle="autoCashback"><div class="knob"></div></div></div>
+      <div class="trow"><div><div class="tt">Smart optimiser <span class="pill blue" style="margin-left:4px;">AI</span></div><div class="ts">AI adjusts round-ups to your cash flow, pauses before rent</div></div>
+        <div class="switch ${S.smartOptimise?'on':''}" data-toggle="smartOptimise"><div class="knob"></div></div></div>
+      <div style="height:6px;"></div>
+    </div>
+  `, 'dashboard');
+}
+
+function rOffers(){
+  const tabs=[{k:'retail',n:'🛍️ Retail'},{k:'local',n:'📍 Near you'},{k:'market',n:'🔁 Marketplace'},{k:'travel',n:'✈️ Travel'}];
+  let items='';
+  if(S.offersTab==='retail'){
+    items = offer('🛒','#0FB8A415','Sainsbury\'s','Groceries · card-linked','3%','cashback')
+          + offer('👟','#1A6DFF12','ASOS','Fashion · online','6%','cashback')
+          + offer('📚','#FF8A3D15','Blackwell\'s','Course books','5%','cashback')
+          + offer('💻','#0A1A2F10','Currys','Tech & laptops','2.5%','cashback');
+  } else if(S.offersTab==='local'){
+    items = offer('☕','#FF8A3D15','Grind Coffee','120m away · show QR','10%','to loan','qr')
+          + offer('💪','#0FB8A415','PureGym Fallowfield','Student rate + cashback','£5','to loan /mo','qr')
+          + offer('💈','#1A6DFF12','Fade Factory Barbers','400m away · show QR','8%','to loan','qr')
+          + offer('🍜','#0A1A2F10','Wok This Way','650m · lunch deal','12%','to loan','qr');
+  } else if(S.offersTab==='market'){
+    items = offer('📗','#0FB8A415','CS Year 1 textbook bundle','Maya P. · verified student · 0.4mi','£38','save £74')
+          + offer('🪑','#FF8A3D15','Desk + chair','Jordan K. · verified · pickup','£45','save £90')
+          + offer('🖥️','#1A6DFF12','24" monitor','Sam T. · verified · 1.1mi','£60','save £80');
+  } else {
+    items = offer('🚆','#1A6DFF12','Trainline','Advance tickets','4%','to loan')
+          + offer('🛏️','#0FB8A415','Hostelworld','Reading week trips','7%','to loan')
+          + offer('🚌','#FF8A3D15','National Express','Home for the holidays','5%','to loan');
+  }
+  return shell(false, `
+    <div class="pad">
+      <div style="font-size:19px;font-weight:900;color:var(--navy);">Offers & Marketplace</div>
+      <div style="font-size:12px;color:var(--dim);font-weight:600;margin:4px 0 14px;">Every offer pays cashback <b style="color:var(--teal);">straight into your loan</b>.</div>
+      <div class="offer-tabs">${tabs.map(t=>`<div class="otab ${S.offersTab===t.k?'on':''}" data-otab="${t.k}">${t.n}</div>`).join('')}</div>
+      ${items}
+      ${S.offersTab==='market'?`<div class="card" style="text-align:center;padding:14px;"><div style="font-size:12px;font-weight:800;color:var(--navy);">Selling something?</div><div style="font-size:10.5px;color:var(--dim);font-weight:600;margin:3px 0 10px;">List to verified students at your uni. 100% of proceeds can go to your loan.</div><button class="btn teal" style="padding:11px;" data-action="list">+ List an item</button></div>`:''}
+      <div style="height:6px;"></div>
+    </div>
+  `, 'offers');
+}
+function offer(ic,bg,t,s,cb,sub,qr){
+  return `<div class="offer" ${qr?`data-qr="${t}"`:''}>
+    <div class="logo" style="background:${bg};">${ic}</div>
+    <div class="om"><div class="ot">${t}</div><div class="os">${s}</div></div>
+    <div class="cb">${cb}<small>${sub}</small></div>
+  </div>`;
+}
+
+function rPbsa(){
+  return shell(false, `
+    <div class="pad">
+      <div style="font-size:19px;font-weight:900;color:var(--navy);">Find your home</div>
+      <div style="font-size:12px;color:var(--dim);font-weight:600;margin:4px 0 16px;">Partner accommodation near <b style="color:var(--navy);">University of Manchester</b> — ranked by debt-reduction impact.</div>
+      ${pbsaCard('linear-gradient(135deg,#1A6DFF,#0FB8A4)','Vita Student — First Street','En-suite · £189/wk · 8 min to campus','£240 off your loan when you book','⭐ 4.8 · Partner')}
+      ${pbsaCard('linear-gradient(135deg,#3D2A78,#1A6DFF)','Unite Students — Piccadilly Point','Studio · £172/wk · 12 min to campus','£180 off your loan when you book','⭐ 4.6 · Partner')}
+      ${pbsaCard('linear-gradient(135deg,#FF8A3D,#F5B23D)','iQ Hollingworth','Shared flat · £148/wk · 15 min','£120 off your loan when you book','⭐ 4.5 · Partner')}
+      <div class="card" style="background:rgba(26,109,255,.06);border:1px solid rgba(26,109,255,.2);box-shadow:none;">
+        <div style="font-size:12px;font-weight:800;color:var(--navy);">💡 Why these are highlighted</div>
+        <div style="font-size:11px;color:var(--dim);font-weight:600;margin-top:4px;line-height:1.6;">Partner buildings convert their usual sign-up incentives (gift cards, free weeks) into direct student-loan reduction. Parents can see and co-fund bookings from Parent Mode.</div>
+      </div>
+    </div>
+  `, 'offers');
+}
+function pbsaCard(grad,n,d,impact,tag){
+  return `<div class="pbsa" data-action="book" data-name="${n}">
+    <div class="img" style="background:${grad};"><div class="tag">${tag}</div></div>
+    <div class="body">
+      <div class="n">${n}</div><div class="d">${d}</div>
+      <div class="impact">🎯 ${impact}</div>
+    </div>
+  </div>`;
+}
+
+function rCommunity(){
+  const lbData = {
+    uni:[['1','JK','Jordan K.','Computer Science','96'],['2','MP','Maya P.','Economics','91'],['3','AM','Amara M. (you)','Computer Science','88',true]],
+    course:[['1','AM','Amara M. (you)','Computer Science','88',true],['2','ST','Sam T.','Computer Science','84'],['3','LB','Leila B.','Computer Science','79']],
+    pbsa:[['1','MP','Maya P.','Vita — First Street','91'],['2','AM','Amara M. (you)','Vita — First Street','88',true],['3','RD','Ravi D.','Vita — First Street','75']],
+  };
+  const chals=[
+    {k:'c1',ic:'💷',t:'Reduce £50 this month',meta:'2,140 students in · ends in 12 days',prog:S.chalProg.c1},
+    {k:'c2',ic:'🧠',t:'Spend smart for 7 days',meta:'Stay under daily budget a full week',prog:S.chalProg.c2},
+    {k:'c3',ic:'👨‍👩‍👧',t:'Parent–child challenge',meta:'Hit a shared £100 goal together',prog:S.chalProg.c3},
+  ];
+  return shell(false, `
+    <div class="pad">
+      <div class="levelcard">
+        <div class="lbl">Freedom Level 6 of 10</div>
+        <h3>Taking Control</h3>
+        <div class="ptrack"><div class="pfill" style="width:62%;"></div></div>
+        <div class="lfoot"><span>Building Momentum</span><span>Staying Ahead</span></div>
+      </div>
+
+      <div class="prize">
+        <div style="position:absolute;right:-8px;top:-8px;font-size:56px;opacity:.15;">🎉</div>
+        <div class="t">🏆 Clear Your Year of Debt</div>
+        <div class="s">Every £1 reduced this year = 1 entry into the annual draw. One student gets a full year of tuition debt wiped.</div>
+        <div class="cd">
+          <div class="cdbox"><div class="v">164</div><div class="l">Days</div></div>
+          <div class="cdbox"><div class="v">08</div><div class="l">Hours</div></div>
+          <div class="cdbox"><div class="v">412</div><div class="l">Your entries</div></div>
+        </div>
+      </div>
+
+      <div class="seclabel" style="margin-top:4px;">Challenges</div>
+      ${chals.map(c=>`
+        <div class="chal">
+          <div class="top">
+            <div class="t">${c.ic} ${c.t}</div>
+            <button class="joinbtn ${S.challenges[c.k]?'joined':''}" data-chal="${c.k}">${S.challenges[c.k]?'Joined ✓':'Join'}</button>
+          </div>
+          <div class="meta">${c.meta}</div>
+          <div class="bar"><div class="barf" style="width:${S.challenges[c.k]?c.prog:0}%;"></div></div>
+        </div>
+      `).join('')}
+
+      <div class="seclabel">Leaderboards</div>
+      <div class="lbtabs">
+        <div class="lbtab ${S.lbTab==='uni'?'on':''}" data-lbtab="uni">University</div>
+        <div class="lbtab ${S.lbTab==='course'?'on':''}" data-lbtab="course">Course</div>
+        <div class="lbtab ${S.lbTab==='pbsa'?'on':''}" data-lbtab="pbsa">My building</div>
+      </div>
+      ${lbData[S.lbTab].map(r=>`
+        <div class="lbrow ${r[5]?'me':''}">
+          <div class="lbrank ${r[0]==='1'?'g':''}">${r[0]}</div>
+          <div class="lbav" ${r[5]?'style="background:linear-gradient(135deg,#FF8A3D,#0FB8A4);"':''}>${r[1]}</div>
+          <div class="lbn">${r[2]}<small>${r[3]}</small></div>
+          <div class="lbs">${r[4]}</div>
+        </div>
+      `).join('')}
+
+      <div class="seclabel">Badges</div>
+      <div class="badgegrid">
+        <div class="badge"><div class="ic">🚀</div><div class="n">Freedom Starter</div></div>
+        <div class="badge"><div class="ic">📈</div><div class="n">Momentum Builder</div></div>
+        <div class="badge"><div class="ic">🏠</div><div class="n">Rent Ready</div></div>
+        <div class="badge locked"><div class="ic">🧘</div><div class="n">Calm Planner</div></div>
+      </div>
+      <div style="height:8px;"></div>
+    </div>
+  `, 'community');
+}
+
+function rAi(){
+  return shell(true, `
+    <div class="aihead">
+      <div class="aiorb">✨</div>
+      <div><div class="t">Freedom Coach</div><div class="s">Knows your loan, spending & goals · private to you</div></div>
+    </div>
+    <div class="chatarea" id="chatArea">
+      ${S.chat.map(m=>`<div class="msg ${m.who}">${m.html}</div>`).join('')}
+      ${S.aiBusy?'<div class="typing"><span></span><span></span><span></span></div>':''}
+    </div>
+    ${!S.aiBusy?`
+    <div class="prompts">
+      <div class="prompt" data-ai="save">Where can I save money this month? <span>→</span></div>
+      <div class="prompt" data-ai="faster">How do I pay my loan off faster? <span>→</span></div>
+      <div class="prompt" data-ai="rent">Will I be okay for rent this month? <span>→</span></div>
+    </div>`:''}
+  `, 'ai');
+}
+
+function rSettings(){
+  return shell(false, `
+    <div class="pad">
+      <div class="profiletop">
+        <div class="pav">AM</div>
+        <div><div class="pname">Amara Mensah</div><div class="psub">University of Manchester · Freedom Level 6</div></div>
+      </div>
+      <div class="sgroup">
+        <div class="srow2"><div class="ic">💳</div>Connected cards — Visa •••• 4471<span class="ch">›</span></div>
+        <div class="srow2"><div class="ic">👨‍👩‍👧</div>Family — Mum & Dad connected<span class="ch">›</span></div>
+        <div class="srow2"><div class="ic">🔔</div>Notifications<span class="ch">›</span></div>
+        <div class="srow2"><div class="ic">🔒</div>Data & Privacy — GDPR controls<span class="ch">›</span></div>
+      </div>
+      <div class="seclabel" style="margin-top:0;">Your data, your rules</div>
+      <div class="trow"><div><div class="tt">Share progress with parents</div><div class="ts">They see impact totals — never your transactions</div></div>
+        <div class="switch on"><div class="knob"></div></div></div>
+      <div class="trow"><div><div class="tt">Appear on leaderboards</div><div class="ts">Shown as first name + initial</div></div>
+        <div class="switch on"><div class="knob"></div></div></div>
+      <div class="sgroup" style="margin-top:14px;">
+        <div class="srow2"><div class="ic">🛟</div>Help & Support<span class="ch">›</span></div>
+        <div class="srow2" style="color:#D34E4E;"><div class="ic">⎋</div>Log out</div>
+      </div>
+    </div>
+  `, 'settings');
+}
+
+/* ---------- PARENT MODE ---------- */
+function rPdash(){
+  return shell(true, `
+    <div class="parenthero">
+      <div class="top" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <div class="greet"><span>Parent Mode</span>Hi, Henrik 👋</div>
+        <div class="hbtn" id="notifBtn">${ICONS.bell}<div class="dot"></div></div>
+      </div>
+      <div style="font-size:11.5px;font-weight:800;opacity:.8;text-transform:uppercase;letter-spacing:.05em;">Your spending reduced Amara's loan by</div>
+      <div class="impactnum" id="pImpact">£47.20</div>
+      <div style="font-size:12px;font-weight:700;opacity:.85;">this month · £312 lifetime · you're her #1 supporter 🥇</div>
+    </div>
+    <div class="herocard" style="margin-top:-40px;">
+      <div class="lbl">Family</div>
+      <div class="familyrow" style="margin-top:10px;">
+        <div class="famchip"><div class="famav" style="background:linear-gradient(135deg,#FF8A3D,#0FB8A4);">A</div>Amara · £27,350</div>
+        <div class="famchip"><div class="famav" style="background:linear-gradient(135deg,#1A6DFF,#3D2A78);">T</div>Theo · starts 2027</div>
+      </div>
+    </div>
+    <div class="pad" style="padding-top:14px;">
+      <div class="seclabel">How your spending helped</div>
+      ${feedItem('🛒','#0FB8A415','Waitrose weekly shop','Your cashback → Amara\'s loan','+£2.40','to her loan','var(--teal)')}
+      ${feedItem('⛽','#1A6DFF12','Shell fuel','Parent-only offer used','+£1.85','to her loan','var(--teal)')}
+      ${feedItem('🛡️','#FF8A3D15','Aviva insurance renewal','Parent partner offer','+£18.50','to her loan','var(--orange)')}
+      <div class="seclabel">Suggested for you</div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:900;color:var(--navy);">🎯 Match Amara's round-ups</div>
+        <div style="font-size:11.5px;color:var(--dim);font-weight:600;margin:4px 0 12px;line-height:1.55;">She rounds up ~£14/month. Matching it would shave another 2 months off her loan.</div>
+        <button class="btn teal" style="padding:11px;" data-action="match">Match her round-ups</button>
+      </div>
+    </div>
+  `, 'pdash');
+}
+
+function rPgoals(){
+  return shell(false, `
+    <div class="pad">
+      <div style="font-size:19px;font-weight:900;color:var(--navy);">Shared goals</div>
+      <div style="font-size:12px;color:var(--dim);font-weight:600;margin:4px 0 16px;">Goals you and Amara fund together.</div>
+      <div class="card goalcard">
+        <svg width="62" height="62" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="26" fill="none" stroke="var(--line)" stroke-width="8"/>
+          <circle cx="32" cy="32" r="26" fill="none" stroke="var(--blue)" stroke-width="8" stroke-linecap="round"
+            stroke-dasharray="${2*Math.PI*26}" stroke-dashoffset="${2*Math.PI*26*(1-S.parentGoal/100)}" transform="rotate(-90 32 32)"/>
+          <text x="32" y="37" text-anchor="middle" font-size="13" font-weight="900" fill="var(--navy)" font-family="Inter">${S.parentGoal}%</text>
+        </svg>
+        <div class="info">
+          <div class="t">£100 off the loan in October</div>
+          <div class="s">£${S.parentGoal} of £100 · You've added £42, Amara £${S.parentGoal-42}. On pace to finish 5 days early.</div>
+        </div>
+      </div>
+      <button class="btn teal" data-action="addgoal">+ Add £20 to goal</button>
+      <div class="seclabel">Goal history</div>
+      ${feedItem('✅','#0FB8A415','September goal complete','£100 · finished 3 days early','−£100','off her loan','var(--teal)')}
+      ${feedItem('✅','#0FB8A415','Freshers-month goal','£75 · joint effort','−£75','off her loan','var(--teal)')}
+      <div class="card" style="background:rgba(61,42,120,.05);border:1px solid rgba(61,42,120,.18);box-shadow:none;">
+        <div style="font-size:12px;font-weight:800;color:var(--navy);">🔒 Privacy by design</div>
+        <div style="font-size:11px;color:var(--dim);font-weight:600;margin-top:4px;line-height:1.6;">You see goal progress and impact totals — never Amara's individual transactions. She controls what's shared.</div>
+      </div>
+    </div>
+  `, 'pgoals');
+}
+
+function rPboard(){
+  return shell(false, `
+    <div class="pad">
+      <div style="font-size:19px;font-weight:900;color:var(--navy);">Parent leaderboard</div>
+      <div style="font-size:12px;color:var(--dim);font-weight:600;margin:4px 0 16px;">Who supported their child the most this month — University of Manchester parents.</div>
+      <div class="lbrow me"><div class="lbrank g">1</div><div class="lbav" style="background:linear-gradient(135deg,#3D2A78,#1A6DFF);">HM</div><div class="lbn">Henrik M. (you)<small>Supporting Amara</small></div><div class="lbs">£47.20</div></div>
+      <div class="lbrow"><div class="lbrank">2</div><div class="lbav">SP</div><div class="lbn">Sunita P.<small>Supporting Maya</small></div><div class="lbs">£41.10</div></div>
+      <div class="lbrow"><div class="lbrank">3</div><div class="lbav">DK</div><div class="lbn">David K.<small>Supporting Jordan</small></div><div class="lbs">£38.65</div></div>
+      <div class="lbrow"><div class="lbrank">4</div><div class="lbav">GT</div><div class="lbn">Grace T.<small>Supporting Sam</small></div><div class="lbs">£29.90</div></div>
+      <div class="prize" style="margin-top:16px;">
+        <div class="t">🏅 Top Supporter — October</div>
+        <div class="s">Stay #1 through the month to earn the Family Champion badge and a bonus £10 injected into Amara's loan by Student Freedom.</div>
+      </div>
+    </div>
+  `, 'pboard');
+}
+
+/* ---------- OVERLAYS ---------- */
+function notifDrawer(){
+  return `<div class="ndrawer" id="ndClose">
+    <div class="nsheet">
+      <div style="font-size:16px;font-weight:900;color:var(--navy);margin-bottom:14px;">Notifications</div>
+      ${nItem('🎉','#0FB8A415','Milestone! Your loan dropped below £27,500','2h ago')}
+      ${nItem('🔥','#FF8A3D15','6-day streak — keep it going today','5h ago')}
+      ${nItem('👨‍👩‍👧','#1A6DFF12','Mum added £2.40 to your loan from her shop','Yesterday')}
+      ${nItem('🏆','#F5B23D22','You moved up to #3 on the uni leaderboard','Yesterday')}
+      ${nItem('✨','#0FB8A415','Coach found 3 new ways to save £61 this month','2 days ago')}
+    </div>
+  </div>`;
+}
+function nItem(ic,bg,t,s){
+  return `<div class="nitem2"><div class="ic" style="background:${bg};">${ic}</div><div><div class="t">${t}</div><div class="s">${s}</div></div></div>`;
+}
+function qrModal(){
+  return `<div class="qrmodal" id="qrClose">
+    <div class="qrsheet">
+      <div style="font-size:15px;font-weight:900;color:var(--navy);">${S.qrOpen}</div>
+      <div style="font-size:11.5px;color:var(--dim);font-weight:600;margin-top:3px;">Show this at the till — cashback lands on your loan instantly.</div>
+      <div class="qrgrid"></div>
+      <div class="pill pos" style="display:inline-block;">Cashback → your loan, automatically</div>
+    </div>
+  </div>`;
+}
+
+/* ============================= RENDER + EVENTS ============================= */
+const RENDER = {ob1:rOb1,ob2:rOb2,ob3:rOb3,dashboard:rDashboard,loan:rLoan,offers:rOffers,
+  pbsa:rPbsa,community:rCommunity,ai:rAi,settings:rSettings,pdash:rPdash,pgoals:rPgoals,pboard:rPboard};
+
+function render(){
+  screenEl.innerHTML = RENDER[S.screen]();
+  wire();
+  renderSide();
+  const ca = screenEl.querySelector('#chatArea');
+  if(ca){ const sb=screenEl.querySelector('.sbody'); sb.scrollTop = sb.scrollHeight; }
+}
+function renderSide(){
+  const list = S.role==='student'?studentScreens:parentScreens;
+  document.getElementById('stepList').innerHTML = list.map(s=>`
+    <div class="step ${S.screen===s.k?'active':''}" data-screen="${s.k}">
+      <span class="num">${s.num}</span> ${s.n} ${s.isnew?'<span class="newtag">NEW</span>':''}
+    </div>`).join('');
+  document.getElementById('sideNote').innerHTML = notes[S.role];
+  document.getElementById('roleStudent').classList.toggle('on', S.role==='student');
+  document.getElementById('roleParent').classList.toggle('on', S.role==='parent');
+  document.querySelectorAll('#stepList .step').forEach(el=>{
+    el.onclick=()=>{S.screen=el.dataset.screen; S.notifOpen=false; S.qrOpen=null; render();};
+  });
+}
+document.getElementById('roleStudent').onclick=()=>{S.role='student';S.screen='dashboard';S.notifOpen=false;S.qrOpen=null;render();};
+document.getElementById('roleParent').onclick=()=>{S.role='parent';S.screen='pdash';S.notifOpen=false;S.qrOpen=null;render();};
+
+const AI_RESPONSES = {
+  save:`Three quick wins I can see 👇<br><br>1️⃣ Your <span class="hl">food spend is £18 over</span> your usual — the Sainsbury's 3% offer covers your top shop.<br>2️⃣ You bought coffee 9× near campus — <span class="hl">Grind pays 10% to your loan</span>, that's ~£4/mo.<br>3️⃣ Your phone contract renews next week — the student partner deal saves <span class="hl">£39/year</span>.<br><br>Total: about <span class="hl">£61 this month</span>.<div class="act" data-nav="offers">Show me these offers</div>`,
+  faster:`You're paying off faster than <span class="hl">82% of Manchester students</span> already 💪<br><br>The single biggest lever: your round-ups average £14/mo. If your mum matches them (she's opted in to suggestions), that's <span class="hl">£28/mo → 5 extra months shaved off</span> and ~£400 interest saved.<div class="act" data-ai-act="nudge">Send Mum a gentle nudge</div>`,
+  rent:`Yes — you're safe 😊 Rent (£620) is due on the 1st and your balance after committed spending will be <span class="hl">£712</span>.<br><br>One heads-up: I've <span class="hl">paused round-ups for the 3 days before rent</span> like always, so nothing surprises you. They restart on the 2nd automatically.`,
+  nudge:`Done ✉️ I've sent Mum a friendly note: <i>"Amara is £16 from her monthly goal — matching her round-ups would get her there!"</i><br><br>No pressure on her side — it's a suggestion, not a request. I'll let you know if she opts in.`,
+};
+
+function askAI(key){
+  const q = {save:'Where can I save money this month?',faster:'How do I pay my loan off faster?',rent:'Will I be okay for rent this month?',nudge:'Send Mum a gentle nudge'}[key];
+  S.chat.push({who:'me',html:q});
+  S.aiBusy=true; render();
+  setTimeout(()=>{ S.aiBusy=false; S.chat.push({who:'ai',html:AI_RESPONSES[key]}); render(); }, 1100);
+}
+
+function wire(){
+  screenEl.querySelectorAll('[data-goto]').forEach(el=>el.addEventListener('click',()=>{S.screen=el.dataset.goto;render();}));
+  screenEl.querySelectorAll('[data-nav]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();S.screen=el.dataset.nav;S.notifOpen=false;S.qrOpen=null;render();}));
+  screenEl.querySelectorAll('[data-otab]').forEach(el=>el.addEventListener('click',()=>{S.offersTab=el.dataset.otab;render();}));
+  screenEl.querySelectorAll('[data-lbtab]').forEach(el=>el.addEventListener('click',()=>{S.lbTab=el.dataset.lbtab;render();}));
+  screenEl.querySelectorAll('[data-qr]').forEach(el=>el.addEventListener('click',()=>{S.qrOpen=el.dataset.qr;render();}));
+  screenEl.querySelectorAll('[data-ai]').forEach(el=>el.addEventListener('click',()=>askAI(el.dataset.ai)));
+  screenEl.querySelectorAll('[data-ai-act]').forEach(el=>el.addEventListener('click',()=>askAI(el.dataset.aiAct)));
+  screenEl.querySelectorAll('[data-chal]').forEach(el=>el.addEventListener('click',()=>{
+    const k=el.dataset.chal;
+    if(!S.challenges[k]){ S.challenges[k]=true; S.chalProg[k]=k==='c1'?64:8; render(); toast('🏆 Challenge joined!'); }
+  }));
+  screenEl.querySelectorAll('[data-toggle]').forEach(el=>el.addEventListener('click',e=>{
+    e.stopPropagation(); const k=el.dataset.toggle; S[k]=!S[k]; render();
+    if(k==='smartOptimise'&&S[k]) toast('✨ AI optimiser on — pauses round-ups before rent');
+  }));
+  screenEl.querySelectorAll('[data-action]').forEach(el=>el.addEventListener('click',e=>{
+    e.stopPropagation(); const a=el.dataset.action;
+    if(a==='boost'){
+      const old=S.balance; S.balance-=25; render();
+      const bn=screenEl.querySelector('#balNum'); if(bn) countUp(bn,old,S.balance);
+      confetti(); toast('⚡ £25 applied — nice one!');
+    }
+    if(a==='roundup'){ S.roundUp=!S.roundUp; render(); toast('↻ Round-ups '+(S.roundUp?'on':'off')); }
+    if(a==='simulate'){
+      const feed=screenEl.querySelector('#feed');
+      if(feed){
+        const opts=[['🍕','Pizza Co — partner','Just now','+£0.62'],['🚌','Bee Network bus','Just now','+£0.18'],['📚','Blackwell\'s','Just now','+£1.15']];
+        const o=opts[Math.floor(Math.random()*opts.length)];
+        const d=document.createElement('div');
+        d.innerHTML=feedItem(o[0],'#0FB8A415',o[1],'Card-linked · '+o[2],o[3],'to your loan','var(--teal)');
+        const item=d.firstElementChild; item.classList.add('new');
+        feed.prepend(item);
+        const cb=parseFloat(o[3].replace('+£',''));
+        S.cashbackMonth+=cb; S.balance=Math.round((S.balance-cb));
+        toast('💳 Purchase detected — cashback → loan');
+      }
+    }
+    if(a==='book'){ confetti(); toast('🎯 £240 will hit your loan on move-in'); }
+    if(a==='list'){ toast('📸 Listing flow — coming in build'); }
+    if(a==='match'){ confetti(); toast('💙 Matching Amara\'s round-ups from today'); }
+    if(a==='addgoal'){ S.parentGoal=Math.min(100,S.parentGoal+20); render(); if(S.parentGoal>=100){confetti();toast('🎉 Goal complete — £100 off her loan!');}else{toast('+£20 added to the shared goal');} }
+  }));
+  const nb=screenEl.querySelector('#notifBtn'); if(nb) nb.addEventListener('click',()=>{S.notifOpen=true;render();});
+  const nd=screenEl.querySelector('#ndClose'); if(nd) nd.addEventListener('click',e=>{if(e.target.id==='ndClose'){S.notifOpen=false;render();}});
+  const qc=screenEl.querySelector('#qrClose'); if(qc) qc.addEventListener('click',e=>{if(e.target.id==='qrClose'){S.qrOpen=null;render();}});
+  const lb=screenEl.querySelector('#linkBtn'); if(lb) lb.addEventListener('click',()=>{
+    lb.textContent='Connecting…';
+    setTimeout(()=>{ S.screen='dashboard'; render(); confetti(); toast('✅ Card linked — cashback is live'); },900);
+  });
+  const sl=screenEl.querySelector('#reduceSlider'); if(sl) sl.addEventListener('input',e=>{S.reduceAmt=parseInt(e.target.value);render();});
+}
+
+render();
+</script>
+</body>
+</html>
