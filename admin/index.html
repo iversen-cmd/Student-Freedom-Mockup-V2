@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Freedom — Admin Console</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1A2F; --navy2:#0F2440; --panel:#101F36; --line:#1E3252;
+  --teal:#0FB8A4; --blue:#3D8BFF; --orange:#FF8A3D; --red:#E45858; --gold:#F5B23D;
+  --purple:#8B6FE8;
+  --bg:#F4F6FA; --card:#FFFFFF; --cline:#E6EBF2; --ink:#13233C; --dim:#68788F;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-size:13.5px;}
+::-webkit-scrollbar{width:9px;height:9px;} ::-webkit-scrollbar-thumb{background:#C7D1DE;border-radius:10px;}
+
+/* LAYOUT */
+.app{display:flex;min-height:100vh;}
+.sidebar{
+  width:236px;background:var(--navy);color:#B9C6D8;flex-shrink:0;
+  display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+.logo{display:flex;align-items:center;gap:10px;padding:18px 18px 14px;}
+.logomark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#1A6DFF,#0FB8A4);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo .t{font-weight:900;color:#fff;font-size:14px;line-height:1.15;}
+.logo .s{font-size:9.5px;font-weight:700;color:#5E7494;letter-spacing:.06em;text-transform:uppercase;}
+.envbadge{margin:0 18px 12px;background:rgba(228,88,88,.14);border:1px solid rgba(228,88,88,.4);
+  color:#FF9B9B;font-size:10px;font-weight:900;letter-spacing:.06em;padding:5px 10px;border-radius:8px;
+  text-align:center;text-transform:uppercase;}
+.navgroup{font-size:9.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#4E6486;
+  padding:14px 18px 6px;}
+.navitem{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;font-size:13px;
+  font-weight:600;color:#8FA2BC;border-left:3px solid transparent;transition:all .12s;}
+.navitem:hover{color:#fff;background:rgba(255,255,255,.04);}
+.navitem.on{color:#fff;background:linear-gradient(90deg,rgba(26,109,255,.16),transparent);border-left-color:var(--teal);}
+.navitem .ic{width:17px;text-align:center;font-size:14px;}
+.navitem .cnt{margin-left:auto;background:var(--orange);color:#fff;font-size:9.5px;font-weight:900;
+  border-radius:100px;padding:2px 7px;}
+.navitem .cnt.red{background:var(--red);}
+.adminbox{margin-top:auto;padding:14px 18px;border-top:1px solid var(--line);display:flex;gap:10px;align-items:center;}
+.adminav{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#8B6FE8,#3D8BFF);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:12px;}
+.adminbox .n{font-size:12px;font-weight:800;color:#fff;}
+.adminbox .r{font-size:10px;color:#5E7494;font-weight:700;}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column;}
+.topbar{background:#fff;border-bottom:1px solid var(--cline);padding:12px 26px;display:flex;
+  align-items:center;gap:16px;position:sticky;top:0;z-index:30;}
+.crumb{font-size:13px;font-weight:800;}
+.crumb span{color:var(--dim);font-weight:600;}
+.gsearch{flex:1;max-width:420px;position:relative;}
+.gsearch input{width:100%;padding:9px 14px 9px 36px;border-radius:10px;border:1.5px solid var(--cline);
+  background:var(--bg);font-family:inherit;font-size:12.5px;outline:none;}
+.gsearch input:focus{border-color:var(--teal);}
+.gsearch .mag{position:absolute;left:12px;top:9px;color:var(--dim);}
+.topbtn{background:#fff;border:1.5px solid var(--cline);border-radius:10px;padding:8px 13px;
+  font-size:12px;font-weight:800;color:var(--ink);cursor:pointer;font-family:inherit;display:flex;gap:6px;align-items:center;}
+.content{padding:24px 26px 60px;max-width:1280px;width:100%;}
+
+/* GENERIC */
+h2.page{font-size:20px;font-weight:900;margin:0 0 4px;}
+p.sub{color:var(--dim);font-size:13px;margin:0 0 20px;font-weight:500;}
+.grid{display:grid;gap:16px;}
+.g4{grid-template-columns:repeat(4,1fr);} .g3{grid-template-columns:repeat(3,1fr);} .g2{grid-template-columns:repeat(2,1fr);}
+.card{background:var(--card);border:1px solid var(--cline);border-radius:14px;padding:18px;}
+.kpi .l{font-size:11px;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.04em;}
+.kpi .v{font-size:24px;font-weight:900;margin:6px 0 2px;}
+.kpi .d{font-size:11.5px;font-weight:800;}
+.pos{color:var(--teal);} .neg{color:var(--red);} .wrn{color:var(--orange);}
+.pill{font-size:10px;font-weight:900;padding:3px 9px;border-radius:100px;display:inline-block;letter-spacing:.02em;}
+.pill.green{background:rgba(15,184,164,.12);color:#0A9B8A;}
+.pill.red{background:rgba(228,88,88,.12);color:var(--red);}
+.pill.orange{background:rgba(255,138,61,.14);color:#E0731F;}
+.pill.blue{background:rgba(61,139,255,.12);color:#2D6FD6;}
+.pill.grey{background:#EEF1F6;color:var(--dim);}
+.pill.purple{background:rgba(139,111,232,.13);color:#6F53CE;}
+table{width:100%;border-collapse:collapse;}
+th{font-size:10.5px;font-weight:900;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;
+  text-align:left;padding:10px 12px;border-bottom:1.5px solid var(--cline);}
+td{padding:12px;border-bottom:1px solid var(--cline);font-size:12.5px;font-weight:600;vertical-align:middle;}
+tr.rowlink{cursor:pointer;transition:background .1s;}
+tr.rowlink:hover{background:#F8FAFD;}
+.avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#1A6DFF,#0FB8A4);
+  color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:10.5px;flex-shrink:0;}
+.ucell{display:flex;align-items:center;gap:10px;}
+.ucell .nm{font-weight:800;} .ucell .em{font-size:10.5px;color:var(--dim);font-weight:600;}
+.btn{border:none;border-radius:10px;padding:9px 14px;font-size:12px;font-weight:800;font-family:inherit;
+  cursor:pointer;transition:transform .08s;display:inline-flex;align-items:center;gap:6px;}
+.btn:active{transform:scale(.97);}
+.btn.teal{background:var(--teal);color:#fff;}
+.btn.navy{background:var(--navy);color:#fff;}
+.btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--cline);}
+.btn.danger{background:rgba(228,88,88,.1);color:var(--red);border:1.5px solid rgba(228,88,88,.3);}
+.btn.sm{padding:6px 11px;font-size:11px;border-radius:8px;}
+.filters{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.fchip{background:#fff;border:1.5px solid var(--cline);border-radius:100px;padding:7px 14px;
+  font-size:11.5px;font-weight:800;color:var(--dim);cursor:pointer;}
+.fchip.on{background:var(--navy);border-color:var(--navy);color:#fff;}
+.searchbox{padding:9px 13px;border-radius:10px;border:1.5px solid var(--cline);font-family:inherit;
+  font-size:12.5px;outline:none;width:260px;background:#fff;}
+.searchbox:focus{border-color:var(--teal);}
+.toolrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:12px;flex-wrap:wrap;}
+
+/* DRAWER */
+.drawer-bg{position:fixed;inset:0;background:rgba(10,26,47,.45);z-index:60;animation:fi .15s;}
+@keyframes fi{from{opacity:0;}to{opacity:1;}}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:560px;max-width:92vw;background:#fff;z-index:61;
+  box-shadow:-20px 0 50px -20px rgba(10,26,47,.35);overflow-y:auto;animation:slid .22s ease;}
+@keyframes slid{from{transform:translateX(60px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.dhead{padding:20px 24px;border-bottom:1px solid var(--cline);display:flex;align-items:center;gap:14px;
+  position:sticky;top:0;background:#fff;z-index:5;}
+.dhead .x{margin-left:auto;background:var(--bg);border:none;width:32px;height:32px;border-radius:9px;
+  cursor:pointer;font-size:15px;font-weight:900;color:var(--dim);}
+.dbody{padding:20px 24px 40px;}
+.dl{display:grid;grid-template-columns:150px 1fr;gap:8px 14px;font-size:12.5px;margin-bottom:6px;}
+.dl dt{color:var(--dim);font-weight:700;}
+.dl dd{margin:0;font-weight:700;}
+.sect{font-size:11px;font-weight:900;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;
+  margin:22px 0 10px;padding-bottom:7px;border-bottom:1.5px solid var(--cline);}
+.actgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.timeline{border-left:2px solid var(--cline);margin-left:8px;padding-left:18px;}
+.tl-item{position:relative;padding-bottom:16px;}
+.tl-item::before{content:"";position:absolute;left:-24px;top:3px;width:10px;height:10px;border-radius:50%;
+  background:var(--teal);border:2.5px solid #fff;box-shadow:0 0 0 1.5px var(--cline);}
+.tl-item.sys::before{background:#B9C6D8;}
+.tl-item .t{font-size:12.5px;font-weight:800;}
+.tl-item .s{font-size:11px;color:var(--dim);font-weight:600;margin-top:2px;line-height:1.5;}
+.notebox{width:100%;border:1.5px solid var(--cline);border-radius:11px;padding:11px 13px;font-family:inherit;
+  font-size:12.5px;resize:vertical;min-height:70px;outline:none;}
+.notebox:focus{border-color:var(--teal);}
+
+/* AUDIT */
+.audit-row{display:flex;gap:13px;background:#fff;border:1px solid var(--cline);border-radius:12px;
+  padding:13px 16px;margin-bottom:9px;align-items:flex-start;}
+.audit-row.live{animation:pop .4s ease;border-color:rgba(15,184,164,.55);}
+@keyframes pop{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.aic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;}
+.audit-main{flex:1;min-width:0;}
+.audit-t{font-size:12.5px;font-weight:800;}
+.audit-s{font-size:11px;color:var(--dim);font-weight:600;margin-top:2px;}
+.audit-meta{text-align:right;font-size:10.5px;color:var(--dim);font-weight:700;flex-shrink:0;}
+.hash{font-family:ui-monospace,Menlo,monospace;font-size:9.5px;color:#9AA8BC;margin-top:3px;}
+.diff{background:#0E1C31;border-radius:10px;padding:10px 13px;margin-top:9px;font-family:ui-monospace,Menlo,monospace;
+  font-size:11px;color:#B9C6D8;line-height:1.7;display:none;}
+.diff .rm{color:#FF9B9B;} .diff .ad{color:#6FE0C8;}
+.audit-row.open .diff{display:block;}
+
+/* INTEGRATIONS */
+.intcard{display:flex;gap:14px;align-items:flex-start;}
+.intlogo{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;}
+.intcard .nm{font-size:13.5px;font-weight:900;}
+.intcard .ds{font-size:11.5px;color:var(--dim);font-weight:600;margin-top:2px;line-height:1.5;}
+.krow{display:flex;align-items:center;gap:8px;margin-top:10px;font-family:ui-monospace,Menlo,monospace;
+  font-size:11px;background:var(--bg);border:1px solid var(--cline);border-radius:8px;padding:7px 10px;color:var(--dim);}
+.krow button{margin-left:auto;}
+.hbar{display:flex;gap:3px;margin-top:10px;}
+.hbar span{flex:1;height:18px;border-radius:4px;background:rgba(15,184,164,.7);}
+.hbar span.w{background:rgba(255,138,61,.75);} .hbar span.e{background:rgba(228,88,88,.8);}
+.switch{width:40px;height:23px;border-radius:100px;background:#D7DEE8;position:relative;cursor:pointer;
+  flex-shrink:0;transition:background .2s;}
+.switch.on{background:var(--teal);}
+.switch .knob{position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s;}
+.switch.on .knob{left:20px;}
+
+/* RBAC */
+.rbac{overflow-x:auto;}
+.rbac td:first-child{font-weight:800;}
+.perm{width:20px;height:20px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:900;}
+.perm.y{background:rgba(15,184,164,.15);color:#0A9B8A;}
+.perm.n{background:#EEF1F6;color:#B7C1CF;}
+.perm.a{background:rgba(255,138,61,.15);color:#E0731F;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:13px 20px;
+  border-radius:12px;font-size:12.5px;font-weight:800;box-shadow:0 16px 40px -12px rgba(0,0,0,.4);
+  opacity:0;transform:translateY(12px);transition:all .25s;z-index:99;display:flex;gap:9px;align-items:center;}
+.toast.show{opacity:1;transform:translateY(0);}
+.sla{font-size:10.5px;font-weight:900;}
+.sla.ok{color:#0A9B8A;} .sla.risk{color:#E0731F;} .sla.breach{color:var(--red);}
+.riskbar{width:74px;height:7px;border-radius:10px;background:#EEF1F6;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:7px;}
+.riskbar i{display:block;height:100%;border-radius:10px;}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:11px;}
+.empty{padding:34px;text-align:center;color:var(--dim);font-weight:700;font-size:12.5px;}
+@media(max-width:1080px){.g4{grid-template-columns:repeat(2,1fr);}.g3{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo">
+      <div class="logomark">
+        <svg width="19" height="19" viewBox="0 0 100 100" fill="none">
+          <path d="M18 62 L45 40 L82 20" stroke="white" stroke-width="11" stroke-linecap="round"/>
+          <path d="M70 20 L82 20 L82 32" stroke="white" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div><div class="t">Student Freedom</div><div class="s">Admin Console</div></div>
+    </div>
+    <div class="envbadge">⬤ Production</div>
+    <div id="nav"></div>
+    <div class="adminbox">
+      <div class="adminav">RI</div>
+      <div><div class="n">Ruben Iversen</div><div class="r">Super Admin · MFA ✓</div></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="crumb" id="crumb">Overview</div>
+      <div class="gsearch">
+        <span class="mag">⌕</span>
+        <input placeholder="Search users, tickets, transactions, chargebacks…  (⌘K)" id="gsearchInput"/>
+      </div>
+      <button class="topbtn" onclick="toast('🔔 3 unread alerts')">🔔<span style="background:var(--red);color:#fff;border-radius:100px;font-size:9px;padding:1px 6px;font-weight:900;">3</span></button>
+      <button class="topbtn" onclick="toast('📖 Runbook opened')">📖 Runbooks</button>
+    </div>
+    <div class="content" id="content"></div>
+  </div>
+</div>
+
+<div id="overlay"></div>
+<div class="toast" id="toastEl"></div>
+
+<script>
+/* ================= STATE ================= */
+let V = {page:'overview', userFilter:'all', userQ:'', ticketFilter:'open', cbFilter:'all', auditQ:'', drawer:null};
+
+const USERS = [
+ {id:'U-10231',ini:'AM',name:'Amara Mensah',email:'amara.m@student.manchester.ac.uk',role:'Student',uni:'Univ. of Manchester',status:'Active',kyc:'Verified',balance:27350,cb:23.40,cards:1,joined:'12 Sep 2025',risk:8,linked:['Henrik M. (parent)','Lena M. (parent)']},
+ {id:'U-10232',ini:'HM',name:'Henrik Mensah',email:'henrik.mensah@gmail.com',role:'Parent',uni:'—',status:'Active',kyc:'Verified',balance:0,cb:47.20,cards:2,joined:'12 Sep 2025',risk:4,linked:['Amara M. (child)']},
+ {id:'U-10310',ini:'JK',name:'Jordan Kane',email:'j.kane@student.manchester.ac.uk',role:'Student',uni:'Univ. of Manchester',status:'Active',kyc:'Verified',balance:31200,cb:31.05,cards:1,joined:'02 Oct 2025',risk:12,linked:['David K. (parent)']},
+ {id:'U-10388',ini:'MP',name:'Maya Patel',email:'maya.p@kcl.ac.uk',role:'Student',uni:'KCL',status:'Suspended',kyc:'Verified',balance:24980,cb:0,cards:1,joined:'11 Oct 2025',risk:71,linked:['Sunita P. (parent)']},
+ {id:'U-10412',ini:'ST',name:'Sam Turner',email:'sam.t@leeds.ac.uk',role:'Student',uni:'Univ. of Leeds',status:'Pending KYC',kyc:'Docs requested',balance:19450,cb:2.10,cards:0,joined:'14 Jul 2026',risk:22,linked:[]},
+ {id:'U-10450',ini:'LB',name:'Leila Boateng',email:'leila.b@bristol.ac.uk',role:'Graduate',uni:'Univ. of Bristol (alum)',status:'Active',kyc:'Verified',balance:41200,cb:18.75,cards:2,joined:'03 Nov 2025',risk:6,linked:['Acme Corp (employer)']},
+ {id:'U-10502',ini:'RD',name:'Ravi Dhillon',email:'ravi.d@student.manchester.ac.uk',role:'Student',uni:'Univ. of Manchester',status:'Active',kyc:'Verified',balance:22100,cb:9.90,cards:1,joined:'20 Jan 2026',risk:15,linked:[]},
+ {id:'U-10577',ini:'GT',name:'Grace Thompson',email:'grace.t@outlook.com',role:'Parent',uni:'—',status:'Locked',kyc:'Verified',balance:0,cb:12.30,cards:1,joined:'02 Feb 2026',risk:34,linked:['Sam T. (child)']},
+];
+
+let TICKETS = [
+ {id:'CC-4821',user:'Amara Mensah',uid:'U-10231',cat:'Missing cashback',pri:'Medium',status:'Open',sla:'3h 12m left',slac:'ok',age:'4h',assignee:'Unassigned',
+  desc:'Customer reports £0.86 cashback from Sainsburys (14 Jul) never applied to loan balance. Transaction visible in feed but stuck in "pending".',
+  tl:[{t:'Ticket created via in-app support',s:'14 Jul · 09:12 · Source: mobile app',sys:1},{t:'Auto-triage: matched transaction TX-88121',s:'14 Jul · 09:12 · Status: pending settlement · Fidel webhook not received',sys:1}]},
+ {id:'CC-4820',user:'Grace Thompson',uid:'U-10577',cat:'Account locked',pri:'High',status:'Open',sla:'42m left',slac:'risk',age:'7h',assignee:'Priya N.',
+  desc:'Parent locked out after 5 failed login attempts. Requests unlock + password reset. Identity verification passed via security questions.',
+  tl:[{t:'Ticket created via phone',s:'14 Jul · 06:30 · Verified: DOB + postcode + last transaction',sys:1},{t:'Assigned to Priya N.',s:'14 Jul · 06:45',sys:1}]},
+ {id:'CC-4819',user:'Maya Patel',uid:'U-10388',cat:'Suspension appeal',pri:'High',status:'Escalated',sla:'SLA breached 1h ago',slac:'breach',age:'2d',assignee:'Fraud team',
+  desc:'Account suspended by velocity rule FR-12 (14 card-link attempts in 1h). Customer states shared device in halls caused this. Requesting reinstatement.',
+  tl:[{t:'Suspended by rule FR-12',s:'12 Jul · 18:03 · Automated',sys:1},{t:'Appeal received',s:'12 Jul · 19:40',sys:1},{t:'Escalated to Fraud & Risk',s:'13 Jul · 10:15 · By: Priya N.',sys:1}]},
+ {id:'CC-4816',user:'Sam Turner',uid:'U-10412',cat:'Card link failed',pri:'Low',status:'Open',sla:'1d 4h left',slac:'ok',age:'1d',assignee:'Unassigned',
+  desc:'Open Banking consent flow fails at bank redirect (Monzo). Error: consent_expired. Customer tried 3 times.',
+  tl:[{t:'Ticket created via chat',s:'13 Jul · 15:20',sys:1},{t:'Known issue KI-207 linked (Monzo consent latency)',s:'13 Jul · 15:21 · Auto-matched',sys:1}]},
+ {id:'CC-4812',user:'Leila Boateng',uid:'U-10450',cat:'GDPR — data export',pri:'Medium',status:'In progress',sla:'26d left (statutory 30d)',slac:'ok',age:'3d',assignee:'DPO queue',
+  desc:'Subject Access Request. Wants full export of personal data incl. transactions and cashback history.',
+  tl:[{t:'SAR received via privacy@ email',s:'11 Jul · 11:00',sys:1},{t:'Identity verified',s:'11 Jul · 14:30 · By: DPO queue',sys:1},{t:'Export job queued',s:'12 Jul · 09:00 · ETA 15 Jul',sys:1}]},
+ {id:'CC-4808',user:'Jordan Kane',uid:'U-10310',cat:'Duplicate account',pri:'Low',status:'Resolved',sla:'Met',slac:'ok',age:'5d',assignee:'Priya N.',
+  desc:'Two accounts created with uni + personal email. Merged balances and history to U-10310.',
+  tl:[{t:'Accounts merged',s:'10 Jul · 12:00 · By: Priya N. · Audit AE-99812',sys:1},{t:'Ticket resolved',s:'10 Jul · 12:05',sys:1}]},
+];
+
+let CHARGEBACKS = [
+ {id:'CB-2210',user:'Maya Patel',merchant:'ASOS',net:'Visa',amt:'£64.00',cb:'£3.84',reason:'10.4 Fraud — card absent',status:'Evidence required',due:'2d 6h',stage:'Representment window open'},
+ {id:'CB-2208',user:'Ravi Dhillon',merchant:'Currys',net:'Mastercard',amt:'£249.00',cb:'£6.22',reason:'4853 Not as described',status:'New',due:'6d',stage:'Awaiting triage'},
+ {id:'CB-2201',user:'Jordan Kane',merchant:'Trainline',net:'Visa',amt:'£38.50',cb:'£1.54',reason:'13.1 Services not provided',status:'Submitted',due:'—',stage:'With issuer · decision pending'},
+ {id:'CB-2194',user:'Leila Boateng',merchant:'PureGym',net:'Visa',amt:'£24.99',cb:'£5.00',reason:'13.2 Cancelled recurring',status:'Won',due:'—',stage:'Cashback clawback reversed'},
+ {id:'CB-2188',user:'Sam Turner',merchant:'Wok This Way',net:'Mastercard',amt:'£11.40',cb:'£1.37',reason:'4837 No auth',status:'Lost',due:'—',stage:'Cashback clawed back from ledger'},
+];
+
+const INTEGRATIONS = [
+ {ic:'🏦',bg:'rgba(61,139,255,.12)',name:'TrueLayer — Open Banking',ds:'Account linking, consent, transaction feed (AISP). FCA-regulated AISP provider.',status:'Healthy',up:'99.98%',key:'tl_live_sk_••••••••7f2a',on:true,health:[1,1,1,1,1,1,1,1,1,1,1,1]},
+ {ic:'💳',bg:'rgba(15,184,164,.12)',name:'Fidel API — Card Linking',ds:'Visa / Mastercard card-linked offers. Real-time transaction webhooks for cashback matching.',status:'Degraded',up:'99.62%',key:'fid_live_pk_••••••••c9d1',on:true,health:[1,1,1,1,1,'w','w',1,1,1,'w',1]},
+ {ic:'🔁',bg:'rgba(255,138,61,.13)',name:'Visa Resolve Online (VROL)',ds:'Dispute & chargeback lifecycle: retrieval requests, representment, evidence submission.',status:'Healthy',up:'100%',key:'vrol_prod_••••••••11b8',on:true,health:[1,1,1,1,1,1,1,1,1,1,1,1]},
+ {ic:'🔁',bg:'rgba(255,138,61,.13)',name:'Mastercom — Disputes',ds:'Mastercard dispute filing and case management API.',status:'Healthy',up:'99.99%',key:'mcom_prod_••••••••3e77',on:true,health:[1,1,1,1,1,1,1,1,1,1,1,1]},
+ {ic:'🎓',bg:'rgba(139,111,232,.13)',name:'SLC Balance Sync',ds:'Nightly student-loan balance reconciliation with Student Loans Company (screen-consent model until API GA).',status:'Healthy',up:'99.9%',key:'slc_batch_••••••••90aa',on:true,health:[1,1,1,'e',1,1,1,1,1,1,1,1]},
+ {ic:'💸',bg:'rgba(15,184,164,.12)',name:'ClearBank — Payout Rails',ds:'FPS payouts of accumulated cashback to SLC repayments. Safeguarded client-money account.',status:'Healthy',up:'100%',key:'clrb_live_••••••••42fe',on:true,health:[1,1,1,1,1,1,1,1,1,1,1,1]},
+ {ic:'🧾',bg:'rgba(61,139,255,.12)',name:'Awin / Rakuten — Affiliates',ds:'Retail affiliate networks. Commission postbacks matched to user purchases.',status:'Healthy',up:'99.7%',key:'awin_pub_••••••••1c03',on:true,health:[1,1,'w',1,1,1,1,1,1,1,1,1]},
+ {ic:'🛡️',bg:'rgba(228,88,88,.1)',name:'ComplyAdvantage — KYC/AML',ds:'Identity verification, PEP/sanctions screening, ongoing monitoring (Phase 2 bank features).',status:'Sandbox',up:'—',key:'ca_test_••••••••88d0',on:false,health:[1,1,1,1,1,1,1,1,1,1,1,1]},
+];
+
+let AUDIT = [
+ {ic:'🔐',bg:'rgba(228,88,88,.1)',t:'Account suspended — Maya Patel (U-10388)',s:'Actor: system (rule FR-12) · velocity: 14 card-link attempts / 1h',time:'12 Jul 18:03',hash:'ae7f…21c9',diff:'<span class="rm">- status: "Active"</span><br><span class="ad">+ status: "Suspended"</span><br><span class="ad">+ reason: "FR-12 velocity"</span>'},
+ {ic:'🧑‍💼',bg:'rgba(61,139,255,.1)',t:'Role changed — Priya N. promoted to CC Team Lead',s:'Actor: Ruben Iversen (Super Admin) · approved by: Jean D. (4-eyes)',time:'11 Jul 14:22',hash:'b2d0…88ef',diff:'<span class="rm">- role: "CC Agent"</span><br><span class="ad">+ role: "CC Team Lead"</span>'},
+ {ic:'⚙️',bg:'rgba(255,138,61,.12)',t:'Integration config changed — Fidel API webhook retry policy',s:'Actor: Dushyant V. (Platform Admin) · change ticket CHG-3312',time:'11 Jul 09:10',hash:'9c11…4a02',diff:'<span class="rm">- retries: 3, backoff: "linear"</span><br><span class="ad">+ retries: 6, backoff: "exponential"</span>'},
+ {ic:'💷',bg:'rgba(15,184,164,.1)',t:'Goodwill credit £5.00 — Jordan Kane (U-10310)',s:'Actor: Priya N. (CC) · reason: "delayed cashback settlement" · ticket CC-4790',time:'10 Jul 16:40',hash:'77aa…d3b1',diff:'<span class="ad">+ ledger: goodwill_credit £5.00 → loan_reduction_pool</span>'},
+ {ic:'📤',bg:'rgba(139,111,232,.12)',t:'GDPR export generated — Leila Boateng (U-10450)',s:'Actor: DPO queue · SAR-2026-081 · delivered via secure link (72h expiry)',time:'10 Jul 09:02',hash:'e0c4…9f10',diff:'<span class="ad">+ sar_export: 14 tables, 2.1MB, pii_masked_fields: 0</span>'},
+];
+
+let PARTNERS = [
+ {name:'Sainsburys',type:'Retail affiliate',rate:'3% cashback',status:'Live',vol:'£12,480/mo'},
+ {name:'ASOS',type:'Retail affiliate',rate:'6% cashback',status:'Live',vol:'£8,110/mo'},
+ {name:'Grind Coffee (MCR)',type:'Local trader · QR',rate:'10% to loan',status:'Live',vol:'£640/mo'},
+ {name:'Vita Student',type:'PBSA partner',rate:'£240/booking to loan',status:'Live',vol:'41 bookings/mo'},
+ {name:'Unite Students',type:'PBSA partner',rate:'£180/booking to loan',status:'Contract review',vol:'—'},
+ {name:'Trainline',type:'Travel affiliate',rate:'4% to loan',status:'Live',vol:'£2,905/mo'},
+ {name:'Acme Corp',type:'Employer scheme',rate:'£50/mo matched',status:'Pilot',vol:'112 employees'},
+];
+
+const FRAUD = [
+ {id:'FR-881',user:'Maya Patel',rule:'FR-12 Card-link velocity',score:71,s:'Suspended · appeal open (CC-4819)',pill:'red'},
+ {id:'FR-879',user:'Grace Thompson',rule:'FR-04 Failed logins ×5',score:34,s:'Account locked · CC verifying identity',pill:'orange'},
+ {id:'FR-872',user:'Sam Turner',rule:'FR-22 Cashback pattern anomaly',score:22,s:'Monitoring · no action',pill:'blue'},
+ {id:'FR-868',user:'Ravi Dhillon',rule:'FR-09 Self-purchase at listed merchant',score:15,s:'Cleared — legitimate part-time job',pill:'grey'},
+];
+
+const GDPR = [
+ {id:'SAR-2026-084',user:'Leila Boateng',type:'Data export (SAR)',rec:'11 Jul',due:'10 Aug',status:'In progress',pill:'blue'},
+ {id:'DEL-2026-019',user:'Former user #U-09112',type:'Right to erasure',rec:'08 Jul',due:'07 Aug',status:'Legal hold check',pill:'orange'},
+ {id:'SAR-2026-081',user:'Marcus Webb',type:'Data export (SAR)',rec:'02 Jul',due:'01 Aug',status:'Delivered',pill:'green'},
+];
+
+/* ================= NAV ================= */
+const NAV = [
+ {g:'Operations'},
+ {k:'overview',ic:'📊',n:'Overview'},
+ {k:'users',ic:'👥',n:'Users'},
+ {k:'tickets',ic:'🎧',n:'Customer Care',cnt:()=>TICKETS.filter(t=>t.status!=='Resolved').length},
+ {k:'chargebacks',ic:'↩️',n:'Chargebacks',cnt:()=>CHARGEBACKS.filter(c=>['New','Evidence required'].includes(c.status)).length,red:true},
+ {g:'Money & Partners'},
+ {k:'integrations',ic:'🔌',n:'Financial Integrations'},
+ {k:'payouts',ic:'💸',n:'Payouts & Recon'},
+ {k:'partners',ic:'🤝',n:'Partners & Offers'},
+ {g:'Trust & Control'},
+ {k:'fraud',ic:'🛡️',n:'Fraud & Risk'},
+ {k:'compliance',ic:'⚖️',n:'Compliance & GDPR'},
+ {k:'audit',ic:'📜',n:'Audit Log'},
+ {k:'rbac',ic:'🔑',n:'Roles & Permissions'},
+ {k:'health',ic:'🩺',n:'System Health'},
+];
+const TITLES={overview:'Overview',users:'Users',tickets:'Customer Care',chargebacks:'Chargebacks & Disputes',integrations:'Financial Integrations',payouts:'Payouts & Reconciliation',partners:'Partners & Offers',fraud:'Fraud & Risk',compliance:'Compliance & GDPR',audit:'Audit Log',rbac:'Roles & Permissions',health:'System Health'};
+
+function renderNav(){
+  document.getElementById('nav').innerHTML = NAV.map(i=>{
+    if(i.g) return `<div class="navgroup">${i.g}</div>`;
+    const c = i.cnt ? i.cnt() : 0;
+    return `<div class="navitem ${V.page===i.k?'on':''}" onclick="go('${i.k}')">
+      <span class="ic">${i.ic}</span>${i.n}${c?`<span class="cnt ${i.red?'red':''}">${c}</span>`:''}</div>`;
+  }).join('');
+}
+function go(p){V.page=p;V.drawer=null;render();}
+
+/* ================= HELPERS ================= */
+function toast(m){const t=document.getElementById('toastEl');t.innerHTML=m;t.classList.add('show');
+  clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2200);}
+function audit(ic,bg,t,s,diff){
+  AUDIT.unshift({ic,bg,t,s:'Actor: Ruben Iversen (Super Admin) · '+s,time:'Just now',hash:Math.random().toString(16).slice(2,6)+'…'+Math.random().toString(16).slice(2,6),diff,live:true});
+  renderNav();
+}
+function statusPill(s){
+  const map={'Active':'green','Suspended':'red','Locked':'orange','Pending KYC':'blue','Open':'blue','In progress':'purple','Escalated':'red','Resolved':'green','New':'blue','Evidence required':'orange','Submitted':'purple','Won':'green','Lost':'red','Healthy':'green','Degraded':'orange','Sandbox':'grey','Live':'green','Pilot':'blue','Contract review':'orange'};
+  return `<span class="pill ${map[s]||'grey'}">${s}</span>`;
+}
+
+/* ================= PAGES ================= */
+function pOverview(){
+  return `
+  <h2 class="page">Good morning, Ruben</h2>
+  <p class="sub">Platform pulse — last 24 hours · all systems ${INTEGRATIONS.some(i=>i.status==='Degraded')?'<span class="wrn" style="font-weight:800;">1 degraded integration</span>':'nominal'}</p>
+  <div class="grid g4">
+    <div class="card kpi"><div class="l">Active users</div><div class="v">48,212</div><div class="d pos">▲ 2.4% w/w</div></div>
+    <div class="card kpi"><div class="l">Cashback processed (24h)</div><div class="v">£18,904</div><div class="d pos">▲ 6.1%</div></div>
+    <div class="card kpi"><div class="l">Debt reduced (24h)</div><div class="v">£16,377</div><div class="d pos">86.6% pass-through</div></div>
+    <div class="card kpi"><div class="l">Open CC tickets</div><div class="v">${TICKETS.filter(t=>t.status!=='Resolved').length}</div><div class="d wrn">1 SLA breach</div></div>
+  </div>
+  <div class="grid g3" style="margin-top:16px;">
+    <div class="card">
+      <div class="sect" style="margin-top:0;">Needs attention</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:10px;align-items:center;cursor:pointer;" onclick="go('tickets')"><span class="pill red">SLA</span><span style="font-weight:700;font-size:12.5px;">CC-4819 escalation breached SLA 1h ago</span></div>
+        <div style="display:flex;gap:10px;align-items:center;cursor:pointer;" onclick="go('chargebacks')"><span class="pill orange">CB</span><span style="font-weight:700;font-size:12.5px;">CB-2210 evidence due in 2d 6h</span></div>
+        <div style="display:flex;gap:10px;align-items:center;cursor:pointer;" onclick="go('integrations')"><span class="pill orange">INT</span><span style="font-weight:700;font-size:12.5px;">Fidel webhooks degraded — 214 pending matches</span></div>
+        <div style="display:flex;gap:10px;align-items:center;cursor:pointer;" onclick="go('compliance')"><span class="pill blue">GDPR</span><span style="font-weight:700;font-size:12.5px;">2 SARs in statutory window</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sect" style="margin-top:0;">Cashback pipeline (24h)</div>
+      ${pipe('Transactions ingested','61,204','100%','var(--blue)')}
+      ${pipe('Matched to offers','9,812','16%','var(--teal)')}
+      ${pipe('Cashback awarded','9,633','98.2% of matched','var(--teal)')}
+      ${pipe('Pending settlement','214','Fidel webhook lag','var(--orange)')}
+      ${pipe('Applied to loans','9,419','£16,377','var(--navy)')}
+    </div>
+    <div class="card">
+      <div class="sect" style="margin-top:0;">Recent admin activity</div>
+      ${AUDIT.slice(0,4).map(a=>`<div style="display:flex;gap:9px;margin-bottom:11px;align-items:flex-start;">
+        <div class="aic" style="background:${a.bg};width:28px;height:28px;font-size:12px;">${a.ic}</div>
+        <div><div style="font-size:11.5px;font-weight:800;line-height:1.4;">${a.t}</div><div style="font-size:10px;color:var(--dim);font-weight:600;">${a.time}</div></div>
+      </div>`).join('')}
+      <a style="font-size:11.5px;font-weight:800;color:var(--teal);cursor:pointer;" onclick="go('audit')">Full audit log →</a>
+    </div>
+  </div>`;
+}
+function pipe(t,v,s,c){return `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--cline);">
+  <div style="font-size:12px;font-weight:700;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${c};margin-right:8px;"></span>${t}</div>
+  <div style="text-align:right;"><span style="font-weight:900;font-size:12.5px;">${v}</span> <span style="font-size:10.5px;color:var(--dim);font-weight:700;">· ${s}</span></div></div>`;}
+
+function pUsers(){
+  const f=V.userFilter, q=V.userQ.toLowerCase();
+  let rows = USERS.filter(u=> (f==='all'||u.status===f||u.role===f) && (!q||u.name.toLowerCase().includes(q)||u.email.includes(q)||u.id.toLowerCase().includes(q)));
+  return `
+  <h2 class="page">Users</h2>
+  <p class="sub">48,212 total · search by name, email or ID. Click a row for the full account view.</p>
+  <div class="toolrow">
+    <div class="filters" style="margin:0;">
+      ${['all','Active','Suspended','Locked','Pending KYC','Student','Parent','Graduate'].map(x=>`<div class="fchip ${f===x?'on':''}" onclick="V.userFilter='${x}';render()">${x==='all'?'All':x}</div>`).join('')}
+    </div>
+    <input class="searchbox" placeholder="Search users…" value="${V.userQ}" oninput="V.userQ=this.value;render();this.focus();this.setSelectionRange(this.value.length,this.value.length)"/>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table>
+      <tr><th>User</th><th>ID</th><th>Role</th><th>Status</th><th>KYC</th><th>Loan balance</th><th>Cashback (mo)</th><th>Risk</th></tr>
+      ${rows.map(u=>`<tr class="rowlink" onclick="openUser('${u.id}')">
+        <td><div class="ucell"><div class="avatar">${u.ini}</div><div><div class="nm">${u.name}</div><div class="em">${u.email}</div></div></div></td>
+        <td class="mono">${u.id}</td><td>${u.role}</td><td>${statusPill(u.status)}</td>
+        <td style="font-size:11.5px;">${u.kyc}</td>
+        <td>${u.balance?('£'+u.balance.toLocaleString()):'—'}</td><td>£${u.cb.toFixed(2)}</td>
+        <td><span class="riskbar"><i style="width:${u.risk}%;background:${u.risk>50?'var(--red)':u.risk>25?'var(--orange)':'var(--teal)'};"></i></span>${u.risk}</td>
+      </tr>`).join('')}
+      ${rows.length?'':'<tr><td colspan="8"><div class="empty">No users match.</div></td></tr>'}
+    </table>
+  </div>`;
+}
+
+function pTickets(){
+  const f=V.ticketFilter;
+  const rows=TICKETS.filter(t=> f==='all' || (f==='open'&&t.status!=='Resolved') || t.status===f);
+  return `
+  <h2 class="page">Customer Care</h2>
+  <p class="sub">Queue sorted by SLA urgency. Agents see only permitted actions (RBAC) and every action is written to the audit log.</p>
+  <div class="grid g4" style="margin-bottom:16px;">
+    <div class="card kpi"><div class="l">Open</div><div class="v">${TICKETS.filter(t=>t.status!=='Resolved').length}</div><div class="d wrn">1 SLA breach</div></div>
+    <div class="card kpi"><div class="l">Median first response</div><div class="v">14m</div><div class="d pos">target 30m</div></div>
+    <div class="card kpi"><div class="l">Resolved (7d)</div><div class="v">312</div><div class="d pos">CSAT 4.7 / 5</div></div>
+    <div class="card kpi"><div class="l">Top category (7d)</div><div class="v" style="font-size:15px;">Missing cashback</div><div class="d">38% of volume</div></div>
+  </div>
+  <div class="filters">
+    ${[['open','Open queue'],['Escalated','Escalated'],['In progress','In progress'],['Resolved','Resolved'],['all','All']].map(x=>`<div class="fchip ${f===x[0]?'on':''}" onclick="V.ticketFilter='${x[0]}';render()">${x[1]}</div>`).join('')}
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table>
+      <tr><th>Ticket</th><th>Customer</th><th>Category</th><th>Priority</th><th>Status</th><th>SLA</th><th>Assignee</th></tr>
+      ${rows.map(t=>`<tr class="rowlink" onclick="openTicket('${t.id}')">
+        <td class="mono" style="font-weight:800;">${t.id}</td><td style="font-weight:800;">${t.user}</td><td>${t.cat}</td>
+        <td>${t.pri==='High'?'<span class="pill red">High</span>':t.pri==='Medium'?'<span class="pill orange">Medium</span>':'<span class="pill grey">Low</span>'}</td>
+        <td>${statusPill(t.status)}</td><td><span class="sla ${t.slac}">${t.sla}</span></td><td>${t.assignee}</td>
+      </tr>`).join('')}
+    </table>
+  </div>`;
+}
+
+function pChargebacks(){
+  const f=V.cbFilter;
+  const rows=CHARGEBACKS.filter(c=>f==='all'||c.status===f);
+  return `
+  <h2 class="page">Chargebacks & Disputes</h2>
+  <p class="sub">Disputes raised through issuers via Visa Resolve Online / Mastercom. Cashback already paid on a disputed transaction is clawed back automatically and reversed if the case is won.</p>
+  <div class="grid g4" style="margin-bottom:16px;">
+    <div class="card kpi"><div class="l">Open disputes</div><div class="v">${CHARGEBACKS.filter(c=>['New','Evidence required','Submitted'].includes(c.status)).length}</div><div class="d wrn">1 evidence deadline &lt; 3d</div></div>
+    <div class="card kpi"><div class="l">Win rate (90d)</div><div class="v">64%</div><div class="d pos">▲ 5pts</div></div>
+    <div class="card kpi"><div class="l">Cashback at risk</div><div class="v">£11.60</div><div class="d">auto-clawback on filing</div></div>
+    <div class="card kpi"><div class="l">Chargeback ratio</div><div class="v">0.04%</div><div class="d pos">well under network thresholds</div></div>
+  </div>
+  <div class="filters">
+    ${['all','New','Evidence required','Submitted','Won','Lost'].map(x=>`<div class="fchip ${f===x?'on':''}" onclick="V.cbFilter='${x}';render()">${x==='all'?'All':x}</div>`).join('')}
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table>
+      <tr><th>Case</th><th>Customer</th><th>Merchant</th><th>Network</th><th>Amount</th><th>Cashback impact</th><th>Reason code</th><th>Status</th><th>Deadline</th><th></th></tr>
+      ${rows.map(c=>`<tr>
+        <td class="mono" style="font-weight:800;">${c.id}</td><td style="font-weight:800;">${c.user}</td><td>${c.merchant}</td><td>${c.net}</td>
+        <td style="font-weight:800;">${c.amt}</td><td>${c.cb}</td><td style="font-size:11px;">${c.reason}</td>
+        <td>${statusPill(c.status)}<div style="font-size:10px;color:var(--dim);font-weight:600;margin-top:3px;">${c.stage}</div></td>
+        <td>${c.due==='—'?'—':`<span class="sla ${c.due.startsWith('2')?'risk':'ok'}">${c.due}</span>`}</td>
+        <td>${c.status==='Evidence required'?`<button class="btn teal sm" onclick="submitEvidence('${c.id}')">Submit evidence</button>`:c.status==='New'?`<button class="btn ghost sm" onclick="triageCb('${c.id}')">Triage</button>`:''}</td>
+      </tr>`).join('')}
+    </table>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="sect" style="margin-top:0;">Chargeback automation rules</div>
+    <div class="grid g3">
+      ${ruleBox('Auto-clawback on filing','When a dispute is filed, related cashback is moved to a held state and removed from the loan-reduction queue.','on')}
+      ${ruleBox('Auto-reverse on win','If representment succeeds, held cashback is re-applied to the loan with a user notification.','on')}
+      ${ruleBox('Evidence auto-pack','Compile receipt data, device fingerprint, geo-match and delivery confirmation into network-ready evidence.','on')}
+    </div>
+  </div>`;
+}
+function ruleBox(t,s,on){return `<div style="border:1px solid var(--cline);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:flex-start;">
+  <div class="switch ${on?'on':''}" onclick="this.classList.toggle('on');toast('⚙️ Rule updated — change logged');auditRule('${t}')"><div class="knob"></div></div>
+  <div><div style="font-weight:800;font-size:12.5px;">${t}</div><div style="font-size:11px;color:var(--dim);font-weight:600;margin-top:3px;line-height:1.55;">${s}</div></div></div>`;}
+function auditRule(t){audit('⚙️','rgba(255,138,61,.12)','Chargeback rule toggled — '+t,'change ticket pending · 4-eyes approval required','<span class="ad">+ rule state changed (pending approval)</span>');}
+
+function pIntegrations(){
+  return `
+  <h2 class="page">Financial Integrations</h2>
+  <p class="sub">Connections to banks, card networks and payment rails. Keys are write-only after creation; rotation and toggles require 4-eyes approval and are audited.</p>
+  <div class="grid g2">
+    ${INTEGRATIONS.map((i,ix)=>`
+    <div class="card intcard">
+      <div class="intlogo" style="background:${i.bg};">${i.ic}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="nm">${i.name}</div>${statusPill(i.status)}
+          <div class="switch ${i.on?'on':''}" style="margin-left:auto;" onclick="toggleInt(${ix})"><div class="knob"></div></div>
+        </div>
+        <div class="ds">${i.ds}</div>
+        <div class="krow">🔑 ${i.key}<button class="btn ghost sm" onclick="event.stopPropagation();rotateKey('${i.name}')">Rotate</button></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:9px;">
+          <div style="font-size:10.5px;font-weight:800;color:var(--dim);">Webhook health · 12h</div>
+          <div style="font-size:10.5px;font-weight:900;" class="${i.status==='Degraded'?'wrn':'pos'}">Uptime ${i.up}</div>
+        </div>
+        <div class="hbar">${i.health.map(h=>`<span class="${h==='w'?'w':h==='e'?'e':''}"></span>`).join('')}</div>
+      </div>
+    </div>`).join('')}
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="sect" style="margin-top:0;">Money movement map</div>
+    <div style="font-size:12.5px;font-weight:700;line-height:2;color:var(--dim);">
+      <span class="pill blue">Card spend</span> → Fidel webhook → cashback engine → <span class="pill green">safeguarded client account (ClearBank)</span> → monthly FPS batch → <span class="pill purple">SLC repayment</span> → balance sync confirms reduction → user sees "time shaved".
+      <br>Disputes flow the other way: <span class="pill orange">issuer chargeback</span> → VROL/Mastercom case → cashback clawback hold → evidence → outcome → ledger reconciliation.
+    </div>
+  </div>`;
+}
+function toggleInt(ix){toast('🔒 Requires 4-eyes approval — request sent to Jean D.');audit('🔌','rgba(61,139,255,.1)','Integration toggle requested — '+INTEGRATIONS[ix].name,'pending second approver (4-eyes)','<span class="ad">+ approval_request: toggle '+(INTEGRATIONS[ix].on?'OFF':'ON')+'</span>');}
+function rotateKey(n){toast('🔑 Key rotation scheduled — old key valid 24h');audit('🔑','rgba(255,138,61,.12)','API key rotation — '+n,'grace period 24h · change ticket CHG-auto','<span class="rm">- key: ••••old</span><br><span class="ad">+ key: ••••new (activates on confirm)</span>');}
+
+function pPayouts(){
+  return `
+  <h2 class="page">Payouts & Reconciliation</h2>
+  <p class="sub">Accumulated cashback is safeguarded, then paid to SLC in batches. Every batch reconciles three ways: our ledger ↔ bank statement ↔ SLC confirmation.</p>
+  <div class="grid g4" style="margin-bottom:16px;">
+    <div class="card kpi"><div class="l">Safeguarded balance</div><div class="v">£214,882</div><div class="d">ClearBank client account</div></div>
+    <div class="card kpi"><div class="l">Next SLC batch</div><div class="v">£38,410</div><div class="d">runs 15 Jul · 22:00</div></div>
+    <div class="card kpi"><div class="l">Unreconciled items</div><div class="v">3</div><div class="d wrn">oldest 2d</div></div>
+    <div class="card kpi"><div class="l">Affiliate receivables</div><div class="v">£61,204</div><div class="d">Awin £48.2k · Rakuten £13k</div></div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table>
+      <tr><th>Batch</th><th>Type</th><th>Amount</th><th>Users</th><th>Sent</th><th>Ledger ↔ Bank</th><th>Bank ↔ SLC</th><th>Status</th></tr>
+      ${[['PB-1188','SLC repayment batch','£41,230','9,120','08 Jul','✓ matched','✓ matched','green|Settled'],
+         ['PB-1187','SLC repayment batch','£39,884','8,904','01 Jul','✓ matched','✓ matched','green|Settled'],
+         ['PB-1186','Affiliate commission in','£48,210','—','28 Jun','✓ matched','n/a','green|Settled'],
+         ['PB-1185','SLC repayment batch','£40,102','9,002','24 Jun','⚠ 3 exceptions','✓ matched','orange|Exceptions'],
+        ].map(r=>`<tr class="rowlink" onclick="toast('📄 Batch detail — exceptions list & statement lines')">
+        <td class="mono" style="font-weight:800;">${r[0]}</td><td>${r[1]}</td><td style="font-weight:800;">${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td>
+        <td style="font-size:11.5px;">${r[5]}</td><td style="font-size:11.5px;">${r[6]}</td><td><span class="pill ${r[7].split('|')[0]}">${r[7].split('|')[1]}</span></td></tr>`).join('')}
+    </table>
+  </div>`;
+}
+
+function pPartners(){
+  return `
+  <h2 class="page">Partners & Offers</h2>
+  <p class="sub">Retail affiliates, local traders, PBSA operators and employer schemes. Rates changed here go live in the consumer app after approval.</p>
+  <div class="toolrow">
+    <div></div><button class="btn teal" onclick="toast('➕ New partner wizard (KYB, contract, rate card)')">+ Add partner</button>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table>
+      <tr><th>Partner</th><th>Type</th><th>Rate / incentive</th><th>Status</th><th>Volume</th><th></th></tr>
+      ${PARTNERS.map((p,ix)=>`<tr>
+        <td style="font-weight:800;">${p.name}</td><td>${p.type}</td><td>${p.rate}</td>
+        <td>${statusPill(p.status)}</td><td>${p.vol}</td>
+        <td><button class="btn ghost sm" onclick="editRate(${ix})">Edit rate</button></td></tr>`).join('')}
+    </table>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="sect" style="margin-top:0;">PBSA incentive conversion</div>
+    <div style="font-size:12.5px;color:var(--dim);font-weight:600;line-height:1.7;">Partner sign-up incentives (gift cards, free weeks) are converted into direct loan reduction at booking. The console tracks conversion per building, parent co-funding share, and generates the ESG impact report PBSA partners receive quarterly.</div>
+  </div>`;
+}
+function editRate(ix){const p=PARTNERS[ix];toast('✏️ Rate change drafted — pending commercial approval');
+  audit('🤝','rgba(15,184,164,.1)','Offer rate change drafted — '+p.name,'requires commercial approval before going live in app','<span class="rm">- rate: "'+p.rate+'"</span><br><span class="ad">+ rate: (draft) pending approval</span>');}
+
+function pFraud(){
+  return `
+  <h2 class="page">Fraud & Risk</h2>
+  <p class="sub">Rule-based today, model-assisted in Phase 2 (per AI roadmap). Alerts route to this queue; actions require reason codes and are audited.</p>
+  <div class="grid g4" style="margin-bottom:16px;">
+    <div class="card kpi"><div class="l">Open alerts</div><div class="v">${FRAUD.filter(f=>f.pill!=='grey').length}</div><div class="d wrn">1 high severity</div></div>
+    <div class="card kpi"><div class="l">Blocked cashback (7d)</div><div class="v">£184</div><div class="d">self-purchase & abuse rules</div></div>
+    <div class="card kpi"><div class="l">False-positive rate</div><div class="v">11%</div><div class="d pos">▼ from 19%</div></div>
+    <div class="card kpi"><div class="l">Rules active</div><div class="v">24</div><div class="d">velocity · device · pattern</div></div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table>
+      <tr><th>Alert</th><th>User</th><th>Rule</th><th>Risk score</th><th>State</th><th></th></tr>
+      ${FRAUD.map(f=>`<tr>
+        <td class="mono" style="font-weight:800;">${f.id}</td><td style="font-weight:800;">${f.user}</td><td>${f.rule}</td>
+        <td><span class="riskbar"><i style="width:${f.score}%;background:${f.score>50?'var(--red)':f.score>25?'var(--orange)':'var(--teal)'};"></i></span>${f.score}</td>
+        <td style="font-size:11.5px;">${f.s}</td>
+        <td>${f.pill==='red'?`<button class="btn ghost sm" onclick="toast('🗂 Case opened with full evidence timeline')">Review case</button>`:''}</td></tr>`).join('')}
+    </table>
+  </div>`;
+}
+
+function pCompliance(){
+  return `
+  <h2 class="page">Compliance & GDPR</h2>
+  <p class="sub">Data-subject requests with statutory clocks, KYC state, consent records and regulator-ready exports.</p>
+  <div class="grid g3" style="margin-bottom:16px;">
+    <div class="card kpi"><div class="l">Open DSRs</div><div class="v">2</div><div class="d">all within statutory window</div></div>
+    <div class="card kpi"><div class="l">KYC queue</div><div class="v">1</div><div class="d">Sam Turner · docs requested</div></div>
+    <div class="card kpi"><div class="l">Consent version</div><div class="v">v3.2</div><div class="d">98.4% of users on latest</div></div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table>
+      <tr><th>Request</th><th>Subject</th><th>Type</th><th>Received</th><th>Statutory due</th><th>Status</th><th></th></tr>
+      ${GDPR.map(g=>`<tr>
+        <td class="mono" style="font-weight:800;">${g.id}</td><td style="font-weight:800;">${g.user}</td><td>${g.type}</td>
+        <td>${g.rec}</td><td>${g.due}</td><td><span class="pill ${g.pill}">${g.status}</span></td>
+        <td>${g.status!=='Delivered'?`<button class="btn ghost sm" onclick="toast('📤 DSR workspace — identity check, scope, export builder')">Open</button>`:''}</td></tr>`).join('')}
+    </table>
+  </div>
+  <div class="grid g2" style="margin-top:16px;">
+    <div class="card"><div class="sect" style="margin-top:0;">Retention & erasure policy</div>
+      <div style="font-size:12.5px;color:var(--dim);font-weight:600;line-height:1.7;">Transactions: 6y (financial records) · Support tickets: 2y · Marketing consent: until withdrawn · Erasure requests check legal holds (open disputes, AML) before execution. All erasures are logged as tombstone events in the audit chain.</div></div>
+    <div class="card"><div class="sect" style="margin-top:0;">Regulator exports</div>
+      <button class="btn ghost" style="margin:4px 8px 4px 0;" onclick="toast('📄 FCA safeguarding reconciliation report generated')">FCA safeguarding report</button>
+      <button class="btn ghost" style="margin:4px 8px 4px 0;" onclick="toast('📄 Complaints root-cause (DISP) report generated')">Complaints (DISP) report</button>
+      <button class="btn ghost" style="margin:4px 0;" onclick="toast('📄 Data-processing register exported')">GDPR Art. 30 register</button></div>
+  </div>`;
+}
+
+function pAudit(){
+  const q=V.auditQ.toLowerCase();
+  const rows=AUDIT.filter(a=>!q||a.t.toLowerCase().includes(q)||a.s.toLowerCase().includes(q));
+  return `
+  <h2 class="page">Audit Log</h2>
+  <p class="sub">Append-only, hash-chained event log of every admin, system and automated action. Click an entry to see the exact before/after diff. Entries cannot be edited or deleted — corrections are new events.</p>
+  <div class="toolrow">
+    <div class="filters" style="margin:0;">
+      <div class="fchip on">All actors</div><div class="fchip" onclick="toast('Filter: humans only')">Humans</div><div class="fchip" onclick="toast('Filter: system/automated')">System</div><div class="fchip" onclick="toast('Filter: config changes')">Config changes</div>
+    </div>
+    <input class="searchbox" placeholder="Search audit events…" value="${V.auditQ}" oninput="V.auditQ=this.value;render();this.focus();this.setSelectionRange(this.value.length,this.value.length)"/>
+  </div>
+  ${rows.map((a,ix)=>`
+    <div class="audit-row ${a.live?'live':''}" onclick="this.classList.toggle('open')">
+      <div class="aic" style="background:${a.bg};">${a.ic}</div>
+      <div class="audit-main">
+        <div class="audit-t">${a.t}</div>
+        <div class="audit-s">${a.s}</div>
+        <div class="diff">${a.diff}</div>
+      </div>
+      <div class="audit-meta">${a.time}<div class="hash">⛓ ${a.hash}</div></div>
+    </div>`).join('')}
+  <div style="font-size:11px;color:var(--dim);font-weight:700;margin-top:14px;">🔗 Chain verified 4 minutes ago · anchor written to WORM storage hourly · retention 7 years</div>`;
+}
+
+function pRbac(){
+  const roles=['CC Agent','CC Team Lead','Fraud Analyst','Finance Ops','Platform Admin','DPO','Super Admin'];
+  const perms=[
+   ['View user PII',        ['a','y','y','n','n','y','y']],
+   ['Unlock / reset access',['y','y','n','n','n','n','y']],
+   ['Goodwill credit ≤ £10',['y','y','n','n','n','n','y']],
+   ['Goodwill credit > £10',['n','a','n','a','n','n','y']],
+   ['Suspend account',      ['n','a','y','n','n','n','y']],
+   ['File / manage chargeback',['n','n','a','y','n','n','y']],
+   ['Edit partner rates',   ['n','n','n','a','n','n','y']],
+   ['Integration config & keys',['n','n','n','n','a','n','a']],
+   ['Run payout batch',     ['n','n','n','a','n','n','a']],
+   ['GDPR export / erasure',['n','n','n','n','n','y','a']],
+   ['Impersonate (read-only)',['n','a','n','n','n','n','a']],
+   ['View audit log',       ['n','y','y','y','y','y','y']],
+  ];
+  return `
+  <h2 class="page">Roles & Permissions</h2>
+  <p class="sub">Least-privilege by default. <span class="perm y">✓</span> allowed · <span class="perm a">4</span> requires 4-eyes approval · <span class="perm n">–</span> denied. Role changes are themselves audited and require a second approver.</p>
+  <div class="card rbac" style="padding:0;overflow-x:auto;">
+    <table>
+      <tr><th>Permission</th>${roles.map(r=>`<th style="text-align:center;">${r}</th>`).join('')}</tr>
+      ${perms.map(p=>`<tr><td>${p[0]}</td>${p[1].map(x=>`<td style="text-align:center;"><span class="perm ${x}">${x==='y'?'✓':x==='a'?'4':'–'}</span></td>`).join('')}</tr>`).join('')}
+    </table>
+  </div>
+  <div class="grid g3" style="margin-top:16px;">
+    <div class="card"><div class="sect" style="margin-top:0;">Session security</div><div style="font-size:12px;color:var(--dim);font-weight:600;line-height:1.7;">MFA enforced · 15-min idle timeout · IP allow-list for Finance Ops & Platform Admin · device binding for Super Admin.</div></div>
+    <div class="card"><div class="sect" style="margin-top:0;">Impersonation guardrails</div><div style="font-size:12px;color:var(--dim);font-weight:600;line-height:1.7;">Read-only, watermark on screen, user notified afterwards, auto-expires in 15 min, every viewed screen logged.</div></div>
+    <div class="card"><div class="sect" style="margin-top:0;">Break-glass</div><div style="font-size:12px;color:var(--dim);font-weight:600;line-height:1.7;">Emergency access path requires two Super Admins + written incident reference; triggers immediate CISO alert and mandatory review.</div></div>
+  </div>`;
+}
+
+function pHealth(){
+  return `
+  <h2 class="page">System Health</h2>
+  <p class="sub">Live service status, queues and webhooks. On-call: Dushyant V. (Platform).</p>
+  <div class="grid g4" style="margin-bottom:16px;">
+    <div class="card kpi"><div class="l">API p95 latency</div><div class="v">142ms</div><div class="d pos">SLO 300ms</div></div>
+    <div class="card kpi"><div class="l">Error rate</div><div class="v">0.03%</div><div class="d pos">SLO 0.5%</div></div>
+    <div class="card kpi"><div class="l">Webhook backlog</div><div class="v">214</div><div class="d wrn">Fidel · draining ~40/min</div></div>
+    <div class="card kpi"><div class="l">Nightly jobs</div><div class="v">11/12 ✓</div><div class="d wrn">SLC sync retried once (08 Jul)</div></div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table>
+      <tr><th>Service</th><th>Status</th><th>Queue depth</th><th>Last incident</th><th></th></tr>
+      ${[['Cashback matching engine','Healthy','12','—'],['Ledger service','Healthy','0','—'],['Notification service','Healthy','88','—'],['Fidel webhook consumer','Degraded','214','Today 06:10 — provider latency'],['SLC sync batch','Healthy','—','08 Jul — retried OK'],['Payout orchestrator','Healthy','—','—']]
+        .map(r=>`<tr><td style="font-weight:800;">${r[0]}</td><td>${statusPill(r[1])}</td><td>${r[2]}</td><td style="font-size:11.5px;">${r[3]}</td>
+        <td>${r[1]==='Degraded'?`<button class="btn ghost sm" onclick="toast('🔁 Replay triggered for 214 events');audit('🩺','rgba(61,139,255,.1)','Webhook replay triggered — Fidel consumer','214 events requeued','<span class=\\'ad\\'>+ replay_batch: 214 events</span>')">Replay events</button>`:''}</td></tr>`).join('')}
+    </table>
+  </div>`;
+}
+
+/* ================= DRAWERS ================= */
+function openUser(id){V.drawer={type:'user',id};render();}
+function openTicket(id){V.drawer={type:'ticket',id};render();}
+function closeDrawer(){V.drawer=null;render();}
+
+function drawerHtml(){
+  if(!V.drawer) return '';
+  if(V.drawer.type==='user'){
+    const u=USERS.find(x=>x.id===V.drawer.id);
+    return `<div class="drawer-bg" onclick="closeDrawer()"></div><div class="drawer">
+      <div class="dhead">
+        <div class="avatar" style="width:42px;height:42px;font-size:14px;">${u.ini}</div>
+        <div><div style="font-weight:900;font-size:15px;">${u.name} ${statusPill(u.status)}</div>
+        <div style="font-size:11.5px;color:var(--dim);font-weight:700;">${u.id} · ${u.role} · joined ${u.joined}</div></div>
+        <button class="x" onclick="closeDrawer()">✕</button>
+      </div>
+      <div class="dbody">
+        <div class="sect" style="margin-top:0;">Account</div>
+        <dl class="dl">
+          <dt>Email</dt><dd>${u.email}</dd>
+          <dt>University</dt><dd>${u.uni}</dd>
+          <dt>KYC</dt><dd>${u.kyc}</dd>
+          <dt>Linked cards</dt><dd>${u.cards} card(s) via Fidel · Open Banking consent ${u.cards?'active':'not granted'}</dd>
+          <dt>Loan balance</dt><dd>${u.balance?('£'+u.balance.toLocaleString()+' · SLC synced last night'):'n/a (parent)'}</dd>
+          <dt>Cashback this month</dt><dd>£${u.cb.toFixed(2)}</dd>
+          <dt>Family links</dt><dd>${u.linked.length?u.linked.join(', '):'None'}</dd>
+          <dt>Risk score</dt><dd><span class="riskbar"><i style="width:${u.risk}%;background:${u.risk>50?'var(--red)':u.risk>25?'var(--orange)':'var(--teal)'};"></i></span>${u.risk} / 100</dd>
+        </dl>
+        <div class="sect">Customer Care actions <span style="text-transform:none;letter-spacing:0;font-weight:700;">(all audited · reason required)</span></div>
+        <div class="actgrid">
+          <button class="btn ghost" onclick="act('${u.id}','🔗','Re-sent card-link email','+ relink_email sent')">🔗 Resend card-link</button>
+          <button class="btn ghost" onclick="act('${u.id}','🎓','Forced SLC balance re-sync','+ slc_sync: manual trigger')">🎓 Re-sync SLC balance</button>
+          <button class="btn ghost" onclick="act('${u.id}','✉️','Password reset link sent','+ pwd_reset: token issued (1h)')">✉️ Send password reset</button>
+          <button class="btn ghost" onclick="act('${u.id}','👁','Read-only impersonation started','+ impersonation: read-only, 15 min, user will be notified')">👁 Impersonate (read-only)</button>
+          <button class="btn teal" onclick="goodwill('${u.id}')">💷 Goodwill credit £5</button>
+          ${u.status==='Locked'?`<button class="btn teal" onclick="unlock('${u.id}')">🔓 Unlock account</button>`:''}
+          ${u.status==='Suspended'?`<button class="btn danger" onclick="toast('⚠️ Reinstatement requires Fraud Analyst sign-off (4-eyes)')">⚠️ Reinstate (needs fraud)</button>`
+            :u.status==='Active'?`<button class="btn danger" onclick="suspend('${u.id}')">⛔ Suspend account</button>`:''}
+        </div>
+        <div class="sect">Note to account file</div>
+        <textarea class="notebox" placeholder="Add an internal note… (visible to CC & audit)"></textarea>
+        <button class="btn navy" style="margin-top:9px;" onclick="toast('📝 Note saved to account file');audit('📝','rgba(61,139,255,.1)','Account note added — ${u.name} (${u.id})','internal CC note','<span class=\\'ad\\'>+ note appended</span>')">Save note</button>
+        <div class="sect">Recent events</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="t">Cashback £0.86 pending settlement</div><div class="s">14 Jul · Fidel webhook not yet received (linked to CC-4821)</div></div>
+          <div class="tl-item sys"><div class="t">SLC balance synced −£340</div><div class="s">01 Jul · nightly batch</div></div>
+          <div class="tl-item sys"><div class="t">Consent v3.2 accepted</div><div class="s">14 Jun · in-app</div></div>
+        </div>
+      </div></div>`;
+  }
+  if(V.drawer.type==='ticket'){
+    const t=TICKETS.find(x=>x.id===V.drawer.id);
+    return `<div class="drawer-bg" onclick="closeDrawer()"></div><div class="drawer">
+      <div class="dhead">
+        <div><div style="font-weight:900;font-size:15px;">${t.id} — ${t.cat} ${statusPill(t.status)}</div>
+        <div style="font-size:11.5px;color:var(--dim);font-weight:700;">${t.user} · ${t.uid} · <span class="sla ${t.slac}">${t.sla}</span> · Assignee: ${t.assignee}</div></div>
+        <button class="x" onclick="closeDrawer()">✕</button>
+      </div>
+      <div class="dbody">
+        <div class="sect" style="margin-top:0;">Issue</div>
+        <div style="font-size:13px;font-weight:600;line-height:1.65;">${t.desc}</div>
+        <div class="sect">Suggested resolutions</div>
+        <div class="actgrid">
+          ${t.cat==='Missing cashback'?`
+            <button class="btn teal" onclick="resolveTicket('${t.id}','💷','Manually settled pending cashback £0.86 → loan','+ ledger: manual_settlement TX-88121 £0.86')">💷 Settle pending cashback</button>
+            <button class="btn ghost" onclick="toast('🔁 Webhook replay requested from Fidel')">🔁 Replay merchant webhook</button>`:''}
+          ${t.cat==='Account locked'?`
+            <button class="btn teal" onclick="resolveTicket('${t.id}','🔓','Unlocked account + password reset issued','<span class=\\'rm\\'>- status: Locked</span><br><span class=\\'ad\\'>+ status: Active · pwd_reset issued</span>')">🔓 Unlock + reset</button>
+            <button class="btn ghost" onclick="toast('📞 Callback scheduled with customer')">📞 Schedule callback</button>`:''}
+          ${t.cat==='Suspension appeal'?`
+            <button class="btn ghost" onclick="toast('🗂 Sent to Fraud with device evidence attached')">🗂 Request fraud review</button>
+            <button class="btn ghost" onclick="toast('✉️ Holding response sent to customer')">✉️ Send holding response</button>`:''}
+          ${t.cat==='Card link failed'?`
+            <button class="btn teal" onclick="resolveTicket('${t.id}','🔗','Fresh consent link issued (Monzo, KI-207 workaround)','+ consent: reissued via fallback flow')">🔗 Reissue consent link</button>
+            <button class="btn ghost" onclick="toast('📌 Subscribed customer to KI-207 status updates')">📌 Link to known issue</button>`:''}
+          ${t.cat==='GDPR — data export'?`
+            <button class="btn ghost" onclick="toast('📤 Export job status: building (ETA 15 Jul)')">📤 Check export job</button>
+            <button class="btn ghost" onclick="toast('🔐 Secure delivery link will auto-expire after 72h')">🔐 Delivery settings</button>`:''}
+          ${t.cat==='Duplicate account'?'':''}
+          <button class="btn ghost" onclick="toast('👤 Assigned to you');audit('🎧','rgba(61,139,255,.1)','Ticket ${t.id} assigned','assigned to self','<span class=\\'ad\\'>+ assignee: Ruben Iversen</span>')">👤 Assign to me</button>
+          <button class="btn ghost" onclick="toast('⬆️ Escalated to Team Lead')">⬆️ Escalate</button>
+        </div>
+        <div class="sect">Reply to customer</div>
+        <textarea class="notebox" placeholder="Type a reply… macros: /cashback-delay /unlock-confirm /gdpr-ack"></textarea>
+        <button class="btn navy" style="margin-top:9px;" onclick="toast('✉️ Reply sent to customer via in-app + email')">Send reply</button>
+        <div class="sect">Timeline</div>
+        <div class="timeline">${t.tl.map(x=>`<div class="tl-item ${x.sys?'sys':''}"><div class="t">${x.t}</div><div class="s">${x.s}</div></div>`).join('')}</div>
+      </div></div>`;
+  }
+  return '';
+}
+
+/* ================= ACTIONS ================= */
+function act(uid,ic,label,diff){
+  const u=USERS.find(x=>x.id===uid);
+  toast(ic+' '+label);
+  audit(ic,'rgba(61,139,255,.1)',label+' — '+u.name+' ('+uid+')','via user drawer · reason: customer request','<span class="ad">'+diff+'</span>');
+}
+function goodwill(uid){
+  const u=USERS.find(x=>x.id===uid);
+  u.cb+=5;
+  toast('💷 £5.00 goodwill credited to loan-reduction pool');
+  audit('💷','rgba(15,184,164,.1)','Goodwill credit £5.00 — '+u.name+' ('+uid+')','within CC limit (≤£10) · reason: service recovery','<span class="ad">+ ledger: goodwill_credit £5.00 → loan_reduction_pool</span>');
+  render();
+}
+function unlock(uid){
+  const u=USERS.find(x=>x.id===uid);u.status='Active';
+  toast('🔓 Account unlocked — customer notified');
+  audit('🔓','rgba(15,184,164,.1)','Account unlocked — '+u.name+' ('+uid+')','identity verified via CC-4820','<span class="rm">- status: "Locked"</span><br><span class="ad">+ status: "Active"</span>');
+  render();
+}
+function suspend(uid){
+  const u=USERS.find(x=>x.id===uid);u.status='Suspended';
+  toast('⛔ Account suspended — reason logged');
+  audit('⛔','rgba(228,88,88,.1)','Account suspended — '+u.name+' ('+uid+')','manual action · reason code required and captured','<span class="rm">- status: "Active"</span><br><span class="ad">+ status: "Suspended"</span>');
+  render();
+}
+function resolveTicket(id,ic,label,diff){
+  const t=TICKETS.find(x=>x.id===id);t.status='Resolved';t.sla='Met';t.slac='ok';
+  t.tl.push({t:label,s:'Just now · By: Ruben Iversen · CSAT survey sent',sys:0});
+  toast('✅ '+id+' resolved');
+  audit(ic,'rgba(15,184,164,.1)',label+' — ticket '+id,'ticket resolved · customer notified','<span class="ad">'+diff+'</span>');
+  render();
+}
+function submitEvidence(id){
+  const c=CHARGEBACKS.find(x=>x.id===id);c.status='Submitted';c.due='—';c.stage='With issuer · decision pending';
+  toast('📤 Evidence pack submitted via VROL');
+  audit('↩️','rgba(255,138,61,.12)','Chargeback evidence submitted — '+id+' ('+c.merchant+', '+c.amt+')','auto-pack: receipt, device match, geo, delivery proof','<span class="ad">+ representment: submitted to Visa Resolve Online</span>');
+  render();
+}
+function triageCb(id){
+  const c=CHARGEBACKS.find(x=>x.id===id);c.status='Evidence required';c.stage='Representment window open';
+  toast('🗂 '+id+' triaged — evidence checklist created');
+  audit('↩️','rgba(255,138,61,.12)','Chargeback triaged — '+id,'cashback '+c.cb+' moved to held state (auto-clawback rule)','<span class="ad">+ cashback_hold: '+c.cb+'</span>');
+  render();
+}
+
+/* ================= RENDER ================= */
+const PAGES={overview:pOverview,users:pUsers,tickets:pTickets,chargebacks:pChargebacks,integrations:pIntegrations,payouts:pPayouts,partners:pPartners,fraud:pFraud,compliance:pCompliance,audit:pAudit,rbac:pRbac,health:pHealth};
+function render(){
+  renderNav();
+  document.getElementById('crumb').innerHTML=`Admin <span>/ ${TITLES[V.page]}</span>`;
+  document.getElementById('content').innerHTML=PAGES[V.page]();
+  document.getElementById('overlay').innerHTML=drawerHtml();
+}
+document.getElementById('gsearchInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){V.page='users';V.userQ=e.target.value;V.userFilter='all';render();}
+});
+render();
+</script>
+</body>
+</html>
