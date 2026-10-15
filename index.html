@@ -141,9 +141,15 @@ body.mobile .demo-fab{display:grid;position:fixed;right:0;top:46%;z-index:200;wi
 
 /* Freedom date card */
 .fdate{position:relative;overflow:hidden;display:block;width:100%;text-align:left}
-.fdate .yr{font-size:34px;line-height:1.05;margin:4px 0 4px}
+.fd-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gainhead{display:flex;align-items:baseline;gap:8px;margin:8px 0 4px;font-family:var(--display);font-weight:600;letter-spacing:-.025em;line-height:1.05;color:var(--ink)}
+.gainhead .gn{font-size:44px}
+.gainhead .yrs{font-size:21px;font-weight:500;color:var(--teal-d);letter-spacing:-.01em}
+.fd-sub{font-size:13.5px;color:var(--muted);line-height:1.4;max-width:21ch;position:relative;z-index:1}
+.momentum{display:inline-flex;align-items:center;gap:6px;margin-top:12px;background:var(--mint);color:#086A5F;font-weight:600;font-size:13px;border-radius:999px;padding:6px 11px;position:relative;z-index:1;white-space:nowrap;box-shadow:0 0 0 3px #fff}
+.g-head{display:block}
 .fdate .gain{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:14px;color:var(--teal-d)}
-.fdate svg.arc{position:absolute;right:-6px;bottom:-4px;width:190px;height:110px}
+.fdate svg.arc{position:absolute;right:-8px;bottom:-6px;width:150px;height:88px}
 
 .qa{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
 .qa button{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;font-weight:600}
@@ -691,6 +697,20 @@ function freedom(pkey, spend, sups){
   return {base, sf, saved: Math.max(0, base.years - sf.years), date: ym(m.start+sf.years), baseDate: ym(m.start+base.years), m};
 }
 
+function payoffFrac(m, spend, sups, lump){
+  let B=m.B0-lump, t=0;
+  while(t<m.cap*12){ const y=t/12, S=m.S0*Math.pow(1+m.g,y), T=m.T0*Math.pow(1+m.tg,y);
+    const R=0.09*Math.max(0,S-T)/12, X=(spend*Math.pow(1.03,Math.floor(y))*0.04*0.8+sups*8000*0.04*0.8)/12;
+    const grown=B*Math.pow(1+m.i,1/12), nb=grown-R-X; t++; if(nb<=0) return (t-1+grown/(R+X))/12; B=nb; }
+  return m.cap;
+}
+// Days the loan is cleared sooner because of this month's confirmed rewards (beneficiary share)
+function monthDays(pkey){ const p=D[pkey], m=p.model; const ben=split(pkey==='graduate'?p.monthCredits:p.monthConfirmed).ben;
+  return Math.max(0,Math.round((payoffFrac(m,m.spend,m.sups,0)-payoffFrac(m,m.spend,m.sups,ben))*365)); }
+function gainHead(saved, key, id){ return `<div class="gainhead tn" ${id?`id="${id}"`:''}><span class="gn"><span data-flip="${saved.toFixed(1)}" ${key?`data-key="${key}"`:''}>${saved.toFixed(1)}</span></span><span class="yrs">years sooner</span></div>`; }
+function fdLabel(t){ return `<div class="fd-top"><span class="lbl">${t}</span>${statusPill('Illustrative')}</div>`; }
+function momentum(pkey){ const d=monthDays(pkey); return `<div class="momentum">${ic('impact',15,2.4)}<span>${d>0?`<span data-odo="${d}" data-dec="0" data-pre="+" data-key="days-${pkey}">+${d}</span> ${d===1?'day':'days'} closer this month`:'Every reward brings it closer'}</span></div>`; }
+
 /* ---------------- App state & routing ---------------- */
 const S = { persona:'student', stack:[], tab:'home', ob:null };
 const view = document.getElementById('view'), tabbar=document.getElementById('tabbar');
@@ -1166,7 +1186,7 @@ const SCREENS = {
   /* ---------- HOME ---------- */
   home:{ tabs:true, render:()=>{ const p=P_(); return ptrHTML()+'<div class="ptr-wrap '+(SEEN['v-home-'+p.key]?'calm':'')+'">'+(p.key==='student'?homeStudent(p):p.key==='graduate'?homeGrad(p):homeParent(p))+'</div>'; },
     after:el=>{ animateRings(el); animateSplits(el,'split-home-'+S.persona); attachPTR(el); P_().ledger.forEach(x=>x.fresh=false); SEEN['v-home-'+S.persona]=1; },
-    note:()=>{ const k=S.persona; return k==='student'?{t:'Maya’s home',b:'<p>The big number is everything Maya has generated: £186. The ring shows this month against her £30 goal.</p><p>The freedom date card is the emotional hook: an illustrative date her loan could be cleared, and how much sooner. Tap it and the date travels into the Impact screen.</p><p>Pull down on the screen to refresh.</p>'}:k==='graduate'?{t:'Alex’s home',b:'<p>Graduates see their estimated balance first, and how much has gone toward it: £612 so far, £143 this year.</p><p>Employer matching is shown as a proposed feature.</p>'}:{t:'Sarah’s home',b:'<p>A supporter sees what they generated for Maya this month, and the split: £14.40 to Maya, £3.60 to Student Freedom.</p><p>Privacy is front and centre.</p>'}; }
+    note:()=>{ const k=S.persona; return k==='student'?{t:'Maya’s home',b:'<p>The big number is everything Maya has generated: £186. The ring shows this month against her £30 goal.</p><p>The freedom card leads with the gain: 5.9 years sooner. The date sits underneath as a comparison, and the pill shows this month’s progress. Tap the card and the headline travels into Impact.</p><p>Pull down on the screen to refresh.</p>'}:k==='graduate'?{t:'Alex’s home',b:'<p>Graduates see their estimated balance first, and how much has gone toward it: £612 so far, £143 this year.</p><p>Employer matching is shown as a proposed feature.</p>'}:{t:'Sarah’s home',b:'<p>A supporter sees what they generated for Maya this month, and the split: £14.40 to Maya, £3.60 to Student Freedom.</p><p>Privacy is front and centre.</p>'}; }
   },
   wallet:{ skel:true, render:(a)=>walletScreen(a), after:el=>{ animateSplits(el); }, note:()=>({t:'Wallet and ledger',b:'<p>Every reward is listed with its status. Pending rewards wait for the retailer’s return window. Tap any item for the full trail.</p>'}) },
   notifications:{ render:()=>notifScreen(), after:()=>{ D.notifRead=true; }, note:()=>({t:'Notifications',b:'<p>Plain, useful alerts: reward tracked, reward confirmed, supporter joined. No streaks or casino mechanics.</p>'}) },
@@ -1208,7 +1228,7 @@ function homeStudent(p){
   <div class="pad">
     <div class="qa">${[['earn','Earn','earn'],['invite','Invite','invite'],['wallet','Wallet','wallet'],['share','Share','share']].map(([k,l,i])=>`<button data-act="qa" data-k="${k}"><span class="qi" style="color:var(--blue)">${ic(i,24)}</span>${l}</button>`).join('')}</div>
     <div class="section-h"><h3>Your freedom date</h3></div>
-    <button class="card fdate" data-act="toimpact"><div class="lbl">Loan could be cleared by</div><div class="yr big tn"><span data-flip="${f.date}" data-key="student-fd">${f.date}</span></div><div class="gain">${ic('impact',18,2.2)} ${f.saved.toFixed(1)} years sooner</div><div class="lbl" style="margin-top:6px;max-width:19ch">Illustrative, based on your plan and supporters</div>${arcSpark()}</button>
+    <button class="card fdate" data-act="toimpact" aria-label="Your loan could be cleared ${f.saved.toFixed(1)} years sooner, debt free by ${f.date} instead of ${f.baseDate}. Illustrative.">${fdLabel('Your loan could be cleared')}${gainHead(f.saved,'student-fd')}<div class="fd-sub">Debt free by ${f.date} instead of ${f.baseDate}</div>${momentum('student')}${arcSpark()}</button>
     <div style="margin-top:12px"><button class="banner-prize" data-act="prize"><span class="gift" style="color:var(--amber-d)">${ic('gift',28)}</span><span><b>Win £1,000 in wallet credit</b><small>Each confirmed reward this month is an entry. Draw on 31 October.</small></span></button></div>
     <div class="section-h"><h3>Recent activity</h3><button data-go="wallet" data-push="1">See all</button></div>
     <div class="list-card">${p.ledger.slice(0,4).map((x,i)=>ledgerRow(x,i)).join('')}</div>
@@ -1235,7 +1255,7 @@ function homeGrad(p){
   <div class="pad">
     <div class="qa">${[['earn','Earn','earn'],['invite','Invite','invite'],['wallet','Wallet','wallet'],['share','Share','share']].map(([k,l,i])=>`<button data-act="qa" data-k="${k}"><span class="qi" style="color:var(--teal-d)">${ic(i,24)}</span>${l}</button>`).join('')}</div>
     <div class="section-h"><h3>Your freedom date</h3></div>
-    <button class="card fdate" data-act="toimpact"><div class="lbl">Loan could be cleared by</div><div class="yr big tn"><span data-flip="${f.date}" data-key="graduate-fd">${f.date}</span></div><div class="gain">${ic('impact',18,2.2)} ${f.saved.toFixed(1)} years sooner</div><div class="lbl" style="margin-top:6px;max-width:19ch">Instead of ${f.baseDate}, illustrative</div>${arcSpark()}</button>
+    <button class="card fdate" data-act="toimpact" aria-label="Your loan could be cleared ${f.saved.toFixed(1)} years sooner, debt free by ${f.date} instead of ${f.baseDate}. Illustrative.">${fdLabel('Your loan could be cleared')}${gainHead(f.saved,'graduate-fd')}<div class="fd-sub">Debt free by ${f.date} instead of ${f.baseDate}</div>${momentum('graduate')}${arcSpark()}</button>
     <div class="card" style="margin-top:12px;background:linear-gradient(135deg,#0D2457,#123C86);color:#fff;border:0">
       <div style="display:flex;justify-content:space-between;align-items:center"><b class="big" style="font-size:16px">You can keep earning</b>${ic('grad',22,1.9,'#7BE0D2')}</div>
       <p style="font-size:14px;line-height:1.5;opacity:.85;margin-top:6px">You graduated in 2021. Student Freedom keeps working for as long as you have a loan to repay.</p></div>
@@ -1269,8 +1289,9 @@ function homeParent(p){
     <div class="section-h"><h3>This month’s split</h3><button data-act="splitinfo" aria-label="How the split works">${ic('info',20)}</button></div>
     <div class="card"><div class="lbl">Partner rewards</div><div class="big tn" style="font-size:26px">${gbp(sp.gross)}</div>${splitBar(sp.ben, sp.sf,['To Maya’s loan pot','Student Freedom'])}</div>
     <div class="card" style="display:flex;gap:14px;align-items:center"><span class="mt" style="background:var(--mint);color:var(--teal-d)">${ic('heart',22)}</span><div style="flex:1"><div class="lbl">Generated for Maya since May</div><b class="big tn" style="font-size:22px">${gbp(life.ben)}</b></div></div>
-    <div class="section-h"><h3>Maya’s progress</h3><button data-go="impact">Details</button></div>
-    <button class="card fdate" data-go="impact"><div class="lbl">Shared by Maya</div><div class="yr big tn" style="font-size:28px">${gbp(D.student.credits)} generated</div><div class="gain">${ic('impact',18,2.2)} Freedom date ${freedom('student').date}</div>${arcSpark()}</button>
+    <div class="section-h"><h3>Maya’s progress</h3><span class="lbl">Shared by Maya</span></div>
+    ${(()=>{ const f=freedom('student'), m=D.student.model, w=freedom('student',m.spend,Math.max(0,m.sups-1)); const yours=Math.max(0,w.sf.years-f.sf.years);
+      return `<button class="card fdate" data-act="toimpact" aria-label="Maya's loan could be cleared ${f.saved.toFixed(1)} years sooner. Illustrative.">${fdLabel('Maya’s loan could be cleared')}${gainHead(f.saved,'parent-fd')}<div class="fd-sub">Debt free by ${f.date} instead of ${f.baseDate}</div><div class="momentum">${ic('heart',15,2.4)}<span>You bring it ${yours.toFixed(1)} years closer</span></div>${arcSpark()}</button>`; })()}
     <div class="section-h"><h3>What Maya sees</h3><button data-go="privacy" data-push="1">Change</button></div>
     <div class="card"><div class="row" style="padding-top:0"><span class="mt" style="background:var(--sky);color:var(--blue)">${ic('eye',22)}</span><span class="mid"><b>Totals only</b><small>Never where you shop or what you buy</small></span>${ic('check',20,2.4,'#12A898')}</div></div>
     <div class="section-h"><h3>Your recent rewards</h3><button data-go="wallet" data-push="1">See all</button></div>
@@ -1403,13 +1424,13 @@ function impactScreen(){
   const k = S.persona, pk = k==='parent'?'student':k, p=D[k];
   const m=D[pk].model;
   const tot = k==='student'?p.credits : k==='graduate'? r2(p.lifeAlloc/0.8) : p.lifetime;
-  const title = k==='parent'?'Maya’s freedom date':'Your freedom date';
+  const title = k==='parent'?'Maya’s loan could be cleared':'Your loan could be cleared';
   return `<div class="${SEEN['v-imp-'+k]?'calm':''}"><div class="topbar scr-pad-top"><h1 style="font-size:26px">Impact</h1><button class="icon-btn" data-act="sharemile" aria-label="Share a milestone">${ic('share',22)}</button></div>
   <div class="pad">
    <div class="card fd-card" style="padding:20px">
-    <div class="lbl">${title}</div>
-    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><div class="big tn" style="font-size:36px" id="fdv"></div><div class="gain" style="display:inline-flex;gap:6px;align-items:center;font-weight:600;color:var(--teal-d)" id="fds"></div></div>
-    <div class="lbl" id="fdb" style="margin-top:2px"></div>
+    ${fdLabel(title)}
+    <div class="gainhead tn" id="fdwrap"><span class="gn" id="fdv"></span><span class="yrs">years sooner</span></div>
+    <div class="fd-sub" id="fdb" style="max-width:none"></div>
     <div id="fchart" class="fchart" style="margin-top:14px"></div><div class="lbl" style="font-size:12px;margin-top:2px">Drag across the chart to see any year</div>
     <div class="split-legend" style="margin-top:6px"><span><i style="background:#12A898"></i>With Student Freedom</span><span><i style="background:#B8C3D6"></i>Without</span></div>
    </div>
@@ -1435,10 +1456,10 @@ function impactAfter(el){
   const fromHome=S.fdShared; S.fdShared=null;
   const upd=(first)=>{ const f=freedom(pk, +spr.value, +sur.value);
     el.querySelector('#spv').textContent=gbp(+spr.value,0); el.querySelector('#suv').textContent=sur.value;
-    if(first){ const key='imp-'+pk+'-'+f.date; if(fromHome||SEEN[key]) flipSet(fdv,f.date,'static'); else { SEEN[key]=1; flipSet(fdv,f.date,'settle'); } }
-    else if(fdv.dataset.v!==f.date) flipSet(fdv,f.date,'flip');
-    el.querySelector('#fds').innerHTML=f.saved>0.05?`${ic('impact',18,2.2)} ${f.saved.toFixed(1)} years sooner`:'';
-    el.querySelector('#fdb').textContent = f.base.cleared ? `Instead of ${f.baseDate} without Student Freedom` : `Without Student Freedom the balance would be written off before it was repaid`;
+    const g=f.saved.toFixed(1);
+    if(first){ const key='imp-'+pk+'-'+g; if(fromHome||SEEN[key]) flipSet(fdv,g,'static'); else { SEEN[key]=1; flipSet(fdv,g,'settle'); } }
+    else if(fdv.dataset.v!==g) flipSet(fdv,g,'flip');
+    el.querySelector('#fdb').textContent = f.base.cleared ? `${k==='parent'?'Maya debt free':'Debt free'} by ${f.date} instead of ${f.baseDate}` : `Debt free by ${f.date}. Without Student Freedom the balance would be written off before it was repaid.`;
     c.innerHTML=freedomChart(f); c._f=f; c._meta=freedomChart.meta;
     if(!first || el.querySelector('.calm')) c.querySelectorAll('[style*="animation"]').forEach(n=>{n.style.animation='none';n.style.opacity=1;});
     if(k==='parent'){ const w=freedom(pk,+spr.value,Math.max(0,+sur.value-1)); el.querySelector('#youpart').textContent = `Without your spending, Maya’s date would be ${w.date}. You bring it forward by about ${(w.sf.years-f.sf.years).toFixed(1)} years.`; }
@@ -1446,13 +1467,13 @@ function impactAfter(el){
   upd(true); spr.addEventListener('input',()=>upd(false)); sur.addEventListener('input',()=>{ hap(5); upd(false); });
   attachScrub(c); SEEN['v-imp-'+k]=1;
   if(fromHome && !reduce){
-    const B={card:shellRect(el.querySelector('.fd-card')), yr:shellRect(fdv), fs:parseFloat(getComputedStyle(fdv).fontSize)}, A=fromHome;
-    fdv.style.visibility='hidden';
+    const fw=el.querySelector('#fdwrap'); const B={card:shellRect(el.querySelector('.fd-card')), yr:shellRect(fw)}, A=fromHome;
+    fw.style.visibility='hidden';
     const gc=ghost('g-card',A.card); gc.style.background='#fff'; gc.style.borderRadius='24px'; gc.style.border='1px solid var(--line)';
     gc.animate([{left:A.card.x+'px',top:A.card.y+'px',width:A.card.w+'px',height:A.card.h+'px',opacity:1},{left:B.card.x+'px',top:B.card.y+'px',width:B.card.w+'px',height:B.card.h+'px',opacity:1,offset:.75},{left:B.card.x+'px',top:B.card.y+'px',width:B.card.w+'px',height:B.card.h+'px',opacity:0}],{duration:520,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'}).onfinish=()=>gc.remove();
-    const gt=ghost('g-el g-rate',A.yr,A.text.replace(/ /g,'&nbsp;')); gt.style.fontSize=A.fs+'px'; gt.style.color='var(--ink)'; gt.style.width='auto'; gt.style.zIndex=47;
-    gt.animate([{transform:'none'},{transform:`translate(${B.yr.x-A.yr.x}px,${B.yr.y-A.yr.y}px) scale(${B.fs/A.fs})`}],{duration:460,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
-    setTimeout(()=>{ fdv.style.visibility=''; gt.remove(); },470);
+    const gt=ghost('g-head',A.yr,`<div class="gainhead tn" style="margin:0"><span class="gn">${A.text}</span><span class="yrs">years sooner</span></div>`); gt.style.width='auto'; gt.style.height='auto'; gt.style.zIndex=47;
+    gt.animate([{transform:'none'},{transform:`translate(${B.yr.x-A.yr.x}px,${B.yr.y-A.yr.y}px)`}],{duration:460,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
+    setTimeout(()=>{ fw.style.visibility=''; gt.remove(); },470);
   }
 }
 function attachScrub(c){
@@ -1621,7 +1642,7 @@ const ACT = {
       else if(p.key==='graduate'){ p.monthCredits=r2(p.monthCredits+g); p.yearAlloc=r2(p.yearAlloc+ben); p.lifeAlloc=r2(p.lifeAlloc+ben); p.balance=r2(p.balance-ben); }
       else { p.month=r2(p.month+g); p.monthConfirmed=r2(p.monthConfirmed+g); p.lifetime=r2(p.lifetime+g); } }
     go('home',{tab:true}); },
-  toimpact:(a)=>{ const yr=a.querySelector('[data-flip]'); if(yr && !reduce){ S.fdShared={card:shellRect(a), yr:shellRect(yr), fs:parseFloat(getComputedStyle(yr.closest('.yr')).fontSize), text:yr.dataset.v||yr.dataset.flip}; } go('impact',{tab:true,plainFade:!!S.fdShared}); },
+  toimpact:(a)=>{ const head=a.querySelector('.gainhead'), yr=a.querySelector('[data-flip]'); if(head && !reduce){ S.fdShared={card:shellRect(a), yr:shellRect(head), text:yr.dataset.v||yr.dataset.flip}; } go('impact',{tab:true,plainFade:!!S.fdShared}); },
   lenajoin:(a)=>{ const p=D.student; if(p.lena) return; p.lena=true; p.supporters=3; const scr=current(); a.style.transition='opacity .3s'; a.style.opacity=0; setTimeout(()=>a.remove(),300);
     const svg=scr.querySelector('.card svg'), path=svg.querySelector('.np[data-i="2"]'), g=svg.querySelector('.nn[data-i="2"]'), c=g.querySelector('.nc'), t=g.querySelector('.nt');
     path.removeAttribute('stroke-dasharray'); path.setAttribute('stroke','#9FD9D0'); const L=path.getTotalLength();
