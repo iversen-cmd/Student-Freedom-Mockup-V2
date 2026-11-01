@@ -255,8 +255,8 @@ body.mobile .demo-fab{display:grid;position:fixed;right:0;top:46%;z-index:200;wi
 /* Sheet */
 .scrim{position:absolute;inset:0;background:rgba(13,36,87,.38);opacity:0;pointer-events:none;transition:opacity .3s;z-index:80}
 .scrim.on{opacity:1;pointer-events:auto}
-.sheet{position:absolute;left:0;right:0;bottom:0;max-height:88%;overflow:auto;background:var(--surface);border-radius:30px 30px 0 0;padding:10px 20px 36px;transform:translateY(105%);transition:transform .42s cubic-bezier(.2,.8,.2,1);z-index:90;scrollbar-width:none}
-.sheet.on{transform:none}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-height:88%;overflow:auto;background:var(--surface);border-radius:30px 30px 0 0;padding:10px 20px 36px;transform:translateY(105%);visibility:hidden;transition:transform .42s cubic-bezier(.2,.8,.2,1),visibility 0s .42s;z-index:90;scrollbar-width:none}
+.sheet.on{transform:none;visibility:visible;transition:transform .42s cubic-bezier(.2,.8,.2,1),visibility 0s}
 .sheet .grab{width:40px;height:5px;border-radius:3px;background:#D3DBE7;margin:0 auto 14px}
 .sheet h3{font-family:var(--display);font-size:21px;font-weight:600;letter-spacing:-.01em;margin-bottom:6px}
 
@@ -645,6 +645,201 @@ body.mobile .sl{padding-top:calc(84px + env(safe-area-inset-top,0px))}
 .spk:nth-child(odd){background:#12A898}
 @keyframes spk{0%{opacity:1;transform:rotate(var(--a)) translateY(-20px)}100%{opacity:0;transform:rotate(var(--a)) translateY(-78px)}}
 
+
+/* ===== v6 components ===== */
+.pseg{position:relative;display:flex;background:#E6ECF4;border-radius:16px;padding:4px;margin:2px 0 6px}
+.pseg i{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px)/3);border-radius:12px;background:#fff;box-shadow:0 3px 10px -3px rgba(13,36,87,.18);transition:transform .45s cubic-bezier(.2,.9,.25,1)}
+.pseg button{flex:1;position:relative;z-index:1;min-height:42px;font-weight:600;font-size:13.5px;color:var(--muted);transition:color .3s}
+.pseg button.on{color:var(--ink)}
+.seg-in-r{animation:segR .42s cubic-bezier(.2,.8,.2,1) both}
+.seg-in-l{animation:segL .42s cubic-bezier(.2,.8,.2,1) both}
+@keyframes segR{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+@keyframes segL{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+.cash-note{display:flex;gap:7px;align-items:center;font-size:13px;font-weight:600;color:var(--teal-d);background:var(--mint);border-radius:12px;padding:8px 12px;margin:6px 0 12px}
+.guest-bar{display:flex;align-items:center;gap:8px;background:var(--navy);color:#fff;border-radius:16px;padding:8px 8px 8px 14px;font-size:13.5px;margin:0 0 10px;animation:inF .4s both}
+.guest-bar span{flex:1}
+.guest-bar button{background:#fff;color:var(--navy);font-weight:700;border-radius:11px;padding:0 12px;min-height:34px;font-size:13px}
+.browse-link{display:flex;gap:6px;align-items:center;justify-content:center;width:100%;font-size:14px;color:var(--muted);min-height:40px}
+.empty-card{text-align:center;padding:26px 20px}
+.empty-card .mt{margin:0 auto 12px}
+.empty-card b{display:block;font-family:var(--display);font-weight:600;font-size:17px}
+.empty-card p{margin-top:6px;line-height:1.5}
+
+/* Perks */
+.save-card{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,#FFF8E6,#FFF1CF);border-color:#F7E3AE}
+.save-ico{width:52px;height:52px;border-radius:17px;background:#fff;color:var(--amber-d);display:grid;place-items:center;flex:none}
+.sid-mini{display:flex;gap:12px;align-items:center;width:100%;margin-top:12px}
+.perk .mid small{white-space:normal}
+.perk-save{font:600 13px var(--display);color:var(--amber-d);background:var(--sun);border-radius:999px;padding:5px 10px;white-space:nowrap}
+.perk-done{padding:6px 0}
+.qr-wrap{position:relative;width:220px;height:220px;margin:16px auto 0}
+.qr-ring{position:absolute;inset:0}
+.qr-in{position:absolute;inset:25px;border-radius:18px;overflow:hidden;background:#fff;display:grid;place-items:center;box-shadow:0 10px 24px -14px rgba(13,36,87,.4)}
+.qr-in svg{width:150px;height:150px}
+.qr-scan{position:absolute;left:8px;right:8px;height:3px;border-radius:2px;background:linear-gradient(90deg,transparent,#12A898,transparent);top:10px;animation:qrscan 1.6s ease-in-out 3 alternate}
+@keyframes qrscan{to{top:calc(100% - 13px)}}
+.sid{position:relative;border-radius:26px;padding:22px;color:#fff;overflow:hidden;background:linear-gradient(140deg,#0D2457 0%,var(--c1) 70%,#12A898 130%);box-shadow:0 26px 44px -24px rgba(13,36,87,.7);transition:transform .25s ease-out;transform-style:preserve-3d;--hx:50%;animation:sidin .7s cubic-bezier(.2,1.2,.3,1) both}
+.sid .holo{position:absolute;inset:-40%;background:radial-gradient(circle at var(--hx) 40%,rgba(255,255,255,.28),transparent 35%),linear-gradient(115deg,transparent 40%,rgba(255,255,255,.38) 50%,transparent 60%);background-size:100% 100%,250% 100%;background-position:0 0,140% 0;animation:holo 1.4s .35s ease-out both;pointer-events:none}
+@keyframes holo{to{background-position:0 0,-60% 0}}
+@keyframes sidin{from{opacity:0;transform:perspective(700px) rotateX(18deg) translateY(20px)}to{opacity:1;transform:none}}
+.sid-live{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.16);border-radius:999px;padding:4px 10px;font-weight:600;font-size:13px}
+.sid-live i{width:8px;height:8px;border-radius:50%;background:#7BE0D2;box-shadow:0 0 0 3px rgba(123,224,210,.3)}
+
+/* Switch */
+.bank-card .kv{font-size:14px}
+.flowdiag{margin:12px 0 4px}
+.qhead{display:block;font-family:var(--display);font-weight:600;font-size:16px}
+.qbtns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.qbtns button{flex:1;min-height:46px;border-radius:14px;border:1.5px solid var(--line);font-weight:600;background:var(--surface);transition:transform .15s,border-color .2s}
+.qbtns button:hover{border-color:var(--blue)}
+.qbtns button:active{transform:scale(.96)}
+.qres{display:flex;gap:12px;align-items:flex-start}
+.qres b{font-weight:600}
+.qin{animation:segR .4s cubic-bezier(.2,.8,.2,1) both}
+
+/* Housing */
+.hcard{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:24px;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 2px rgba(13,36,87,.04),0 10px 28px -16px rgba(13,36,87,.16);animation:inF .5s both}
+.hc-img{display:block;width:100%;height:132px;position:relative;overflow:hidden}
+.hc-img svg{display:block;height:100%;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.hc-img:hover svg{transform:scale(1.04)}
+.spons{position:absolute;left:12px;top:12px;font-size:11.5px;font-weight:700;background:rgba(255,255,255,.9);color:var(--ink);border-radius:999px;padding:4px 9px}
+.hc-heart,.hc-heart2{position:absolute;right:12px;top:12px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;color:var(--muted);transition:transform .2s,color .2s}
+.hc-heart.on,.hc-heart2.on,.ev-heart.on{color:#E5484D}
+.hc-heart.on svg,.hc-heart2.on svg,.ev-heart.on svg{fill:#E5484D;animation:heartpop .4s cubic-bezier(.3,1.8,.5,1)}
+@keyframes heartpop{50%{transform:scale(1.35)}}
+.hc-heart2{position:static}
+.hc-body{display:block;width:100%;text-align:left;padding:14px 16px 16px}
+.hc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.win{fill:#2C4170;animation:winon .5s ease-out both}
+@keyframes winon{from{fill:#2C4170}to{fill:#FFD98A}}
+.teaser{display:flex;gap:12px;align-items:center}
+.prop-hero{height:220px;overflow:hidden;transform-origin:top center}
+.prop-hero svg{display:block;width:100%;height:100%}
+.prop-top{position:absolute;top:60px;left:16px;right:16px;display:flex;justify-content:space-between;z-index:3}
+body.mobile .prop-top{top:calc(12px + env(safe-area-inset-top,0px))}
+.prop-body{position:relative;z-index:2;background:var(--canvas);border-radius:28px 28px 0 0;margin-top:-26px;padding-top:20px}
+.price-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.price-row > div{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 14px}
+.mroute{stroke-dasharray:5 6;animation:mdash 1.2s linear 2}
+@keyframes mdash{from{stroke-dashoffset:44}to{stroke-dashoffset:0}}
+.mpin{animation:pinb .8s cubic-bezier(.3,1.6,.5,1) both;transform-origin:86px 98px}
+@keyframes pinb{from{transform:translateY(-24px);opacity:0}to{transform:none;opacity:1}}
+.feat-tags{display:flex;flex-wrap:wrap;gap:8px}
+.feat-tags span{display:inline-flex;gap:6px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:13.5px;font-weight:500}
+.feat-tags span svg{color:var(--teal)}
+.feat-tags.col{flex-direction:column}
+.feat-tags.col span{border-radius:14px}
+
+/* Careers */
+.cprof{display:flex;gap:14px;align-items:center}
+.cp-ring{position:relative;width:62px;height:62px;flex:none}
+.cp-ring b{position:absolute;inset:0;display:grid;place-items:center;font:600 14px var(--display)}
+.cp-ring svg circle:first-child{stroke:#E6ECF4}
+.emp-benefit{margin-top:12px;background:linear-gradient(135deg,#E9FBF7,#EAF2FD);border-color:#CDEDE6}
+.emp-row{display:flex;justify-content:space-between;font-size:14px;margin-top:10px}
+.job{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:22px;margin-bottom:10px;animation:inF .45s both;box-shadow:0 1px 2px rgba(13,36,87,.04),0 10px 28px -16px rgba(13,36,87,.16);transition:transform .16s}
+.job:active{transform:scale(.97)}
+.job .mid{flex:1;min-width:0}
+.job .mid small{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.job .end{text-align:right}
+.job .end small{display:block;font-size:11.5px;color:var(--muted)}
+.emp-ini{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;color:#fff;font:600 15px var(--display);flex:none;box-shadow:inset 0 -6px 12px rgba(0,0,0,.12)}
+.award{display:inline-flex;gap:5px;align-items:center;margin-top:7px;font-size:12px;font-weight:700;color:#4B3FB0;background:var(--lilac);border-radius:999px;padding:4px 9px}
+.track .tsteps{display:flex;margin-top:14px}
+.ts{flex:1;position:relative;text-align:center}
+.ts i{display:block;width:14px;height:14px;border-radius:50%;background:#DCE4EF;margin:0 auto;position:relative;z-index:1;transition:background .4s}
+.ts::before{content:"";position:absolute;top:6px;left:-50%;right:50%;height:2px;background:#DCE4EF}
+.ts:first-child::before{display:none}
+.ts.done i,.ts.done::before{background:var(--teal)}
+.ts.cur i{box-shadow:0 0 0 5px rgba(18,168,152,.2);animation:pop .5s .3s}
+.ts small{display:block;font-size:11.5px;color:var(--muted);margin-top:6px}
+.ts.done small{color:var(--ink);font-weight:600}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.facts > div{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px}
+.facts small{display:block;font-size:12px;color:var(--muted);margin-top:8px}
+.facts b{display:block;font-size:14px;font-weight:600;margin-top:1px}
+
+/* Progress hub */
+.hub{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.hub-t{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:4px;min-height:118px;animation:inF .45s both;box-shadow:0 1px 2px rgba(13,36,87,.04),0 10px 28px -16px rgba(13,36,87,.16);transition:transform .16s}
+.hub-t:active{transform:scale(.96)}
+.hub-t .mt{margin-bottom:6px}
+.hub-t b{font-weight:600;font-size:14.5px}
+.hub-t small{font-size:12.5px;color:var(--muted)}
+.hub-t small.warn{color:var(--amber-d);font-weight:700}
+.repay-nudge{display:flex;gap:10px;align-items:center;width:100%;margin-top:10px;background:var(--sun);border:1px solid #F7E3AE;color:#6B4A00;border-radius:16px;padding:11px 14px;font-size:13.5px;font-weight:600;text-align:left}
+.repay-nudge span{flex:1}
+
+/* Repayment and claims */
+.ack{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:14px;margin-bottom:10px;transition:border-color .25s,background .25s}
+.ack b{display:block;font-weight:600;font-size:14.5px;line-height:1.35}
+.ack small{display:block;font-size:13px;color:var(--muted);margin-top:4px;line-height:1.4}
+.ackbox{width:26px;height:26px;border-radius:8px;border:2px solid #C5D0E0;flex:none;display:grid;place-items:center;transition:background .25s,border-color .25s}
+.ackbox svg{opacity:0;transform:scale(.4);transition:opacity .2s,transform .3s cubic-bezier(.3,1.6,.5,1)}
+.ack.on{border-color:var(--teal);background:#F3FBF9}
+.ack.on .ackbox{background:var(--teal);border-color:var(--teal)}
+.ack.on .ackbox svg{opacity:1;transform:none}
+.btn:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}
+.btn.ready{animation:okp .7s ease-out}
+.ready-card{text-align:center;padding:22px}
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.mpick{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 6px;border-radius:18px;background:var(--surface);border:1.5px solid var(--line);transition:border-color .2s,transform .15s}
+.mpick small{font-size:12px;font-weight:600;text-align:center;line-height:1.25}
+.mpick.sel{border-color:var(--blue);box-shadow:0 0 0 4px rgba(17,103,223,.1)}
+.mpick:active{transform:scale(.95)}
+.upload{position:relative;display:flex;gap:12px;align-items:center;width:100%;text-align:left;margin-top:16px;padding:16px;border-radius:18px;border:2px dashed #C5D0E0;background:var(--surface);overflow:hidden}
+.up-ico{width:46px;height:46px;border-radius:14px;background:var(--sky);color:var(--blue);display:grid;place-items:center;flex:none}
+.up-txt b{display:block;font-weight:600}
+.up-txt small{display:block;font-size:13px;color:var(--muted)}
+.up-bar{position:absolute;left:0;bottom:0;height:4px;width:0;background:var(--teal)}
+.upload.busy .up-bar{animation:upbar 1.25s ease-in-out forwards}
+.upload.done{border-style:solid;border-color:var(--teal)}
+.upload.done .up-ico{background:var(--teal);color:#fff;animation:pop .4s}
+@keyframes upbar{to{width:100%}}
+.step.warn .sd{background:var(--amber);color:#fff;font-weight:700}
+
+/* Help & wellbeing */
+.wbgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wb{display:flex;flex-direction:column;gap:12px;align-items:flex-start;text-align:left;border-radius:22px;padding:16px;min-height:112px;animation:inF .45s both;transition:transform .16s}
+.wb:active{transform:scale(.96)}
+.wb b{font-weight:600;font-size:15px;line-height:1.25}
+.sos{margin-top:12px;background:#FDECEC;border-color:#F6CDCF;font-size:14px;line-height:1.45;color:#7A2A2E}
+.sos b{font-weight:700}
+.budget-hero{text-align:center}
+.bbar{display:flex;flex-direction:column;gap:6px;margin:14px 0 10px}
+.bbar i{display:block;height:12px;border-radius:999px;width:0;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.bbar #bin{background:var(--teal)}
+.bbar #bout{background:#F2A0A4}
+.brow + .brow{margin-top:8px}
+.brow span{font-size:14.5px}
+.faq{margin-top:10px}
+.faq summary{font-weight:600;cursor:pointer;min-height:28px;list-style-position:inside}
+
+/* Supporter web page */
+.web{background:#fff}
+.webbar{position:sticky;top:0;z-index:4;display:flex;gap:8px;align-items:center;padding:8px 12px 10px;background:#F2F3F5;border-bottom:1px solid #E1E4EA}
+.url{flex:1;display:flex;gap:6px;align-items:center;justify-content:center;background:#fff;border-radius:12px;min-height:36px;font-size:13px;color:#33415E;font-weight:500}
+.web-hero{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px}
+.wstep{display:flex;gap:12px;align-items:flex-start;padding:10px 0}
+.wstep b{display:block;font-weight:600}
+.wstep small{display:block;font-size:13px;color:var(--muted)}
+.rise2{animation:stRise .6s cubic-bezier(.2,.8,.2,1) both}
+
+/* Events */
+.evrow{padding:4px 20px 6px;margin:0 -20px;scroll-padding-left:20px}
+.feat{scroll-padding-left:20px}
+.ev{flex:none;width:176px;position:relative;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:14px;scroll-snap-align:start;box-shadow:0 1px 2px rgba(13,36,87,.04),0 10px 28px -16px rgba(13,36,87,.16)}
+.ev-ico{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;margin-bottom:10px}
+.ev b{display:block;font-weight:600;font-size:14.5px;line-height:1.3}
+.ev small{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+.ev-meta{display:block;font-size:12.5px;font-weight:700;margin-top:8px}
+.ev-heart{position:absolute;right:8px;top:8px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:var(--faint)}
+
+/* Draw */
+.draw-hero{display:grid;place-items:center;margin:6px 0 10px}
+.draw-ticket{width:76px;height:76px;border-radius:24px;display:grid;place-items:center;color:#fff;background:radial-gradient(circle at 35% 28%,#FFE08A,#F6B92B 55%,#C98A06);box-shadow:0 14px 28px -12px rgba(185,127,0,.6);animation:medalin .7s cubic-bezier(.3,1.5,.5,1) both}
+.plane{position:absolute;left:0;top:0;z-index:170;pointer-events:none}
+
 body:has(.story) .demo-fab,body:has(.gradm) .demo-fab{display:none!important}
 /* Presenter */
 .tt-date{font-size:12.5px;color:var(--stage-muted);margin:-2px 0 6px}
@@ -715,6 +910,7 @@ document.documentElement.style.setProperty('--mk', `url(${MARK})`);
 
 /* ---------------- Icons ---------------- */
 const P = {
+  house:'<path d="M3 11 12 4l9 7"/><path d="M5 9.5V20h5v-6h4v6h5V9.5"/>',
   home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1v-9.5Z"/>',
   earn:'<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z"/><circle cx="8" cy="8" r="1.6"/>',
   impact:'<path d="M3 20h18"/><path d="M5 16l5-5 4 3 6-7"/><path d="M15 7h5v5"/>',
@@ -767,18 +963,19 @@ const ic = (n, s=22, w=1.9, c='currentColor') => `<svg width="${s}" height="${s}
 /* ---------------- Money helpers ---------------- */
 const r2 = v => Math.round(v*100)/100;
 const gbp = (v, d=2) => '£' + Number(v).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
-const split = (g, route='named') => { const s = route==='community'?0.95:0.8; const b = r2(g*s); return {gross:r2(g), ben:b, sf:r2(g-b)}; };
+const SHARE=0.75; // beneficiary share of eligible received commission (75/25)
+const split = (g) => { const b = r2(g*SHARE); return {gross:r2(g), ben:b, sf:r2(g-b)}; };
 
 /* ---------------- Merchants & offers (illustrative) ---------------- */
 const M = {
   grocer:{name:'Campus Grocer', cat:'Everyday', icon:'cart', bg:'#E3F6F2', fg:'#0C8578', rate:4, track:'Automatic', channel:'In store and online', status:'Illustrative', exp:'Ongoing'},
-  brew:{name:'Brew & Bean', cat:'Local', icon:'coffee', bg:'#FFF2D6', fg:'#9A6A00', rate:10, track:'Automatic', channel:'In store, near campus', status:'Pilot', exp:'Ends 30 Nov'},
+  brew:{name:'Brew & Bean', cat:'Local', icon:'coffee', bg:'#FFF2D6', fg:'#9A6A00', rate:10, track:'Automatic', channel:'In store, Cowley Road, Oxford', status:'Pilot', exp:'Ends 30 Nov'},
   rail:{name:'RailSaver', cat:'Travel', icon:'train', bg:'#E9F1FE', fg:'#0B4FB3', rate:3, track:'Shop online', channel:'Online', status:'Illustrative', exp:'Ends 31 Dec'},
   thread:{name:'ThreadLab', cat:'Fashion', icon:'shirt', bg:'#F3ECFD', fg:'#6A3FC2', rate:7, track:'Activate', channel:'Online and in store', status:'Illustrative', exp:'Ends 15 Nov'},
   gadget:{name:'GadgetHub', cat:'Tech', icon:'laptop', bg:'#EAF0F6', fg:'#2E4466', rate:2.5, track:'Shop online', channel:'Online', status:'Illustrative', exp:'Ongoing'},
   take:{name:'Takeaway Club', cat:'Food', icon:'food', bg:'#FDECEC', fg:'#B23A40', rate:5, track:'Activate', channel:'App and online', status:'Illustrative', exp:'Ends 31 Oct'},
   page:{name:'PageTurner Books', cat:'Online', icon:'book', bg:'#E8F5EC', fg:'#2B7A47', rate:6, track:'Code', channel:'Online, code at checkout', status:'Illustrative', exp:'Ends 31 Jan'},
-  fit:{name:'FitPass Gyms', cat:'Local', icon:'dumbbell', bg:'#E6F4FB', fg:'#1A6E95', rate:8, track:'Activate', channel:'Membership, near campus', status:'Pilot', exp:'Ends 31 Dec'}
+  fit:{name:'FitPass Gyms', cat:'Local', icon:'dumbbell', bg:'#E6F4FB', fg:'#1A6E95', rate:8, track:'Activate', channel:'Membership, Headington, Oxford', status:'Pilot', exp:'Ends 31 Dec'}
 };
 const OFFER_ORDER = ['brew','grocer','thread','take','fit','page','rail','gadget'];
 
@@ -788,7 +985,7 @@ function mkLedger(items){ return items.map((x,i)=>({ref:'SF-'+(x.ref||('2610-'+S
 const BASE = {
   student:{
     key:'student', name:'Maya', full:'Maya Clarke', initial:'M', color:'#1167DF', age:20,
-    roleLabel:'Current student', sub:'University of Manchester, Year 2 of 3', plan:'Plan 5',
+    roleLabel:'Current student', sub:'University of Oxford, Year 2 of 3', plan:'Plan 5',
     credits:186.00, monthConfirmed:24.00, pending:11.00, monthGoal:30, supporters:2, card:'4417',
     trend:[['Apr',14],['May',19],['Jun',22],['Jul',31],['Aug',38],['Sep',38],['Oct',24]],
     cats:[['Supporters',105.60,'#1167DF'],['Everyday',32.40,'#12A898'],['Fashion',18.20,'#7C5AE0'],['Travel & tech',15.20,'#5B6884'],['Local',14.60,'#F6B92B']],
@@ -839,7 +1036,7 @@ const BASE = {
   }
 };
 let D; // live, mutable copy
-function freshData(){ D = JSON.parse(JSON.stringify(BASE)); D.T=0; D.recapSeen={}; D.milestones=null; D.reactSeen=true; D.reactions=[{from:'Maya',to:'Mum (Sarah)',e:'🙏',text:'Thank you so much, Mum!',when:'2 days ago'}]; D.student.quarterBen=19.20; D.student.paid=129.60; D.graduate.quarterBen=12.80; D.activated = {}; D.notifRead=false; D.priv={totals:true, merchants:false, names:true, monthly:true}; D.notifPrefs={tracked:true,confirmed:true,offers:true,supporters:true,draw:false}; }
+function freshData(){ D = JSON.parse(JSON.stringify(BASE)); D.T=0; D.recapSeen={}; D.milestones=null; D.reactSeen=true; D.reactions=[{from:'Maya',to:'Mum (Sarah)',e:'🙏',text:'Thank you so much, Mum!',when:'2 days ago'}]; D.student.quarterBen=18.00; D.student.paid=121.50; D.graduate.quarterBen=12.00; D.student.repayReady=false; D.graduate.repayReady=true; D.draw={}; D.savings={student:23.40,graduate:11.20}; D.consent={careers:true,employer:true,location:false,analytics:true,marketing:false}; D.budget={loan:230,work:60,rent:175,food:45,travel:12,other:25}; D.appsBy={student:{cherwellA:'Applied'},graduate:{}}; D.billAns=null; D.perkUsed={}; D.enq={}; D.savedHomes={}; D.savedEv={}; D.pools={}; D.activated = {}; D.notifRead=false; D.priv={totals:true, merchants:false, names:true, monthly:true}; D.notifPrefs={tracked:true,confirmed:true,offers:true,supporters:true,draw:false}; }
 freshData();
 
 /* ---------------- Illustrative repayment model ---------------- */
@@ -848,7 +1045,7 @@ function simulate(m, spend, sups){
   while(t < m.cap*12){
     const y=t/12, S=m.S0*Math.pow(1+m.g,y), T=m.T0*Math.pow(1+m.tg,y);
     const R=0.09*Math.max(0,S-T)/12;
-    const X=(spend*Math.pow(1.03,Math.floor(y))*0.04*0.8 + sups*8000*0.04*0.8)/12;
+    const X=(spend*Math.pow(1.03,Math.floor(y))*0.04*SHARE + sups*8000*0.04*SHARE)/12;
     B = B*Math.pow(1+m.i,1/12) - R - X; t++;
     if (t%6===0) pts.push([t/12, Math.max(0,B)]);
     if (B<=0) return {years:t/12, pts, cleared:true};
@@ -864,7 +1061,7 @@ function freedom(pkey, spend, sups){
 function payoffFrac(m, spend, sups, lump){
   let B=m.B0-lump, t=0;
   while(t<m.cap*12){ const y=t/12, S=m.S0*Math.pow(1+m.g,y), T=m.T0*Math.pow(1+m.tg,y);
-    const R=0.09*Math.max(0,S-T)/12, X=(spend*Math.pow(1.03,Math.floor(y))*0.04*0.8+sups*8000*0.04*0.8)/12;
+    const R=0.09*Math.max(0,S-T)/12, X=(spend*Math.pow(1.03,Math.floor(y))*0.04*SHARE+sups*8000*0.04*SHARE)/12;
     const grown=B*Math.pow(1+m.i,1/12), nb=grown-R-X; t++; if(nb<=0) return (t-1+grown/(R+X))/12; B=nb; }
   return m.cap;
 }
@@ -878,7 +1075,7 @@ function momentum(pkey){ const d=monthDays(pkey); return `<div class="momentum">
 /* ---------------- App state & routing ---------------- */
 const S = { persona:'student', stack:[], tab:'home', ob:null };
 const view = document.getElementById('view'), tabbar=document.getElementById('tabbar');
-const TABS = [['home','Home','home'],['earn','Earn','earn'],['impact','Impact','impact'],['network','Network','network'],['profile','Profile','profile']];
+const TABS = [['home','Home','home'],['earn','Earn & Save','earn'],['homes','Housing','house'],['opps','Careers','brief'],['impact','Progress','impact']];
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------------- Tab bar (built once, sliding indicator) ---------------- */
@@ -895,7 +1092,7 @@ function renderTabs(){
   lastTab=S.tab;
 }
 buildTabs();
-tabbar.addEventListener('click', e=>{ const b=e.target.closest('[data-tab]'); if(!b) return; hap(4); go(b.dataset.tab,{tab:true}); });
+tabbar.addEventListener('click', e=>{ const b=e.target.closest('[data-tab]'); if(!b) return; hap(4); if(S.guest && (b.dataset.tab==='home'||b.dataset.tab==='impact')) return ACT.guestgate(); go(b.dataset.tab,{tab:true}); });
 
 /* ---------------- Helpers ---------------- */
 const SEEN={};
@@ -1116,7 +1313,7 @@ function homeHeader(p){
   return `<div class="topbar scr-pad-top">
     <button class="avatar" style="background:${p.color}" data-go="profile" aria-label="Profile">${p.initial}</button>
     <div class="greet"><small>Good morning</small><b>${p.name}</b></div>
-    <button class="icon-btn" data-go="notifications" data-push="1" aria-label="Notifications">${ic('bell',22)}${D.notifRead?'':'<span class="dot"></span>'}</button>
+    ${helpBtn()}<button class="icon-btn" data-go="notifications" data-push="1" aria-label="Notifications">${ic('bell',22)}${D.notifRead?'':'<span class="dot"></span>'}</button>
   </div>`;
 }
 function statusPill(st){
@@ -1137,7 +1334,7 @@ function ledgerRow(x, idx, viewer){
     <span class="end"><b class="tn" style="color:${neg?'var(--red)':x.st==='pending'?'var(--amber-d)':'var(--teal-d)'}">${neg?'−':'+'}${gbp(amt)}</b>${statusPill(x.st)}</span></button>`;
 }
 function splitBar(ben, sf, labels=['Your loan pot','Student Freedom'], route='named'){
-  const tot=ben+sf; const pb = route==='community'?95:80;
+  const tot=ben+sf; const pb = Math.round(SHARE*100);
   return `<div class="splitbar" role="img" aria-label="${pb}% ${labels[0]}, ${100-pb}% ${labels[1]}"><i style="width:0;background:var(--teal)" data-w="${pb}"></i><i style="width:0;background:var(--blue)" data-w="${100-pb}"></i></div>
   <div class="split-legend"><span><i style="background:var(--teal)"></i>${labels[0]} ${pb}%</span><b class="tn">${gbp(ben)}</b></div>
   <div class="split-legend" style="margin-top:6px"><span><i style="background:var(--blue)"></i>${labels[1]} ${100-pb}%</span><b class="tn">${gbp(sf)}</b></div>`;
@@ -1257,7 +1454,7 @@ const SCREENS = {
         ['Watch your freedom date move closer','Every reward goes toward your student loan, so the day you are debt free gets nearer.']
       ].map((s,i)=>`<div class="slide" data-s="${i}" style="transform:translateX(${i*100}%);opacity:${i?0:1}">${ILL[i]}<h2>${s[0]}</h2><p>${s[1]}</p></div>`).join('')}</div>
       <div class="dots" id="wdots"><i class="on"></i><i></i><i></i></div>
-      <div style="padding:0 20px 34px"><button class="btn btn-primary" data-go="role">Get started</button><button class="btn btn-text" data-act="signin" style="width:100%">I already have an account</button></div>
+      <div style="padding:0 20px 34px"><button class="btn btn-primary" data-go="role">Get started</button><button class="btn btn-text" data-act="signin" style="width:100%">I already have an account</button><button class="btn-text browse-link" data-act="browse">${ic('pin',15,2.2)} Just browsing? See offers in Oxford</button></div>
     </div>`,
     after:(el)=>{ let k=0; const sl=[...el.querySelectorAll('.slide')], dots=[...el.querySelectorAll('#wdots i')];
       const show=n=>{ k=(n+3)%3; sl.forEach((s,i)=>{ s.style.transform=`translateX(${(i-k)*100}%)`; s.style.opacity=i===k?1:0; if(i===k){ s.querySelectorAll('.draw').forEach(p=>{p.style.animation='none'; p.offsetWidth; p.style.animation='';}); } }); dots.forEach((d,i)=>d.classList.toggle('on',i===k)); };
@@ -1293,11 +1490,10 @@ const SCREENS = {
     note:()=>({t:'Verify',b:'<p>The code fills itself, as it would with SMS autofill. A passkey is offered so returning users skip passwords.</p>'})
   },
   ob_about:{ render:()=>obShell(`<h2 class="ob-title">A bit about you</h2><p class="ob-sub">This tells us which loan plan and offers fit you.</p>
-      ${field('Date of birth','14 / 03 / 2006','calendar')}
-      <p class="disclaim" style="margin-top:8px">${ic('check',14,2.4)} You are 20, so you can set up on your own.</p>
-      ${field('University','University of Manchester','grad')}
+      <div class="list-card" style="margin-top:18px"><div class="row"><span class="mid"><b style="white-space:normal">I confirm I’m 18 or over</b><small>We don’t need your exact birthday to get started</small></span><span class="toggle on" data-act="tgl" role="switch" aria-checked="true" aria-label="I confirm I’m 18 or over"></span></div></div>
+      ${field('University','University of Oxford','grad')}
       <label class="field"><span>Course stage</span></label><div class="seg" data-seg>${['Year 1','Year 2','Year 3','Postgrad'].map((y,i)=>`<button class="${i===1?'on':''}" data-act="seg">${y}</button>`).join('')}</div>`),
-    note:()=>({t:'About you',b:'<p>Date of birth drives the age check. Under-18s would be routed to a guardian consent flow instead.</p>'})
+    note:()=>({t:'About you',b:'<p>A simple adult confirmation replaces the date of birth, as the plan recommends. University choice drives local offers, and Oxford is the pilot city.</p>'})
   },
   ob_loan:{ render:()=>obShell(`<h2 class="ob-title">Your student loan</h2><p class="ob-sub">An estimate is fine. We never ask for your Student Loans Company login.</p>
       <label class="field"><span>Repayment plan</span></label><div class="seg" data-seg>${['Plan 2','Plan 5','Not sure'].map((y,i)=>`<button class="${i===1?'on':''}" data-act="seg">${y}</button>`).join('')}</div>
@@ -1328,7 +1524,7 @@ const SCREENS = {
       <div class="card" style="margin-top:20px"><div class="lbl">Example reward</div><div class="big tn" style="font-size:34px">£10.00</div>${splitBar(sp.ben, sp.sf, ['Toward your student loan','Keeps Student Freedom running'])}</div>
       <button class="opt sel" style="cursor:default"><span class="oi" style="background:var(--sky);color:var(--blue)">${ic('grad',26)}</span><span><b>My own student loan</b><small>${S.ob.role==='graduate'?'Plan 2, est. £41,820':'Plan 5, building up while I study'}</small></span><span class="radio"></span></button>
       <p class="disclaim">The split is worked out on the reward excluding VAT. You see both halves on every transaction.</p>`); },
-    after:el=>animateSplits(el), note:()=>({t:'The 80/20 split',b:'<p>Transparent from day one. Of every reward, 80% goes to the loan and 20% funds the platform. Shown on a £10 example so it is easy to grasp.</p>'})
+    after:el=>animateSplits(el), note:()=>({t:'The 75/25 split',b:'<p>Transparent from day one. Of every cash reward, 75% goes to the loan and 25% funds the platform. Shown on a £10 example so it is easy to grasp.</p><p>Discounts and perks are separate: they save money but never add to the loan pot.</p>'})
   },
   ob_invite:{ render:()=>obShell(`<h2 class="ob-title">Who else could help?</h2><p class="ob-sub">Supporters link their own card. Their rewards go to you. You never see what they buy.</p>
       ${[['Mum','#7C5AE0',true],['Grandad','#12A898',true],['Aunt Lena','#F6B92B',false]].map(([n,c,on])=>`<button class="opt ${on?'sel':''}" data-act="sel"><span class="avatar" style="background:${c}">${n[0]}</span><span><b>${n}</b><small>${on?'Will get an invite link':'Tap to include'}</small></span><span class="radio"></span></button>`).join('')}`,'Send invites','obnext',`<button class="btn btn-text" data-act="obnext" style="width:100%;margin-bottom:4px">Skip for now</button>`),
@@ -1351,24 +1547,24 @@ const SCREENS = {
     after:el=>{ animateRings(el); animateSplits(el,'split-home-'+S.persona); attachPTR(el); fillPots(el,S.persona); P_().ledger.forEach(x=>x.fresh=false); SEEN['v-home-'+S.persona]=1;
       if(S.persona==='parent' && !D.reactSeen){ D.reactSeen=true; const r=D.reactions.find(x=>x.to.startsWith('Mum')); const be=el.querySelector('.big-emo'); setTimeout(()=>{ if(be){ emojiBurst(be,r.e,10); be.animate([{transform:'scale(1)'},{transform:'scale(1.5) rotate(-10deg)'},{transform:'scale(1)'}],{duration:600,easing:'cubic-bezier(.3,1.6,.5,1)'}); } pushNotif('Maya sent you '+r.e, r.text); },500); }
       checkMilestone(); },
-    note:()=>{ const k=S.persona; return k==='student'?{t:'Maya’s home',b:'<p>The big number is everything Maya has generated: £186. The ring shows this month against her £30 goal.</p><p>The freedom card leads with the gain: 5.9 years sooner. The date sits underneath as a comparison, and the pill shows this month’s progress. Tap the card and the headline travels into Impact.</p><p>Tap the recap bubble at the top for a story of her month. The loan pot fills through the quarter; tap it to preview the quarter-end payout. Pull down to refresh.</p>'}:k==='graduate'?{t:'Alex’s home',b:'<p>Graduates see their estimated balance first, and how much has gone toward it: £612 so far, £143 this year.</p><p>Employer matching is shown as a proposed feature.</p>'}:{t:'Sarah’s home',b:'<p>A supporter sees what they generated for Maya this month, and the split: £14.40 to Maya, £3.60 to Student Freedom.</p><p>Privacy is front and centre.</p>'}; }
+    note:()=>{ const k=S.persona; return k==='student'?{t:'Maya’s home',b:'<p>The big number is everything Maya has generated: £186. The ring shows this month against her £30 goal.</p><p>The freedom card leads with the gain: '+freedom('student').saved.toFixed(1)+' years sooner. The date sits underneath as a comparison, and the pill shows this month’s progress. Tap the card and the headline travels into My Progress.</p><p>Tap the recap bubble at the top for a story of her month. The loan pot fills through the quarter; tap it to preview the quarter-end payout. Pull down to refresh.</p>'}:k==='graduate'?{t:'Alex’s home',b:'<p>Graduates see their estimated balance first, and how much has gone toward it: £612 so far, £143 this year.</p><p>Employer matching is shown as a proposed feature.</p>'}:{t:'Sarah’s home',b:'<p>A supporter sees what they generated for Maya this month, and the 75/25 split: £13.50 to Maya, £4.50 to Student Freedom.</p><p>Privacy is front and centre.</p>'}; }
   },
   wallet:{ skel:true, render:(a)=>walletScreen(a), after:el=>{ animateSplits(el); }, note:()=>({t:'Wallet and ledger',b:'<p>Every reward is listed with its status. Pending rewards wait for the retailer’s return window. Tap any item for the full trail.</p>'}) },
   notifications:{ render:()=>notifScreen(), after:()=>{ D.notifRead=true; }, note:()=>({t:'Notifications',b:'<p>Plain, useful alerts: reward tracked, reward confirmed, supporter joined. No streaks or casino mechanics.</p>'}) },
 
   /* ---------- EARN ---------- */
-  earn:{ tabs:true, render:(a)=>earnScreen(a), note:()=>({t:'Earn',b:'<p>Offers are grouped like a shopping app. Near campus offers are a pilot idea for local cafés and gyms.</p><p>Every rate is labelled Illustrative or Pilot.</p>'}) },
+  earn:{ tabs:true, render:(a)=>earnScreen2(a), note:(a)=>{ const g=(a&&a.seg)||'cash'; return g==='perks'?{t:'Earn & Save: perks',b:'<p>Discounts and free entry are a different kind of value. The savings counter is kept apart from loan cash, as the plan requires.</p><p>Tap a perk for a single-use code with a 60-second countdown, or open the digital student ID with its live clock.</p>'}:g==='switch'?{t:'Switch & save',b:'<p>The animation shows the key distinction: the bank pays its bonus straight to the customer. Only our commission can feed the loan pot.</p><p>The bills check asks whether bills are included in rent before showing any offers.</p>'}:{t:'Earn & Save: cash',b:'<p>Cash rewards from partner shops. 75% of each goes to the loan pot.</p><p>Every rate is labelled Illustrative or Pilot.</p>'}; }, _x:()=>({t:'Earn',b:'<p>Offers are grouped like a shopping app. Near campus offers are a pilot idea for local cafés and gyms.</p><p>Every rate is labelled Illustrative or Pilot.</p>'}) },
   offer:{ render:(a)=>offerScreen(a), after:(el,a)=>animateSplits(el,'split-offer-'+a.k), note:a=>({t:M[a.k].name+' offer',b:'<p>Rate, how tracking works, and a worked example of the split before you spend.</p><p>Tap Activate, then the demo button to simulate a purchase.</p>'}) },
   reward:{ render:(a)=>rewardScreen(a), after:(el,a)=>rewardAnim(el,a), note:()=>({t:'Reward tracked',b:'<p>Watch the reward move from pending to confirmed, then drop into the loan pot. In real life that takes weeks. Here it takes three seconds.</p>'}) },
 
   /* ---------- IMPACT ---------- */
-  impact:{ tabs:true, render:()=>impactScreen(), after:el=>impactAfter(el), note:()=>({t:'Impact',b:'<p>The freedom date chart compares the loan with and without Student Freedom. Drag the sliders and the date flips like a departure board. Drag a finger across the chart to read any year.</p><p>Assumptions are listed underneath. It is an illustration, not advice.</p>'}) },
+  impact:{ tabs:true, render:()=>impactScreen(), after:el=>impactAfter(el), note:()=>({t:'My Progress',b:'<p>The freedom date chart compares the loan with and without Student Freedom. Drag the sliders and the date flips like a departure board. Drag a finger across the chart to read any year.</p><p>Assumptions are listed underneath. It is an illustration, not advice.</p>'}) },
 
   /* ---------- NETWORK ---------- */
-  network:{ tabs:true, render:()=>networkScreen(), note:()=>({t:'Network',b:'<p>Rewards flow in from each supporter for a few seconds, then settle. A dashed circle is an invite still waiting.</p><p>Tap the demo link under the list to see Aunt Lena join.</p>'}) },
+  network:{ render:()=>networkScreen(), note:()=>({t:'Network',b:'<p>Rewards flow in from each supporter for a few seconds, then settle. A dashed circle is an invite still waiting.</p><p>Tap the demo link under the list to see Aunt Lena join.</p>'}) },
 
   /* ---------- PROFILE ---------- */
-  profile:{ tabs:true, render:()=>profileScreen(), note:()=>({t:'Profile',b:'<p>Account, linked cards, privacy and security, plus a plain explanation of what is live, pilot or proposed.</p>'}) },
+  profile:{ render:()=>profileScreen(), note:()=>({t:'Profile',b:'<p>Account, linked cards, privacy and security, plus a plain explanation of what is live, pilot or proposed.</p>'}) },
   cards:{ render:()=>cardsScreen(), note:()=>({t:'Linked cards',b:'<p>Shows linked, pending and error states, all masked. Card numbers never sit with Student Freedom.</p>'}) },
   privacy:{ render:()=>privacyScreen(), note:()=>({t:'Privacy centre',b:'<p>Who sees what, written in plain language, with consent history and a data request option.</p>'}) },
   status:{ render:()=>statusScreen(), note:()=>({t:'What is live',b:'<p>An honest legend: nothing in this demo is connected to a real bank, card network or the Student Loans Company.</p>'}) },
@@ -1396,8 +1592,9 @@ function homeStudent(p){
     ${qaRow()}
     <div class="section-h"><h3>Your freedom date</h3></div>
     <button class="card fdate" data-act="toimpact" aria-label="Your loan could be cleared ${f.saved.toFixed(1)} years sooner, debt free by ${f.date} instead of ${f.baseDate}. Illustrative.">${fdLabel('Your loan could be cleared')}${gainHead(f.saved,'student-fd')}<div class="fd-sub">Debt free by ${f.date} instead of ${f.baseDate}</div>${momentum('student')}${arcSpark()}</button>
-    ${potCard(p)}
-    <div style="margin-top:12px"><button class="banner-prize" data-act="prize"><span class="gift" style="color:var(--amber-d)">${ic('gift',28)}</span><span><b>Win £1,000 in wallet credit</b><small>Each confirmed reward this month is an entry. Draw on 31 October.</small></span></button></div>
+    ${potCard(p)}${p.repayReady?'':`<button class="repay-nudge" data-go="repay" data-push="1">${ic('key',18,2.2)}<span>Add your loan details so your first payment can go out</span>${ic('chev',18)}</button>`}
+    <div style="margin-top:12px"><button class="banner-prize" data-act="prize"><span class="gift" style="color:var(--amber-d)">${ic('gift',28)}</span><span><b>Free draw: £1,000 toward your loan</b><small>${drawIn()?'You’re entered for this month. Good luck!':'Free to enter, one entry each. No purchase needed.'}</small></span></button></div>
+    ${eventsRow()}
     <div class="section-h"><h3>Recent activity</h3><button data-go="wallet" data-push="1">See all</button></div>
     <div class="list-card">${p.ledger.slice(0,4).map((x,i)=>ledgerRow(x,i)).join('')}</div>
     <div class="section-h"><h3>Where your rewards go</h3><button data-act="splitinfo" aria-label="How the split works">${ic('info',20)}</button></div>
@@ -1477,7 +1674,7 @@ function walletScreen(a){
   const p=P_(); const f=a.f||'all';
   const items=p.ledger.map((x,i)=>[x,i]).filter(([x])=>f==='all'||x.st===f);
   const sum=st=>r2(p.ledger.filter(x=>x.st===st).reduce((s,x)=>s+x.gross,0));
-  const conf = p.key==='student'?p.credits : p.key==='graduate'? r2(p.lifeAlloc/0.8) : p.lifetime;
+  const conf = p.key==='student'?p.credits : p.key==='graduate'? r2(p.lifeAlloc/SHARE) : p.lifetime;
   const pend = p.key==='parent'?p.monthPending:p.pending;
   const tiles = p.key==='parent'
     ? [['Pending',gbp(pend),'var(--amber-d)'],['Confirmed (lifetime)',gbp(r2(p.lifetime-p.monthPending)),'var(--ink)'],['To Maya',gbp(split(r2(p.lifetime-p.monthPending)).ben),'var(--teal-d)'],['Reversed',gbp(0),'var(--muted)']]
@@ -1486,26 +1683,28 @@ function walletScreen(a){
   <div class="pad"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${tiles.map(t=>`<div class="card" style="padding:14px"><div class="lbl">${t[0]}</div><div class="big tn" style="font-size:21px;color:${t[2]};margin-top:4px">${t[1]}</div></div>`).join('')}</div>
   <div class="seg" style="margin-top:18px" role="tablist">${[['all','All'],['pending','Pending'],['confirmed','Confirmed'],['reversed','Reversed']].map(([k,l])=>`<button class="${f===k?'on':''}" data-act="wfilter" data-f="${k}" role="tab" aria-selected="${f===k}">${l}</button>`).join('')}</div>
   <div class="list-card" style="margin-top:14px">${items.length?items.map(([x,i])=>ledgerRow(x,i,p.key)).join(''):`<div class="row"><span class="mid"><b>Nothing here yet</b><small>Rewards appear here once a partner tracks them.</small></span></div>`}</div>
+  ${paymentsSection()}
   <p class="disclaim">Rewards are sent toward the loan at the end of each quarter once partners have paid. Payment to the Student Loans Company is a proposed integration and is not live.</p><div style="height:30px"></div></div>`;
 }
 function txnSheet(i){
   const p=P_(), x=p.ledger[i], sp=split(x.gross); const title=x.m?M[x.m].name:`From ${x.sup}`;
-  const st=x.st; const steps=[['Tracked','Partner recorded the purchase',1],['Confirmed','Return window passed',st==='confirmed'],['Split 80/20','Shares calculated, excluding VAT',st==='confirmed'],['Partner paid','Funds received by Student Freedom',st==='confirmed'?'now':0],['Quarter-end run','Approved by two people',0],['Sent to loan','Student Loans Company payment (proposed)',0]];
+  const st=x.st; const steps=[['Tracked','Partner recorded the purchase',1],['Confirmed','Return window passed',st==='confirmed'],['Split 75/25','Shares calculated, excluding VAT',st==='confirmed'],['Partner paid','Funds received by Student Freedom',st==='confirmed'?'now':0],['Quarter-end run','Approved by two people',0],['Sent to loan','Student Loans Company payment (proposed)',0]];
   const toName = p.key==='parent'?'To Maya':'To your loan';
   return `<h3>${title}</h3><div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">${statusPill(st)}<span class="lbl">${x.d}, ref ${x.ref}</span></div>
    ${st==='reversed'?`<div class="card" style="background:var(--rose);border-color:#F6CDCF;margin-bottom:12px"><b style="font-weight:600">Reward reversed</b><div class="lbl" style="color:#7A2A2E">${x.note}. Nothing was sent to your loan.</div></div>`:''}
    <div class="card" style="padding:4px 16px">${x.m?`<div class="kv"><span>Eligible spend</span><b class="tn">${gbp(x.spend)}</b></div><div class="kv"><span>Reward rate</span><b class="tn">${x.rate}%</b></div>`:`<div class="kv"><span>Source</span><b>Supporter’s own card</b></div>`}
-   <div class="kv"><span>Partner reward</span><b class="tn">${gbp(sp.gross)}</b></div><div class="kv"><span>${toName} (80%)</span><b class="tn" style="color:var(--teal-d)">${gbp(sp.ben)}</b></div><div class="kv"><span>Student Freedom (20%)</span><b class="tn">${gbp(sp.sf)}</b></div></div>
+   <div class="kv"><span>Partner reward</span><b class="tn">${gbp(sp.gross)}</b></div><div class="kv"><span>${toName} (75%)</span><b class="tn" style="color:var(--teal-d)">${gbp(sp.ben)}</b></div><div class="kv"><span>Student Freedom (25%)</span><b class="tn">${gbp(sp.sf)}</b></div></div>
    ${x.sup?`<p class="disclaim">${x.sup.split(' ')[0]} chose to share totals only. Where they shopped stays private.</p><div class="thanks" style="margin-top:14px"><b>Say thanks to ${x.sup.split(' ')[0]}</b>${emoRow(x.sup)}</div>`:''}
    ${st!=='reversed'?`<h3 style="font-size:16px;margin:20px 0 12px">Where it is now</h3><div class="steps">${steps.map(s=>`<div class="step ${s[2]===1||s[2]===true?'done':s[2]==='now'?'now':''}"><span class="sd">${s[2]===1||s[2]===true?ic('check',14,3):''}</span><div><b>${s[0]}</b><small>${s[1]}</small></div></div>`).join('')}</div>`:''}
-   <button class="btn btn-ghost" style="margin-top:22px" data-close>Close</button>`;
+   <button class="btn btn-ghost" style="margin-top:22px" data-act="ticket" data-i="${i}">${ic('chat',20)} Get help with this</button>
+   <button class="btn btn-text" style="width:100%" data-close>Close</button>`;
 }
 
 /* ---------- Notifications ---------- */
 function notifScreen(){
   const k=S.persona;
   const list = k==='parent' ? [
-    ['check','#12A898','Reward confirmed','£9.60 from your October shopping. £7.68 is on its way to Maya.','2h'],
+    ['check','#12A898','Reward confirmed','£9.60 from your October shopping. £7.20 is on its way to Maya.','2h'],
     ['pound','#F6B92B','Reward tracked','RailSaver, £4.20 pending.','Yesterday'],
     ['heart','#7C5AE0','Maya says thank you','Maya reached £186 generated this year.','3 days'],
     ['earn','#1167DF','New offer','PageTurner Books, 6% back online.','Last week']]
@@ -1516,21 +1715,20 @@ function notifScreen(){
     ['calendar','#7C5AE0','Quarter-end update','£41.20 queued for your loan at the end of December.','Last week']]
   : [
     ['pound','#F6B92B','Reward tracked','Campus Grocer, £1.42 pending.','12m'],
-    ['check','#12A898','Reward confirmed','ThreadLab, £5.95 confirmed. £4.76 to your loan pot.','Yesterday'],
+    ['check','#12A898','Reward confirmed','ThreadLab, £5.95 confirmed. £4.46 to your loan pot.','Yesterday'],
     ['network','#7C5AE0','Mum’s spending added £9.60','Her rewards for early October are confirmed.','4 days'],
     ['invite','#1167DF','Invite still waiting','Aunt Lena has not opened your invite yet.','5 days'],
-    ['gift','#B97F00','Monthly draw','You have 5 entries for the £1,000 wallet-credit draw.','1 week']];
+    ['gift','#B97F00','Free monthly draw','The October draw closes on the 31st. Free to enter, one entry each.','1 week']];
   return `${header('Notifications',{right:`<button class="icon-btn" data-act="notifprefs" aria-label="Notification settings">${ic('dots',22)}</button>`})}
    <div class="pad"><div class="list-card">${list.map(([i,c,t,s,w])=>`<div class="row"><span class="mt" style="background:${c}1F;color:${c}">${ic(i,22)}</span><span class="mid"><b style="white-space:normal">${t}</b><small>${s}</small></span><span class="lbl" style="align-self:flex-start;white-space:nowrap">${w}</span></div>`).join('')}</div></div>`;
 }
 
 /* ---------- Earn ---------- */
-function earnScreen(a){
+function cashBody(a){
   const cat=a.cat||'For you';
   const cats=['For you','Everyday','Food','Travel','Fashion','Tech','Local','Online'];
   const list = OFFER_ORDER.filter(k=>cat==='For you'||M[k].cat===cat);
-  return `<div class="topbar scr-pad-top"><h1 style="font-size:26px">Earn</h1><button class="icon-btn" data-act="toast" data-msg="Saved offers appear here" aria-label="Saved offers">${ic('heart',22)}</button></div>
-  <div class="pad"><div class="search" role="search">${ic('search',20)}<span>Search shops and brands</span></div></div>
+  return `<div class="pad"><div class="cash-note">${ic('grad',16,2.2)} Cash rewards: 75% goes to your loan pot</div><div class="search" role="search">${ic('search',20)}<span>Search shops and brands</span></div></div>
   <div class="cats" role="tablist">${cats.map(c=>`<button class="${c===cat?'on':''}" data-act="cat" data-c="${c}" role="tab" aria-selected="${c===cat}">${c==='Local'?ic('pin',15,2.2)+' ':''}${c}</button>`).join('')}</div>
   ${cat==='For you'?`<div class="section-h pad" style="margin-top:14px"><h3>Picked for you</h3></div>
   <div class="feat">${[['brew','#FFF2D6','#9A6A00','Near campus, 2 min walk'],['thread','#F3ECFD','#6A3FC2','Popular with students'],['fit','#E6F4FB','#1A6E95','New pilot near campus']].map(([k,bg,fg,s])=>`<button class="fcard" style="background:${bg};color:${fg}" data-k="${k}" data-go="offer" data-args='{"k":"${k}"}'>
@@ -1594,9 +1792,9 @@ function rewardAnim(el,a){
 function impactScreen(){
   const k = S.persona, pk = k==='parent'?'student':k, p=D[k];
   const m=D[pk].model;
-  const tot = k==='student'?p.credits : k==='graduate'? r2(p.lifeAlloc/0.8) : p.lifetime;
+  const tot = k==='student'?p.credits : k==='graduate'? r2(p.lifeAlloc/SHARE) : p.lifetime;
   const title = k==='parent'?'Maya’s loan could be cleared':'Your loan could be cleared';
-  return `<div class="${SEEN['v-imp-'+k]?'calm':''}"><div class="topbar scr-pad-top"><h1 style="font-size:26px">Impact</h1><button class="icon-btn" data-act="sharemile" aria-label="Share a milestone">${ic('share',22)}</button></div>
+  return `<div class="${SEEN['v-imp-'+k]?'calm':''}">${tabTop('My Progress',`<button class="icon-btn" data-act="sharemile" aria-label="Share a milestone">${ic('share',22)}</button>`)}
   <div class="pad">
    <div class="card fd-card" style="padding:20px">
     ${fdLabel(title)}
@@ -1605,6 +1803,7 @@ function impactScreen(){
     <div id="fchart" class="fchart" style="margin-top:14px"></div><div class="lbl" style="font-size:12px;margin-top:2px">Drag across the chart to see any year</div>
     <div class="split-legend" style="margin-top:6px"><span><i style="background:#12A898"></i>With Student Freedom</span><span><i style="background:#B8C3D6"></i>Without</span></div>
    </div>
+   ${hubTiles()}
    <div class="card" style="margin-top:12px">
     <div style="display:flex;justify-content:space-between"><b style="font-weight:600">${k==='parent'?'Maya’s yearly spending at work':'Your yearly eligible spending'}</b><b class="tn" id="spv"></b></div>
     <input class="range" type="range" min="0" max="15000" step="500" value="${m.spend}" id="spr" aria-label="Yearly eligible spending">
@@ -1612,7 +1811,7 @@ function impactScreen(){
     <input class="range" type="range" min="0" max="4" step="1" value="${m.sups}" id="sur" aria-label="${m.supLabel}">
     ${k==='parent'?`<div class="card" style="margin-top:10px;background:var(--lilac);border:0;padding:14px"><b style="font-weight:600">Your part in this</b><div class="lbl" id="youpart" style="color:#3D3489"></div></div>`:''}
     <details style="margin-top:10px"><summary style="font-weight:600;color:var(--blue);cursor:pointer;min-height:44px;display:flex;align-items:center">How we worked this out</summary>
-     <p class="disclaim" style="margin-top:0">Starting ${m.startLabel} with a balance of ${gbp(m.B0,0)}, ${(m.i*100).toFixed(1)}% interest, salary ${gbp(m.S0,0)} rising ${(m.g*100).toFixed(1)}% a year, and 9% repayments above a ${gbp(m.T0,0)} threshold rising 2% a year. Spending grows 3% a year. Each supporter spends ${gbp(8000,0)} a year. Rewards are 4% with 80% to the loan. This is an illustration, not financial advice, and not a promise of interest or years saved.</p></details>
+     <p class="disclaim" style="margin-top:0">Starting ${m.startLabel} with a balance of ${gbp(m.B0,0)}, ${(m.i*100).toFixed(1)}% interest, salary ${gbp(m.S0,0)} rising ${(m.g*100).toFixed(1)}% a year, and 9% repayments above a ${gbp(m.T0,0)} threshold rising 2% a year. Spending grows 3% a year. Each supporter spends ${gbp(8000,0)} a year. Rewards are 4%, with 75% of each reward going to the loan. This is an illustration, not financial advice, and not a promise of interest or years saved.</p></details>
    </div>
    <div class="section-h"><h3>${k==='parent'?'Your rewards by month':k==='graduate'?'Allocated by month':'Credits by month'}</h3><span class="lbl tn">${k==='graduate'?gbp(p.yearAlloc)+' this year':gbp(tot)+' total'}</span></div>
    <div class="card">${bars(p.trend)}</div>
@@ -1675,7 +1874,7 @@ function attachScrub(c){
 function networkScreen(){
   const k=S.persona;
   if(k==='parent'){
-    return `<div class="topbar scr-pad-top"><h1 style="font-size:26px">Network</h1></div><div class="pad">
+    return `${header('People you support')}<div class="pad">
      <div class="card" style="padding:10px 6px">${networkSVG({initial:'S',label:'You',color:'#7C5AE0'},[{initial:'M',label:'Maya',color:'#1167DF'},{initial:'+',label:'Add someone',pending:true}])}</div>
      <div class="section-h"><h3>People you support</h3></div>
      <div class="list-card"><div class="row"><span class="avatar" style="background:#1167DF">M</span><span class="mid"><b>Maya Clarke</b><small>Daughter, Plan 5 student</small></span>${statusPill('confirmed').replace('Confirmed','Linked')}</div></div>
@@ -1686,12 +1885,12 @@ function networkScreen(){
   const lena=D.student.lena;
   const nodes = isS ? [{initial:'S',label:'Mum',color:'#7C5AE0'},{initial:'P',label:'Grandad',color:'#12A898'},{initial:'L',label:'Aunt Lena',color:'#F6B92B',pending:!lena}] : [{initial:'R',label:'Dad',color:'#1167DF'},{initial:'+',label:'Invite',pending:true}];
   const center = isS?{initial:'M',label:'Maya',color:'#1167DF'}:{initial:'A',label:'Alex',color:'#12A898'};
-  const rows = isS ? [['S','#7C5AE0','Mum (Sarah)','Linked since May','£55.68','confirmed'],['P','#12A898','Grandad (Peter)','Linked since July','£28.80','confirmed'],['L','#F6B92B','Aunt Lena',lena?'Joined this week':'Invited 5 days ago',lena?'£0.00':'Waiting',lena?'confirmed':'pending']]
+  const rows = isS ? [['S','#7C5AE0','Mum (Sarah)','Linked since May','£52.20','confirmed'],['P','#12A898','Grandad (Peter)','Linked since July','£27.00','confirmed'],['L','#F6B92B','Aunt Lena',lena?'Joined this week':'Invited 5 days ago',lena?'£0.00':'Waiting',lena?'confirmed':'pending']]
                    : [['R','#1167DF','Dad (Richard)','Linked since January','£38.00','confirmed']];
-  return `<div class="topbar scr-pad-top"><h1 style="font-size:26px">Network</h1><button class="icon-btn" data-act="invite" aria-label="Invite">${ic('invite',22)}</button></div>
+  return `${header('Supporters',{right:`<button class="icon-btn" data-act="invite" aria-label="Invite">${ic('invite',22)}</button>`})}
   <div class="pad">
    <div class="card" style="padding:10px 6px;background:linear-gradient(180deg,#fff,#F3FAF8)">${networkSVG(center,nodes)}</div>
-   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px"><div class="card" style="padding:14px"><div class="lbl">Supporters linked</div><div class="big tn" style="font-size:24px" data-odo="${isS?D.student.supporters:1}" data-dec="0" data-pre="" data-key="net-${S.persona}" id="netcount">${isS?D.student.supporters:1}</div></div><div class="card" style="padding:14px"><div class="lbl">From supporters</div><div class="big tn" style="font-size:24px;color:var(--teal-d)" data-odo="${isS?84.48:38}" data-key="netv-${S.persona}">${isS?'£84.48':'£38.00'}</div></div></div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px"><div class="card" style="padding:14px"><div class="lbl">Supporters linked</div><div class="big tn" style="font-size:24px" data-odo="${isS?D.student.supporters:1}" data-dec="0" data-pre="" data-key="net-${S.persona}" id="netcount">${isS?D.student.supporters:1}</div></div><div class="card" style="padding:14px"><div class="lbl">From supporters</div><div class="big tn" style="font-size:24px;color:var(--teal-d)" data-odo="${isS?79.20:38}" data-key="netv-${S.persona}">${isS?'£79.20':'£38.00'}</div></div></div>
    <div class="section-h"><h3>Your supporters</h3></div>
    <div class="list-card">${rows.map(r=>`<div class="row" ${r[0]==='L'?'id="lenarow"':''}><span class="avatar" style="background:${r[1]};${r[5]==='pending'?'color:#5B6884;background:#EEF2F7':''};transition:background .5s,color .5s">${r[0]}</span><span class="mid"><b>${r[2]}</b><small>${r[3]}</small></span><span class="end"><b class="tn" style="font-size:14px">${r[4]}</b>${r[5]==='pending'?`<button class="status st-pending" data-act="toast" data-msg="Reminder sent to Aunt Lena" style="min-height:28px">Remind</button>`:''}</span></div>`).join('')}</div>
    ${isS&&!lena?`<button class="btn btn-text" id="lenademo" style="width:100%;font-size:14px" data-act="lenajoin">${ic('bolt',16,2.2)} Demo: Aunt Lena accepts the invite</button>`:''}
@@ -1725,16 +1924,31 @@ function profileScreen(){
   const p=P_();
   const groups=[
     ['Account',[['card','Linked cards','1 linked, 1 pending','cards'],['heart',p.key==='parent'?'People you support':'Supporters',p.key==='parent'?'Maya':p.key==='student'?'2 linked':'1 linked','network'],['bell','Notifications','Choose what you hear about','@notifprefs']]],
-    ['Privacy and security',[['eye','Privacy centre','What others can see','privacy'],['shield','Security','Passkey on, 2 devices','security'],['doc','Consent history','Terms, marketing, sharing','@consent']]],
-    ['About',[['info','What is live in this app','Live, pilot and proposed features','status'],['help','Help and FAQ','How rewards and splits work','@help'],['refresh','Reset demo','Restore the sample data','@reset'],['logout','Sign out','Back to the welcome screen','@signout']]]
+    ...(p.key==='student'&&!p.graduated?[['Student status',[['idcard','Verified student','University of Oxford, until 31 Oct 2027','sid']]]]:[]),
+    ['Privacy and security',[['eye','Privacy and choices','What others see, and what you allow','privacy'],['shield','Security','Passkey on, 2 devices','security'],['doc','Consent history','Terms, marketing, sharing','@consent']]],
+    ['About',[['info','What is live in this app','Live, pilot and proposed features','status'],['life','Help & Wellbeing','Support, money tools and FAQs','help'],['refresh','Reset demo','Restore the sample data','@reset'],['logout','Sign out','Back to the welcome screen','@signout']]]
   ];
-  return `<div class="topbar scr-pad-top"><h1 style="font-size:26px">Profile</h1></div>
+  return `${header('Profile')}
   <div class="pad"><div class="card" style="display:flex;gap:14px;align-items:center"><span class="avatar" style="background:${p.color};width:60px;height:60px;font-size:22px">${p.initial}</span><div style="flex:1"><b class="big" style="font-size:19px">${p.full}</b><div class="lbl">${p.roleLabel}</div><div class="lbl">${p.sub}${p.plan?', '+p.plan:''}</div></div></div>
   <div class="card" style="margin-top:12px;padding:14px 16px"><div style="display:flex;justify-content:space-between;font-size:14px"><b style="font-weight:600">Profile complete</b><b class="tn">90%</b></div><div class="splitbar" style="margin:10px 0 6px"><i style="width:0;background:var(--teal)" data-w="90"></i></div><div class="lbl">Add a second card to earn on more of your spending</div></div>
   ${groups.map(([g,rows])=>`<div class="section-h"><h3>${g}</h3></div><div class="list-card">${rows.map(([i,t,s,dest])=>`<button class="row" ${dest[0]==='@'?`data-act="${dest.slice(1)}"`:`data-go="${dest}" data-push="1"`}><span class="mt" style="background:var(--canvas);color:var(--ink)">${ic(i,22)}</span><span class="mid"><b>${t}</b><small>${s}</small></span><span class="chev">${ic('chev',20)}</span></button>`).join('')}</div>`).join('')}
   <p class="disclaim" style="text-align:center">Student Freedom demo, version 1.8. Sample data only.</p><div style="height:10px"></div></div>`;
 }
 SCREENS.profile.after = el=>animateSplits(el,'split-profile');
+Object.assign(SCREENS,{
+  homes:{ tabs:true, render:(a)=>homesScreen(a), note:()=>({t:'Accommodation',b:'<p>One of the five main areas in the plan. Each listing shows the weekly price and the full-term cost, whether bills are included, and when availability was last updated.</p><p>Sponsored places are labelled. Student Freedom is clearly not the landlord.</p>'}) },
+  property:{ render:(a)=>propertyScreen(a), after:el=>{ const hero=el.querySelector('.prop-hero'); if(hero&&!reduce) el.addEventListener('scroll',()=>{ hero.style.transform=`translateY(${el.scrollTop*.35}px) scale(${1+Math.min(el.scrollTop,200)/1600})`; },{passive:true}); }, note:()=>({t:'Property page',b:'<p>Full term cost, deposit, cancellation, guarantor and accessibility up front. The enquiry sheet shows exactly which details go to the operator.</p><p>A referral reward is shown as illustrative.</p>'}) },
+  opps:{ tabs:true, render:(a)=>oppsScreen(a), after:el=>{ el.querySelectorAll('.cp-ring .ringfg').forEach(c=>setTimeout(()=>c.style.strokeDashoffset=c.dataset.off,150)); }, note:()=>({t:'Opportunities',b:'<p>An optional career profile, opt-in matching and verified employers. Employers never see spending, rewards or loan details.</p><p>For Alex, an employer contribution is shown in its own ledger, with no fee taken.</p>'}) },
+  job:{ render:(a)=>jobScreen(a), note:()=>({t:'Opportunity',b:'<p>Pay, place and dates up front, a verified employer badge and a talent-pool opt-in that expires.</p><p>Applying shows exactly what is passed to the employer, and finishes on their own site.</p>'}) },
+  perk:{ render:(a)=>perkScreen(a), note:()=>({t:'Perk',b:'<p>A perk is a discount, not cash. The code is single use with a countdown, so a screenshot won’t work twice.</p>'}) },
+  sid:{ render:()=>sidScreen(), after:el=>sidAfter(el), note:()=>({t:'Digital student ID',b:'<p>Tilt it with the mouse. The live clock proves it isn’t a screenshot. Verification has an expiry and a yearly recheck.</p>'}) },
+  repay:{ render:()=>repayScreen(), after:el=>{ if(P_().repayReady) return; el.querySelector('#repaygo').disabled=true; }, note:()=>({t:'Loan details',b:'<p>The plan’s repayment-ready step: loan reference, plan and payment authority, collected before the first payment rather than at sign-up.</p><p>Three plain warnings must be ticked, including that extra payments may not help if a loan would be written off.</p>'}) },
+  claim:{ render:()=>claimScreen(), after:el=>focusFx(el), note:()=>({t:'Missing reward claim',b:'<p>Three short steps: shop, amount with receipt, review. The result shows a reference and a clear timeline, with a right to appeal.</p>'}) },
+  help:{ render:()=>helpScreen(), note:()=>({t:'Help & Wellbeing',b:'<p>Always one tap away from every main screen. Wellbeing signposts are open to everyone, with no sign-in and no tracking for offers.</p><p>Money tools, plain loan explainers, a trust centre and a route to a real person.</p>'}) },
+  budget:{ render:()=>budgetScreen(), after:el=>budgetAfter(el), note:()=>({t:'Budget planner',b:'<p>A simple manual budget. No bank connection needed, and it stays on the phone.</p>'}) },
+  trust:{ render:()=>trustScreen(), note:()=>({t:'Trust centre',b:'<p>Who the user is dealing with, how money moves, partner roles and plain promises. No certifications are claimed.</p>'}) },
+  invitepage:{ render:()=>invitePage(), note:()=>({t:'Supporter invite page',b:'<p>What Sarah sees when she opens Maya’s link in a web browser. Supporters can join without installing the app.</p>'}) }
+});
 function cardsScreen(){
   const p=P_();
   return `${header('Linked cards')}<div class="pad">
@@ -1755,12 +1969,13 @@ function privacyScreen(){
    <div class="card" style="background:var(--mint);border:0;display:flex;gap:12px"><span style="color:var(--teal-d)">${ic('shield',26)}</span><span style="font-size:14.5px;line-height:1.5">We use your linked card only to spot purchases at partner brands. We do not sell your data, and partners only ever see group totals.</span></div>
    <div class="section-h"><h3>${isP?'What Maya can see':'What supporters can see'}</h3></div>
    <div class="list-card">${rows.map(([k,t,s,def])=>{ const on=D.priv[k]; return `<div class="row"><span class="mid"><b>${t}</b><small>${s}</small></span><button class="toggle ${on?'on':''}" data-act="priv" data-k="${k}" role="switch" aria-checked="${on}" aria-label="${t}"></button></div>`;}).join('')}</div>
+   ${consentSection()}
    <div class="section-h"><h3>Your data</h3></div>
    <div class="list-card">${[['doc','Download my data','We email a copy within 30 days'],['close','Delete my account','Removes your data and unlinks cards']].map(([i,t,s])=>`<button class="row" data-act="toast" data-msg="Request recorded (demo)"><span class="mt" style="background:var(--canvas)">${ic(i,22)}</span><span class="mid"><b>${t}</b><small>${s}</small></span><span class="chev">${ic('chev',20)}</span></button>`).join('')}</div>
    <div style="height:20px"></div></div>`;
 }
 function statusScreen(){
-  const L=[['Demo','Everything in this app today','Sample data, simulated card linking and simulated rewards.'],['Pilot','Near-campus offers','Local cafés and gyms near universities, to be trialled in phases.'],['Proposed','Card-linking provider','A regulated provider to track purchases. Not yet contracted.'],['Proposed','Student Loans Company payments','Sending your share to your loan account. Not yet agreed.'],['Proposed','Employer matching','Employers adding to rewards as a staff benefit.'],['Illustrative','Offers and rates','Example brands and rates to show how earning works.']];
+  const L=[['Demo','Everything in this app today','Sample data, simulated card linking and simulated rewards.'],['Pilot','Near-campus offers','Local cafés and gyms near universities, to be trialled in phases.'],['Proposed','Card-linking provider','A regulated provider to track purchases. Not yet contracted.'],['Proposed','Student Loans Company payments','Sending your share to your loan account. Not yet agreed.'],['Proposed','Employer matching','Employers adding to rewards as a staff benefit.'],['Illustrative','Offers and rates','Example brands and rates to show how earning works.'],['Pilot','Oxford perks','Local discounts with a digital student ID, starting in Oxford.'],['Proposed','Accommodation','Listings and referrals with student housing operators.'],['Proposed','Opportunities','Verified employers, jobs and employer loan contributions.'],['Proposed','Switching','Bank, broadband and mobile offers through approved partners.']];
   return `${header('What is live')}<div class="pad"><p class="ob-sub" style="margin-bottom:8px">We label every feature honestly, so you always know what is real today.</p>
    <div class="list-card">${L.map(([s,t,d])=>`<div class="legend-row"><span style="flex:none;min-width:86px">${statusPill(s)}</span><div><b style="font-weight:600">${t}</b><p>${d}</p></div></div>`).join('')}</div><div style="height:20px"></div></div>`;
 }
@@ -1769,7 +1984,7 @@ function securityScreen(){
    <div class="row"><span class="mt" style="background:var(--sky);color:var(--blue)">${ic('key',22)}</span><span class="mid"><b>Passkey</b><small>Face ID on this iPhone</small></span><span class="toggle on" data-act="tgl" role="switch" aria-checked="true"></span></div>
    <div class="row"><span class="mt" style="background:var(--sky);color:var(--blue)">${ic('lock',22)}</span><span class="mid"><b>Two-step verification</b><small>Code by text message</small></span><span class="toggle on" data-act="tgl" role="switch" aria-checked="true"></span></div></div>
    <div class="section-h"><h3>Signed-in devices</h3></div>
-   <div class="list-card"><div class="row"><span class="mt" style="background:var(--canvas)">${ic('phone',22)}</span><span class="mid"><b>iPhone 15</b><small>This device, Manchester, now</small></span></div><div class="row"><span class="mt" style="background:var(--canvas)">${ic('laptop',22)}</span><span class="mid"><b>Chrome on Mac</b><small>Last used 3 days ago</small></span><button class="status st-reversed" data-act="toast" data-msg="Signed out of Chrome on Mac" style="min-height:30px">Sign out</button></div></div>
+   <div class="list-card"><div class="row"><span class="mt" style="background:var(--canvas)">${ic('phone',22)}</span><span class="mid"><b>iPhone 15</b><small>This device, Oxford, now</small></span></div><div class="row"><span class="mt" style="background:var(--canvas)">${ic('laptop',22)}</span><span class="mid"><b>Chrome on Mac</b><small>Last used 3 days ago</small></span><button class="status st-reversed" data-act="toast" data-msg="Signed out of Chrome on Mac" style="min-height:30px">Sign out</button></div></div>
    <button class="btn btn-ghost" style="margin-top:16px" data-act="toast" data-msg="Thanks. Our security team will be in touch.">Report a security issue</button></div>`;
 }
 
@@ -1805,7 +2020,7 @@ const ACT = {
   copy:(a)=>{ if(a.dataset.busy) return; a.dataset.busy=1; const o=a.innerHTML; a.classList.add('st-confirmed'); a.innerHTML=ic('check',14,3)+' Copied'; hap(6); setTimeout(()=>{ a.classList.remove('st-confirmed'); a.innerHTML=o; delete a.dataset.busy; },1600); },
   txn:(a)=>openSheet(txnSheet(+a.dataset.i)),
   wfilter:(a)=>{ go('wallet',{fade:true,noskel:true,args:{f:a.dataset.f}}); S.stack.splice(-2,1); },
-  cat:(a)=>go('earn',{tab:true,args:{cat:a.dataset.c}}),
+  cat:(a)=>go('earn',{tab:true,args:{cat:a.dataset.c,seg:'cash'}}),
   activate:(a)=>{ const k=a.dataset.k; if(D.activated[k]) return; D.activated[k]=true; a.className='btn btn-teal ok-pulse'; a.innerHTML=`<span class="swapin">${ic('check',20,2.6)} Activated</span>`; hap([8,30,8]); toast(M[k].track==='Shop online'?'Opening '+M[k].name+' (demo)':'Offer activated. Pay with your linked card.'); },
   rewarddone:(a)=>{ if(a.dataset.ok){ const g=+a.dataset.g, k=a.dataset.k, p=P_(); const ben=split(g).ben;
       p.ledger.unshift({ref:'SF-2610-'+String(5100+p.ledger.length*13), d:'Just now', m:k, spend:+a.dataset.s, rate:M[k].rate, gross:g, st:'confirmed', fresh:true});
@@ -1830,10 +2045,9 @@ const ACT = {
     const end=row.querySelector('.end'); end.querySelector('b').textContent='£0.00'; const pill=end.querySelector('.status'); pill.removeAttribute('data-act'); morphPill(pill,'st-confirmed','<span aria-hidden="true">✓</span>Linked');
     hap([10,40,10]); setTimeout(()=>pushNotif('Aunt Lena joined your network','Rewards from her shopping will now come to you.'),700); },
   splitinfo:()=>{ const sp=split(10); openSheet(`<h3>How the split works</h3><p class="lbl" style="line-height:1.5">Partner brands pay a reward when you shop. We split it the same way every time.</p><div class="card" style="margin-top:14px">${splitBar(sp.ben,sp.sf,[S.persona==='parent'?'To Maya’s loan pot':'To your loan pot','Runs Student Freedom'])}</div>
-    <div class="list-card" style="margin-top:12px">${[['Calculated without VAT','The split uses the reward amount excluding VAT.'],['Paid out each quarter','Once partners have paid, two people approve each payment run.'],['Community route','People with no student to support can give 95% to an approved education charity.']].map(([t,s])=>`<div class="row"><span class="mid"><b>${t}</b><small style="white-space:normal">${s}</small></span></div>`).join('')}</div><button class="btn btn-ghost" style="margin-top:16px" data-close>Got it</button>`, s=>animateSplits(s)); },
-  prize:()=>openSheet(`<h3>Monthly £1,000 draw</h3><p class="lbl" style="line-height:1.5">Each confirmed reward in a month gives you one entry. One winner gets £1,000 of wallet credit, which goes toward their loan pot.</p>
-    <div class="card" style="margin-top:14px;display:flex;gap:14px;align-items:center;background:var(--sun);border-color:#F7E3AE"><span class="big tn" style="font-size:40px;color:var(--amber-d)">5</span><span><b style="font-weight:600">Your entries this month</b><div class="lbl">Draw on 31 October</div></span></div>
-    <p class="disclaim">Free to enter. Winner chosen by an audited random draw under published terms. Subject to legal and compliance approval before launch.</p><button class="btn btn-ghost" style="margin-top:16px" data-close>Close</button>`),
+    <div class="list-card" style="margin-top:12px">${[['Calculated without VAT','The split uses the reward amount excluding VAT.'],['Paid out each quarter','Once partners have paid, two people approve each payment run.'],['Discounts are separate','A perk or discount saves you money, but it never adds to your loan pot.']].map(([t,s])=>`<div class="row"><span class="mid"><b>${t}</b><small style="white-space:normal">${s}</small></span></div>`).join('')}</div><button class="btn btn-ghost" style="margin-top:16px" data-close>Got it</button>`, s=>animateSplits(s)); },
+  prize:()=>openSheet(drawSheet()),
+  enterdraw:(a)=>{ if(drawIn()) return; D.draw[S.persona+'-'+D.T]=1; hap([10,40,10]); emojiBurst(a,'🎟️',8); a.className='btn btn-teal ok-pulse'; a.innerHTML=`<span class="swapin">${ic('check',20,2.6)} You’re entered</span>`; const c=current()&&current().querySelector('.banner-prize small'); if(c) c.textContent='You’re entered for this month. Good luck!'; },
   employer:()=>openSheet(`<h3>Employer matching</h3>${statusPill('Proposed')}<p class="lbl" style="line-height:1.5;margin-top:10px">Some employers may add to your rewards as a staff benefit. Their contributions would be handled separately from the 80/20 split.</p><button class="btn btn-primary" style="margin-top:18px" data-act="toast2" data-msg="We will let you know when this is available">Tell me when it is ready</button><button class="btn btn-text" style="width:100%" data-close>Close</button>`),
   toast2:(a)=>{ closeSheet(); toast(a.dataset.msg,'bell'); },
   supportanother:()=>openSheet(`<h3>Support someone else</h3><p class="lbl" style="line-height:1.5">Ask them for their invite code, or send a request they can approve. Your rewards can go to more than one person.</p><label class="field"><span>Invite code</span><span class="inp"><input placeholder="For example JAMES-4R2T" aria-label="Invite code"></span></label><button class="btn btn-primary" style="margin-top:18px" data-act="toast2" data-msg="Request sent. They need to approve it.">Send request</button><button class="btn btn-text" style="width:100%" data-close>Cancel</button>`),
@@ -1850,7 +2064,7 @@ const ACT = {
     const row=a.closest('.emo-row'); row.outerHTML=`<div class="sent">${e} Sent. ${to.split(' ')[0]} will see it on their home screen.</div>`; },
   toast:(a)=>toast(a.dataset.msg,'info')
 };
-function startOb(role){ S.ob={role,i:0}; go('ob_'+OB[role][0]); }
+function startOb(role){ S.guest=false; S.ob={role,i:0}; go('ob_'+OB[role][0]); }
 function focusFx(el){ el.querySelectorAll('.inp input').forEach(i=>{ i.addEventListener('focus',()=>i.parentElement.classList.add('focus')); i.addEventListener('blur',()=>i.parentElement.classList.remove('focus')); }); }
 
 /* ================= Immersive layer ================= */
@@ -1900,7 +2114,7 @@ function potSVG(level=0.25, size=52){ const id='pc'+(++potUid), h=Math.round(siz
   return `<svg class="pot" width="${size}" height="${h}" viewBox="0 0 52 58" aria-hidden="true" style="overflow:visible"><defs><clipPath id="${id}"><path d="M8 17h36v31a8 8 0 0 1-8 8H16a8 8 0 0 1-8-8z"/></clipPath><linearGradient id="${id}g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5FD3C4"/><stop offset="1" stop-color="#0FA090"/></linearGradient></defs>
    <rect x="13" y="4" width="26" height="9" rx="4" fill="#12A898"/><g clip-path="url(#${id})"><rect x="0" y="0" width="52" height="60" fill="#EAF8F5"/><rect class="potfill" data-level="${level}" x="0" y="16" width="52" height="44" fill="url(#${id}g)" style="transform:translateY(${(1-level)*40}px)"/><rect x="12" y="20" width="4" height="26" rx="2" fill="#fff" opacity=".45"/></g>
    <path d="M8 17h36v31a8 8 0 0 1-8 8H16a8 8 0 0 1-8-8z" fill="none" stroke="#12A898" stroke-width="3"/><text x="26" y="44" text-anchor="middle" font-family="Lexend,sans-serif" font-weight="600" font-size="13" fill="#fff" opacity=".9">£</text></svg>`; }
-const potTarget=p=> (p.key==='graduate'?38.4:72);
+const potTarget=p=> (p.key==='graduate'?36:67.5);
 function potCard(p){ const q=p.quarterBen||0, lv=Math.min(1,q/potTarget(p)), qi=quarterInfo(), first=!SEEN['pot-v-'+p.key];
   return `<button class="card potcard" data-go="payout" data-push="1" aria-label="Loan pot this quarter ${gbp(q)}, sends on ${qi.label}">
     <div class="potbig">${potSVG(first?0:lv,64).replace('class="potfill"',`class="potfill" data-to="${lv}"`)}</div>
@@ -2068,8 +2282,372 @@ function openGraduation(){
 }
 function setGraduated(){ const s=D.student; if(s.graduated) return; s.graduated=true; s.roleLabel='Graduate, Plan 5'; s.sub='Graduated July 2028, first job'; s.age=22;
   s.balance=r2(45000-(s.paid||0)); s.salary=28750; s.payroll=Math.round(.09*(28750-25000)/12); s.lifeAlloc=r2(split(s.credits).ben); s.monthCredits=s.monthConfirmed;
-  s.yearAlloc=r2(split(s.trend.slice(-7).reduce((a,t)=>a+t[1],0)).ben); s.gradYear=2028; s.supporterYear=r2(s.monthConfirmed*.35*.8*7);
+  s.yearAlloc=r2(split(s.trend.slice(-7).reduce((a,t)=>a+t[1],0)).ben); s.gradYear=2028; s.supporterYear=r2(s.monthConfirmed*.35*SHARE*7);
   const b=document.querySelector('#personaBtns [data-persona=student] small'); if(b) b.textContent='Graduate, 22'; }
+
+const APPS=()=>{ D.appsBy=D.appsBy||{}; return (D.appsBy[S.persona]=D.appsBy[S.persona]||{}); };
+/* ================= v6: Earn & Save, Housing, Careers, Progress hub, Help & Wellbeing ================= */
+Object.assign(P,{
+  house:'<path d="M3 11 12 4l9 7"/><path d="M5 9.5V20h5v-6h4v6h5V9.5"/>',
+  life:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.6"/><path d="M5.6 5.6l3.9 3.9M14.5 14.5l3.9 3.9M18.4 5.6l-3.9 3.9M9.5 14.5l-3.9 3.9"/>',
+  plane:'<path d="M21 3 3 10.5l7 2.5 2.5 7L21 3Z"/><path d="M10 13l4-4"/>',
+  upload:'<path d="M12 16V4"/><path d="M7.5 8.5 12 4l4.5 4.5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>',
+  idcard:'<rect x="2.5" y="5" width="19" height="14" rx="3"/><circle cx="8.5" cy="11" r="2.3"/><path d="M5.5 16c.6-1.6 1.7-2.4 3-2.4s2.4.8 3 2.4M14 10h4.5M14 13.5h3"/>',
+  bank:'<path d="M3 9.5 12 4l9 5.5"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>',
+  wifi:'<path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19" r="1"/>',
+  ticket:'<path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4V8Z"/><path d="M13 6v12" stroke-dasharray="2 2.5"/>',
+  map:'<path d="M9 4 3 6.5v13.5l6-2.5 6 2.5 6-2.5V4l-6 2.5L9 4Z"/><path d="M9 4v13.5M15 6.5V20"/>',
+  calc:'<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8 7h8M8.5 12h.1M12 12h.1M15.5 12h.1M8.5 16h.1M12 16h.1M15.5 16h.1"/>'
+});
+const helpBtn=()=>`<button class="icon-btn" data-go="help" data-push="1" aria-label="Help and wellbeing">${ic('life',22)}</button>`;
+const tabTop=(title,extra='')=>`<div class="topbar scr-pad-top"><h1 style="font-size:26px">${title}</h1>${extra}${helpBtn()}</div>${guestBar()}`;
+function guestBar(){ return S.guest?`<div class="pad"><div class="guest-bar">${ic('pin',16,2.2)}<span>Browsing Oxford as a guest</span><button data-act="joinnow">Create account</button></div></div>`:''; }
+const drawIn=()=>!!(D.draw&&D.draw[S.persona+'-'+D.T]);
+function drawSheet(){ const m=monthName(), on=drawIn();
+  return `<div class="draw-hero"><span class="draw-ticket">${ic('ticket',30,1.8)}</span></div><h3 style="text-align:center">Free ${m} draw</h3>
+  <p class="lbl" style="text-align:center;line-height:1.5;max-width:31ch;margin:0 auto">One winner gets £1,000 paid toward their student loan. Free to enter, one entry per person.</p>
+  <div class="list-card" style="margin-top:16px">${[['check','No purchase needed','You don’t need to shop, link a card or accept marketing'],['calendar','Closes on the last day of the month','Winner picked at random under the published rules'],['info','No active loan?','The rules set out an alternative prize of the same value']].map(([i,t,s])=>`<div class="row"><span class="mt" style="background:var(--sun);color:var(--amber-d)">${ic(i,20)}</span><span class="mid"><b style="white-space:normal">${t}</b><small style="white-space:normal">${s}</small></span></div>`).join('')}</div>
+  <button class="btn ${on?'btn-teal':'btn-primary'}" style="margin-top:18px" data-act="enterdraw">${on?ic('check',20,2.6)+' You’re entered':'Enter for free'}</button>
+  <p class="disclaim" style="text-align:center">Promoted by Student Freedom. Apple and Google are not sponsors and are not involved. Subject to legal approval before launch.</p>`; }
+
+/* ---------- Data ---------- */
+const PERKS=[
+  {k:'jericho',name:'Jericho Coffee House',area:'Jericho',icon:'coffee',bg:'#FFF2D6',fg:'#9A6A00',deal:'2 for 1 on coffee before 11am',save:3.20,how:'Show your student ID',cond:['Before 11am, Monday to Friday','One per visit']},
+  {k:'turl',name:'Turl Street Books',area:'City centre',icon:'book',bg:'#E8F5EC',fg:'#2B7A47',deal:'15% off any book',save:4.50,how:'Single-use code',cond:['Excludes second-hand books','One use per day']},
+  {k:'cowley',name:'Cowley Road Club',area:'Cowley Road',icon:'sparkle',bg:'#F3ECFD',fg:'#6A3FC2',deal:'Free entry before 11pm on Thursdays',save:6.00,how:'Single-use code',cond:['18 and over, photo ID at the door','Capacity limited']},
+  {k:'iffley',name:'Iffley Fields Gym',area:'Iffley Road',icon:'dumbbell',bg:'#E6F4FB',fg:'#1A6E95',deal:'Free day pass',save:8.00,how:'Single-use code',cond:['First visit only','Bring a towel']}
+];
+const HOMES=[
+  {k:'cherwell',name:'Cherwell Court',op:'Riverside Student Living',sky:['#BFE3F5','#E9F6FB'],bld:'#2F4C82',room:'En-suite',wk:219,weeks:44,bills:true,walk:'12 min walk to the city centre',upd:'2 days ago',sponsored:true,feat:['Bills and wifi included','On-site gym','Bike store'],dep:'£250 booking deposit',canc:'Free cancellation within 14 days',guar:'UK guarantor, or pay one term upfront',access:'Step-free rooms available'},
+  {k:'botley',name:'Botley Works',op:'Northwall Homes',sky:['#FFD9B8','#FFF2E3'],bld:'#5B3F8C',room:'Studio',wk:265,weeks:51,bills:true,walk:'18 min by bus to the city centre',upd:'Today',feat:['Bills and wifi included','Private kitchen','24-hour reception'],dep:'£300 booking deposit',canc:'Free cancellation within 7 days',guar:'No guarantor needed with upfront rent',access:'Lift to all floors'},
+  {k:'cowleyyard',name:'Cowley Yard',op:'Kestrel Student Homes',sky:['#C9EDE3','#EEF9F5'],bld:'#1D6B60',room:'En-suite',wk:189,weeks:44,bills:false,billsEst:15,walk:'20 min walk to the city centre',upd:'5 days ago',feat:['Shared kitchen for 6','Garden','Laundry on site'],dep:'£200 booking deposit',canc:'Free cancellation within 14 days',guar:'UK guarantor required',access:'Ground-floor rooms available'}
+];
+const JOBS=[
+  {k:'meadow',emp:'Meadow Engineering',ini:'ME',col:'#1167DF',type:'Insight days',title:'Spring insight days',where:'Oxford',pay:'Travel and lunch covered',dates:'2 days in March 2027',close:'30 Nov',desc:['Meet engineers on real projects','Workshops on CVs and interviews','Open to all years of study']},
+  {k:'cherwellA',emp:'Cherwell Analytics',ini:'CA',col:'#12A898',type:'Internships',title:'Summer data internship',where:'Oxford, hybrid',pay:'£24,000 a year, pro rata',dates:'10 weeks from June 2027',close:'15 Jan',desc:['Work with a real client team','A mentor for the whole summer','Penultimate-year students']},
+  {k:'portm',emp:'Port Meadow Pharma',ini:'PM',col:'#7C5AE0',type:'Graduate jobs',title:'Graduate scientist',where:'Abingdon',pay:'£34,000 a year',dates:'Starts September 2028',close:'28 Feb',award:'£250 joining award paid to your loan',desc:['Two-year rotation programme','Lab and data roles','Chemistry, biology or pharmacy degree']}
+];
+const EVENTS=[
+  {k:'hike',org:'Hiking Society',t:'Shotover Hill walk',when:'Sat 10:00',cost:'Free',col:'#12A898',icon:'pin'},
+  {k:'film',org:'Film Club',t:'Classic film night',when:'Wed 19:30',cost:'£3',col:'#7C5AE0',icon:'sparkle'},
+  {k:'quiz',org:'Student Union',t:'Pub quiz for charity',when:'Thu 20:00',cost:'Free',col:'#F6A12B',icon:'help'}
+];
+
+/* ---------- Segmented control ---------- */
+const SEGS=[['cash','Cash to loan'],['perks','Perks'],['switch','Switch & save']];
+function segBar(cur){ const i=Math.max(0,SEGS.findIndex(x=>x[0]===cur));
+  return `<div class="pad"><div class="pseg" role="tablist"><i style="transform:translateX(${i*100}%)"></i>${SEGS.map(([k,l])=>`<button class="${k===cur?'on':''}" data-act="eseg" data-s="${k}" role="tab" aria-selected="${k===cur}">${l}</button>`).join('')}</div></div>`; }
+
+/* ---------- Earn & Save ---------- */
+function earnScreen2(a){ const seg=a.seg||'cash';
+  return `${tabTop('Earn & Save')}${segBar(seg)}<div id="ebody">${earnBody(a)}</div>`; }
+function earnBody(a){ const seg=a.seg||'cash'; return seg==='perks'?perksBody():seg==='switch'?switchBody():cashBody(a); }
+function earnAfter(root){ root.querySelectorAll('.save-heart').forEach(()=>{}); }
+function perksBody(){
+  if(S.persona==='parent') return `<div class="pad"><div class="card empty-card"><span class="mt" style="background:var(--lilac);color:#5B45C8;width:56px;height:56px">${ic('idcard',28)}</span><b>Perks are for students and graduates</b><p class="lbl">Maya sees local discounts in her app. You can still earn cash for her loan in Cash to loan.</p></div></div>`;
+  const p=P_(), sv=(D.savings&&D.savings[S.persona])||0, ver=p.key==='student'&&!p.graduated;
+  const top = S.guest ? `<div class="card save-card"><div style="flex:1"><div class="lbl">Perks in Oxford</div><b class="big" style="font-size:19px;display:block;margin:2px 0">Save on coffee, books and nights out</b><div class="lbl" style="font-size:12.5px">Create an account and verify your student status to use them.</div></div><span class="save-ico">${ic('sparkle',26)}</span></div>` : null;
+  return `<div class="pad">
+   ${top||`<div class="card save-card"><div style="flex:1"><div class="lbl">Saved with perks this term</div><div class="big tn" style="font-size:28px;margin:2px 0" data-odo="${sv}" data-key="sav-${S.persona}">${gbp(sv)}</div><div class="lbl" style="font-size:12.5px">Money you didn’t spend. It never goes into your loan pot.</div></div><span class="save-ico">${ic('sparkle',26)}</span></div>
+   <button class="card sid-mini" data-go="sid" data-push="1"><span class="mt" style="background:var(--navy);color:#fff">${ic('idcard',22)}</span><span style="flex:1;text-align:left"><b style="font-weight:600;display:block">Your digital student ID</b><span class="lbl">${ver?'Verified until 31 Oct 2027':'Graduate access, general offers only'}</span></span>${ver?'<span class="status st-live">✓ Verified</span>':'<span class="status st-illus">Graduate</span>'}</button>`}
+   <div class="section-h"><h3>Near you in Oxford</h3><span class="lbl">Example offers</span></div>
+   ${PERKS.map(x=>{ const used=D.perkUsed&&D.perkUsed[x.k]; return `<button class="offer perk" data-go="perk" data-args='{"k":"${x.k}"}'><span class="mt" style="background:${x.bg};color:${x.fg};width:50px;height:50px;border-radius:17px">${ic(x.icon,24)}</span><span class="mid"><b>${x.name}</b><small>${x.deal}</small><span class="lbl" style="font-size:12px;display:block;margin-top:4px">${ic('pin',12,2.2)} ${x.area} · ${x.how}</span></span>${used?'<span class="status st-confirmed">Used</span>':`<span class="perk-save tn">Save ~${gbp(x.save)}</span>`}</button>`; }).join('')}
+   <p class="disclaim">These are example Oxford scenarios, not agreed partners. Discounts reduce what you pay. They don’t add money to your loan.</p><div style="height:12px"></div></div>`;
+}
+function switchBody(){
+  return `<div class="pad">
+   <p class="ob-sub" style="margin:4px 0 6px;max-width:none">Better deals on accounts and bills. Any bonus from the provider goes to you. If we earn a commission, part of it can go to your loan pot.</p>
+   <div class="section-h"><h3>Student bank account</h3>${statusPill('Proposed')}</div>
+   <div class="card bank-card"><div style="display:flex;gap:12px;align-items:center"><span class="mt" style="background:#E9F1FE;color:#0B4FB3">${ic('bank',22)}</span><div style="flex:1"><b style="font-weight:600">Northgate Bank student account</b><div class="lbl">Example offer for illustration</div></div></div>
+    <div class="flowdiag">${flowSVG()}</div>
+    <div class="kv"><span>Switching bonus</span><b class="tn">£100, paid by the bank to you</b></div>
+    <div class="kv"><span>To your loan pot</span><b class="tn" style="color:var(--teal-d)">£15, from our commission</b></div>
+    <div class="kv"><span>Key condition</span><b>Pay in £500 within 60 days</b></div>
+    <div class="kv"><span>Overdraft</span><b>Arranged overdraft, check the terms</b></div>
+    <button class="btn btn-ghost" style="margin-top:12px" data-act="bankgo">See full terms with Northgate</button></div>
+   <div class="section-h"><h3>Broadband, mobile and energy</h3></div>
+   <div class="card" id="billq">${billStep(D.billAns||null)}</div>
+   <p class="disclaim">Offers shown aren’t the whole market. Compare the total cost, not just the reward. Provider credits stay with the provider.</p><div style="height:12px"></div></div>`;
+}
+function flowSVG(){ const id='fl'+Math.random().toString(36).slice(2,6);
+  return `<svg viewBox="0 0 300 92" width="100%" aria-label="The bank pays your £100 bonus to you. It pays Student Freedom a commission, and £15 of that goes to your loan pot.">
+   <path id="${id}a" d="M44 30 C 110 8, 190 8, 256 30" fill="none" stroke="#9FC2F5" stroke-width="2.5" stroke-dasharray="5 6"/>
+   <path id="${id}b" d="M44 62 C 110 84, 190 84, 256 62" fill="none" stroke="#9FD9D0" stroke-width="2.5" stroke-dasharray="5 6"/>
+   ${[0,.7].map(b=>`<circle r="0" fill="#1167DF"><set attributeName="r" to="5" begin="${b}s"/><animateMotion dur="1.8s" begin="${b}s" repeatCount="3" fill="freeze"><mpath href="#${id}a"/></animateMotion></circle><circle r="0" fill="#12A898"><set attributeName="r" to="5" begin="${b+.35}s"/><animateMotion dur="1.8s" begin="${b+.35}s" repeatCount="3" fill="freeze"><mpath href="#${id}b"/></animateMotion></circle>`).join('')}
+   <circle cx="30" cy="46" r="22" fill="#0B4FB3"/><text x="30" y="51" text-anchor="middle" font-family="Lexend,sans-serif" font-weight="600" font-size="12" fill="#fff">Bank</text>
+   <circle cx="270" cy="24" r="17" fill="#1167DF"/><text x="270" y="28" text-anchor="middle" font-family="Lexend,sans-serif" font-weight="600" font-size="10" fill="#fff">You</text>
+   <circle cx="270" cy="68" r="17" fill="#12A898"/><text x="270" y="72" text-anchor="middle" font-family="Lexend,sans-serif" font-weight="600" font-size="9.5" fill="#fff">Pot</text>
+   <text x="150" y="12" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" font-weight="600" fill="#0B4FB3">£100 bonus</text>
+   <text x="150" y="90" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" font-weight="600" fill="#0C8578">£15 to loan pot</text></svg>`; }
+function billStep(ans){
+  if(!ans) return `<b class="qhead">Are bills included in your rent?</b><div class="qbtns">${[['yes','Yes'],['no','No'],['unsure','Not sure']].map(([k,l])=>`<button data-act="billans" data-v="${k}">${l}</button>`).join('')}</div>`;
+  if(ans==='yes') return `<div class="qres"><span class="mt" style="background:var(--mint);color:var(--teal-d)">${ic('check',22,2.4)}</span><div><b>You’re probably sorted</b><p class="lbl">With bills included there’s usually nothing to switch.</p></div></div><button class="btn-text" data-act="billans" data-v="">Change answer</button>`;
+  if(ans==='unsure') return `<div class="qres"><span class="mt" style="background:var(--sky);color:var(--blue)">${ic('doc',22)}</span><div><b>Check your tenancy agreement</b><p class="lbl">It lists which bills are included. Come back once you know.</p></div></div><button class="btn-text" data-act="billans" data-v="">Change answer</button>`;
+  if(ans==='no') return `<b class="qhead">Whose name are the bills in?</b><div class="qbtns">${[['me','Mine'],['other','Someone else’s']].map(([k,l])=>`<button data-act="billans" data-v="${k}">${l}</button>`).join('')}</div>`;
+  if(ans==='other') return `<div class="qres"><span class="mt" style="background:var(--sun);color:var(--amber-d)">${ic('info',22)}</span><div><b>Only the account holder can switch</b><p class="lbl">Share the offers with them if you think you could save.</p></div></div><button class="btn-text" data-act="billans" data-v="">Change answer</button>`;
+  return `<b class="qhead">Offers for you</b>${[['wifi','FibreNest broadband','£22 a month, 18 months','£396 total','£10 to loan pot'],['phone','Pocket Mobile SIM','£8 a month, 12 months','£96 total','£4 to loan pot'],['bolt','Energy','Your current supplier may already be your best option','Compare first','']].map(([i,t,s,tot,rw])=>`<div class="row"><span class="mt" style="background:var(--canvas)">${ic(i,22)}</span><span class="mid"><b>${t}</b><small style="white-space:normal">${s}</small></span><span class="end"><b class="tn" style="font-size:14px">${tot}</b>${rw?`<small style="color:var(--teal-d);font-weight:600">${rw}</small>`:''}</span></div>`).join('')}<button class="btn-text" data-act="billans" data-v="">Start again</button>`;
+}
+function perkScreen(a){ const x=PERKS.find(p=>p.k===a.k); const used=D.perkUsed&&D.perkUsed[x.k];
+  return `<div class="flow">${header('')}
+   <section class="od-hero" style="background:${x.bg}"><span class="bubble" style="position:absolute;width:180px;height:180px;border-radius:50%;background:#fff;opacity:.45;right:-50px;top:-60px"></span>
+    <div style="display:flex;gap:12px;align-items:center;position:relative"><span class="mt" style="background:#fff;color:${x.fg};width:56px;height:56px;border-radius:18px">${ic(x.icon,26)}</span><div><b class="big" style="font-size:20px">${x.name}</b><div class="lbl">${x.area}, Oxford</div></div></div>
+    <div class="big" style="font-size:30px;line-height:1.15;margin-top:20px;position:relative;color:${x.fg}">${x.deal}</div>
+    <div style="margin-top:10px;position:relative">${statusPill('Illustrative')} <span class="status st-pilot">Perk, not cash</span></div></section>
+   <div class="pad">
+    <div class="card" style="margin-top:14px" id="perkbox">${used?perkDone(x):`<div class="kv"><span>How to use it</span><b>${x.how}</b></div>${x.cond.map(c=>`<div class="kv"><span>Condition</span><b>${c}</b></div>`).join('')}<div class="kv"><span>You save about</span><b class="tn">${gbp(x.save)}</b></div>`}</div>
+    <p class="disclaim">A perk lowers what you pay. It doesn’t add money to your loan pot. Staff check the code once, so a screenshot won’t work twice.</p>
+   </div>
+   <div class="footer-cta">${used?`<button class="btn btn-ghost" data-back>Back to perks</button>`:`<button class="btn btn-primary" data-act="perkcode" data-k="${x.k}">${x.how==='Show your student ID'?'Show my student ID':'Get my code'}</button>`}</div></div>`; }
+function perkDone(x){ return `<div class="perk-done"><div class="success-burst" style="width:96px;height:96px;margin:6px auto"><div class="c"></div><div class="c2" style="inset:14px"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div></div><b class="big" style="font-size:19px;display:block;text-align:center">Enjoy! You saved about ${gbp(x.save)}</b><p class="lbl" style="text-align:center">Added to your perks savings. Your loan pot is unchanged.</p></div>`; }
+function qrSheet(x){ return `<h3 style="text-align:center">${x.name}</h3><p class="lbl" style="text-align:center">Show this to staff. It works once.</p>
+  <div class="qr-wrap"><svg class="qr-ring" viewBox="0 0 220 220" aria-hidden="true"><circle cx="110" cy="110" r="104" fill="none" stroke="#E6ECF4" stroke-width="6"/><circle id="qrr" cx="110" cy="110" r="104" fill="none" stroke="#12A898" stroke-width="6" stroke-linecap="round" stroke-dasharray="653.5" stroke-dashoffset="0" transform="rotate(-90 110 110)"/></svg><div class="qr-in">${qrSVG(x.k+Date.now())}<i class="qr-scan"></i></div></div>
+  <div style="text-align:center;margin-top:10px"><span class="status st-live" id="qrt">Valid for 60 s</span></div>
+  <button class="btn btn-teal" style="margin-top:18px" data-act="perkscan" data-k="${x.k}">Staff scanned it (demo)</button><button class="btn btn-text" style="width:100%" data-close>Cancel</button>`; }
+function sidScreen(){ const p=P_(), ver=p.key==='student'&&!p.graduated;
+  return `${header('Student ID')}<div class="pad">
+   <div class="sid" id="sid" style="--c1:${p.color}"><i class="holo"></i>
+    <div style="display:flex;justify-content:space-between;align-items:center;position:relative"><img src="${MARK}" alt="" style="height:30px;filter:brightness(0) invert(1)"><span class="sid-live"><i></i><span id="sidclock" class="tn">--:--:--</span></span></div>
+    <div style="display:flex;gap:14px;align-items:center;margin-top:22px;position:relative"><span class="avatar" style="width:64px;height:64px;font-size:24px;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.6)">${p.initial}</span><div><b class="big" style="font-size:21px;display:block">${p.full}</b><span style="opacity:.85;font-size:14px">${ver?'University of Oxford':'Graduate'}</span></div></div>
+    <div style="display:flex;justify-content:space-between;margin-top:22px;font-size:13px;position:relative"><span><span style="opacity:.75;display:block">Status</span><b>${ver?'Student, verified':'Graduate'}</b></span><span style="text-align:right"><span style="opacity:.75;display:block">Valid until</span><b>${ver?'31 Oct 2027':'General offers'}</b></span></div></div>
+   <p class="lbl" style="text-align:center;margin-top:12px">Tilt it. The live clock shows staff it isn’t a screenshot.</p>
+   <div class="list-card" style="margin-top:16px"><div class="row"><span class="mt" style="background:var(--mint);color:var(--teal-d)">${ic('shield',22)}</span><span class="mid"><b>How you’re verified</b><small style="white-space:normal">Checked with your university through a verification partner. We keep the result, not your documents.</small></span></div>
+   <button class="row" data-act="toast" data-msg="We’ll remind you a month before it runs out"><span class="mt" style="background:var(--sky);color:var(--blue)">${ic('refresh',22)}</span><span class="mid"><b>Reverify each year</b><small>Next check due October 2027</small></span><span class="chev">${ic('chev',20)}</span></button></div>
+   <p class="disclaim">After you graduate you keep your account, rewards and history. Only student-only offers need a valid student status.</p></div>`; }
+function sidAfter(el){ const c=el.querySelector('#sidclock'), card=el.querySelector('#sid'); const tick=()=>{ if(!c.isConnected) return clearInterval(t); const d=new Date(); c.textContent=d.toLocaleTimeString('en-GB'); }; const t=setInterval(tick,1000); tick();
+  if(!reduce){ card.addEventListener('pointermove',e=>{ const r=card.getBoundingClientRect(); const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5; card.style.transform=`perspective(700px) rotateY(${x*14}deg) rotateX(${-y*12}deg)`; card.style.setProperty('--hx',(x+.5)*100+'%'); });
+    card.addEventListener('pointerleave',()=>card.style.transform=''); } }
+
+/* ---------- Housing ---------- */
+function bldSVG(h, big){ const W=big?360:300, H=big?200:130, id='b'+Math.random().toString(36).slice(2,6); const cols=big?7:6, rows=big?5:4, bw=big?190:150, bx=(W-bw)/2, by=big?40:30, cw=bw/cols;
+  let win=''; for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){ const d=((r*cols+c)*37%23)/20; win+=`<rect class="win" x="${bx+c*cw+cw*.22}" y="${by+18+r*((H-by-30)/rows)}" width="${cw*.56}" height="${(H-by-30)/rows*.5}" rx="2" style="animation-delay:${(.2+d).toFixed(2)}s"/>`; }
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${h.sky[0]}"/><stop offset="1" stop-color="${h.sky[1]}"/></linearGradient></defs>
+   <rect width="${W}" height="${H}" fill="url(#${id})"/><circle cx="${W*.82}" cy="${H*.24}" r="${big?20:14}" fill="#fff" opacity=".75"/>
+   <rect x="${bx-40}" y="${by+40}" width="44" height="${H}" rx="3" fill="${h.bld}" opacity=".35"/><rect x="${bx+bw-4}" y="${by+26}" width="50" height="${H}" rx="3" fill="${h.bld}" opacity=".45"/>
+   <rect x="${bx}" y="${by}" width="${bw}" height="${H}" rx="5" fill="${h.bld}"/><rect x="${bx-6}" y="${by-6}" width="${bw+12}" height="10" rx="3" fill="${h.bld}"/>${win}
+   <rect x="0" y="${H-10}" width="${W}" height="10" fill="#7FBF8E" opacity=".5"/></svg>`; }
+function homesScreen(a){ const f=a.f||'All', saved=D.savedHomes||{};
+  const list=HOMES.filter(h=>f==='All'||(f==='En-suite'&&h.room==='En-suite')||(f==='Studio'&&h.room==='Studio')||(f==='Bills included'&&h.bills));
+  return `${tabTop('Accommodation')}
+  <div class="pad"><button class="search hsearch" data-act="toast" data-msg="Filters are fixed for this demo">${ic('search',20)}<span><b style="color:var(--ink);font-weight:600">Oxford, 2027/28</b><br><small>Up to £270 a week, any room</small></span></button></div>
+  <div class="cats" role="tablist">${['All','En-suite','Studio','Bills included'].map(c=>`<button class="${c===f?'on':''}" data-act="hfilter" data-f="${c}" role="tab" aria-selected="${c===f}">${c}</button>`).join('')}</div>
+  <div class="pad"><div class="section-h"><h3>${list.length} places</h3><span class="lbl">Prices per week, plus full term</span></div>
+  ${list.map((h,i)=>`<div class="hcard" style="animation-delay:${i*70}ms"><button class="hc-img" data-go="property" data-args='{"k":"${h.k}"}' aria-label="${h.name}">${bldSVG(h)}${h.sponsored?'<span class="spons">Sponsored</span>':''}</button>
+    <button class="hc-heart ${saved[h.k]?'on':''}" data-act="hsave" data-k="${h.k}" aria-label="Save ${h.name}" aria-pressed="${!!saved[h.k]}">${ic('heart',20,2.2)}</button>
+    <button class="hc-body" data-go="property" data-args='{"k":"${h.k}"}'><span style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><b class="big" style="font-size:17px">${h.name}</b><b class="tn">${gbp(h.wk,0)}<small class="lbl"> /wk</small></b></span>
+     <span class="lbl" style="display:block">${h.room}, ${h.walk}</span>
+     <span class="hc-tags"><span class="status st-illus tn">${gbp(h.wk*h.weeks,0)} for ${h.weeks} weeks</span>${h.bills?'<span class="status st-live">Bills included</span>':`<span class="status st-pending">Bills extra, about £${h.billsEst}/wk</span>`}${D.enq&&D.enq[h.k]?'<span class="status st-pilot">Enquiry sent</span>':''}</span>
+     <span class="lbl" style="font-size:12px;display:block;margin-top:6px">Availability updated ${h.upd}</span></button></div>`).join('')}
+  <div class="card teaser"><span class="mt" style="background:var(--lilac);color:#4B3FB0">${ic('calendar',22)}</span><div style="flex:1"><b style="font-weight:600">On-time rent rewards</b><div class="lbl">Some halls may reward paying rent on time, paid toward your loan.</div></div>${statusPill('Proposed')}</div>
+  <p class="disclaim">Example listings for illustration. Student Freedom isn’t a landlord or letting agent. Sponsored places are always labelled.</p><div style="height:12px"></div></div>`; }
+function propertyScreen(a){ const h=HOMES.find(x=>x.k===a.k), sent=D.enq&&D.enq[h.k];
+  return `<div class="flow"><div class="prop-hero">${bldSVG(h,true)}</div><div class="prop-top"><button class="icon-btn" data-back aria-label="Back">${ic('back',22,2.2)}</button><button class="icon-btn hc-heart2 ${(D.savedHomes||{})[h.k]?'on':''}" data-act="hsave" data-k="${h.k}" aria-label="Save">${ic('heart',22,2.2)}</button></div>
+   <div class="prop-body"><div class="pad">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div><h2 class="big" style="font-size:24px">${h.name}</h2><div class="lbl">Operated by ${h.op}</div></div>${h.sponsored?'<span class="status st-pending">Sponsored</span>':''}</div>
+    <div class="price-row"><div><div class="lbl">Per week</div><b class="big tn" style="font-size:24px">${gbp(h.wk,0)}</b></div><div><div class="lbl">Full ${h.weeks}-week term</div><b class="big tn" style="font-size:24px">${gbp(h.wk*h.weeks,0)}</b></div></div>
+    ${h.bills?'':`<div class="card" style="background:var(--sun);border-color:#F7E3AE;margin-top:10px;font-size:14px">Bills aren’t included. Budget about £${h.billsEst} a week, so roughly ${gbp(h.billsEst*h.weeks,0)} for the term.</div>`}
+    <div class="section-h"><h3>Where it is</h3></div>
+    <div class="card mapcard">${mapSVG()}<div class="lbl" style="margin-top:8px">${ic('pin',14,2.2)} ${h.walk}</div></div>
+    <div class="section-h"><h3>What’s included</h3></div>
+    <div class="feat-tags">${h.feat.map(f=>`<span>${ic('check',14,2.6)} ${f}</span>`).join('')}</div>
+    <div class="section-h"><h3>Before you book</h3></div>
+    <div class="card" style="padding:4px 16px"><div class="kv"><span>Deposit</span><b>${h.dep}</b></div><div class="kv"><span>Cancellation</span><b>${h.canc}</b></div><div class="kv"><span>Guarantor</span><b>${h.guar}</b></div><div class="kv"><span>Accessibility</span><b>${h.access}</b></div></div>
+    <div class="card" style="margin-top:12px;display:flex;gap:12px;align-items:center"><span class="mt" style="background:var(--mint);color:var(--teal-d)">${ic('pound',22)}</span><span style="font-size:14px;line-height:1.45">If you book through Student Freedom, a referral reward may go to your loan pot after you move in. ${statusPill('Illustrative')}</span></div>
+    <p class="disclaim">${h.op} is the landlord and decides on your booking. Student Freedom is not the landlord.</p>
+   </div></div>
+   <div class="footer-cta">${sent?`<button class="btn btn-teal" style="pointer-events:none">${ic('check',20,2.6)} Enquiry sent to ${h.op.split(' ')[0]}</button>`:`<button class="btn btn-primary" data-act="enquire" data-k="${h.k}">Enquire with ${h.op.split(' ')[0]}</button>`}</div></div>`; }
+function mapSVG(){ return `<svg viewBox="0 0 320 130" width="100%" aria-hidden="true"><rect width="320" height="130" rx="14" fill="#EEF4EA"/><path d="M-10 92 C 60 70, 120 110, 190 86 S 300 60, 340 74" fill="none" stroke="#A9D3EE" stroke-width="12" stroke-linecap="round"/>
+  <path d="M20 20 L300 34 M40 120 L120 10 M210 128 L260 6" stroke="#fff" stroke-width="7" stroke-linecap="round"/><rect x="200" y="40" width="40" height="26" rx="5" fill="#DCE6D3"/><rect x="60" y="34" width="34" height="22" rx="5" fill="#DCE6D3"/>
+  <path d="M86 98 C 130 80, 170 70, 222 52" fill="none" stroke="#1167DF" stroke-width="3" stroke-dasharray="5 6" class="mroute"/><circle cx="222" cy="52" r="6" fill="#0D2457"/><text x="230" y="44" font-family="Figtree,sans-serif" font-size="11" font-weight="700" fill="#0D2457">City centre</text>
+  <g class="mpin"><path d="M86 98c0 0-11-11-11-19a11 11 0 0 1 22 0c0 8-11 19-11 19Z" fill="#E5484D"/><circle cx="86" cy="79" r="4" fill="#fff"/></g></svg>`; }
+
+/* ---------- Careers / Opportunities ---------- */
+function oppsScreen(a){
+  if(S.persona==='parent') return `${tabTop('Opportunities')}<div class="pad"><div class="card empty-card"><span class="mt" style="background:var(--sky);color:var(--blue);width:56px;height:56px">${ic('brief',28)}</span><b>Careers are for students and graduates</b><p class="lbl">Maya controls her own career profile. You won’t see what she applies for.</p></div>
+    <div class="card" style="margin-top:12px"><b style="font-weight:600">Employers can help too</b><p class="lbl" style="margin-top:4px;line-height:1.5">Some employers may add money to their staff’s student loans. If you run a business, ask us about it.</p></div></div>`;
+  const p=P_(), isG=!S.guest&&(p.key==='graduate'||p.graduated), f=a.f||(isG?'Graduate jobs':'All'), apps=APPS();
+  const list=JOBS.filter(j=>f==='All'||j.type===f);
+  const optin=S.guest?true:D.consent.careers;
+  if(S.guest) return `${tabTop('Opportunities')}<div class="pad"><div class="card cprof"><span class="mt" style="background:var(--sky);color:var(--blue);width:56px;height:56px">${ic('brief',26)}</span><div style="flex:1"><b style="font-weight:600">Opportunities in Oxford</b><div class="lbl">Create an account to save roles and apply. Your profile is always optional.</div></div></div></div>
+   <div class="cats" role="tablist">${['All','Insight days','Internships','Graduate jobs'].map(c=>`<button class="${c===f?'on':''}" data-act="ofilter" data-f="${c}" role="tab" aria-selected="${c===f}">${c}</button>`).join('')}</div>
+   <div class="pad">${list.map((j,i)=>jobCard(j,null,i)).join('')}<p class="disclaim">Example employers for illustration.</p></div>`;
+  return `${tabTop('Opportunities')}<div class="pad">
+   <div class="card cprof"><div class="cp-ring">${ring(optin?.6:.2,62,7,'var(--blue)')}<b class="tn">${optin?60:20}%</b></div><div style="flex:1"><b style="font-weight:600">Your career profile</b><div class="lbl">Optional. Only shared when you choose to apply.</div><button class="btn-text" style="min-height:34px;font-size:14px" data-act="toast" data-msg="Profile editing is simulated in this demo">Edit profile</button></div></div>
+   <div class="card" style="margin-top:12px"><div class="row" style="padding:0;min-height:0"><span class="mid"><b style="white-space:normal">Show opportunities that match my course</b><small style="white-space:normal">Uses your course and interests. Never your spending or loan.</small></span><button class="toggle ${optin?'on':''}" data-act="optin" role="switch" aria-checked="${optin}" aria-label="Show matching opportunities"></button></div></div>
+   ${p.key==='graduate'?`<div class="card emp-benefit"><div style="display:flex;gap:10px;align-items:center"><span class="mt" style="background:#12A898;color:#fff">CA</span><div style="flex:1"><b style="font-weight:600">Cherwell Analytics adds to your loan</b><div class="lbl" style="color:#3D4D6B">£50 a month from your employer</div></div>${statusPill('Proposed')}</div>
+     <div class="emp-row"><span>Paid to your loan</span><b class="tn">100%, no fee taken</b></div><div class="emp-row"><span>Since June</span><b class="tn" data-odo="250" data-key="emp-b">£250.00</b></div><div class="lbl" style="font-size:12px;margin-top:6px">Kept separate from your cashback. Tax and payroll treatment set by your employer.</div></div>`:''}
+  </div>
+  <div class="cats" role="tablist">${['All','Insight days','Internships','Graduate jobs'].map(c=>`<button class="${c===f?'on':''}" data-act="ofilter" data-f="${c}" role="tab" aria-selected="${c===f}">${c}</button>`).join('')}</div>
+  <div class="pad">${optin?list.map((j,i)=>jobCard(j,apps[j.k],i)).join(''):`<div class="card empty-card"><b>Matching is switched off</b><p class="lbl">Turn it on above to see opportunities for your course. You can still browse every job.</p></div>`}
+   ${Object.keys(apps).length?`<div class="section-h"><h3>Your applications</h3></div>${Object.keys(apps).map(k=>trackCard(JOBS.find(j=>j.k===k),apps[k])).join('')}`:''}
+   <p class="disclaim">Example employers for illustration. Employers never see your spending, rewards, loan or wellbeing activity.</p><div style="height:12px"></div></div>`; }
+function jobCard(j,st,i){ return `<button class="job" data-go="job" data-args='{"k":"${j.k}"}' style="animation-delay:${i*60}ms"><span class="emp-ini" style="background:${j.col}">${j.ini}</span><span class="mid"><span class="lbl" style="font-size:12.5px">${j.emp} <span style="color:var(--teal-d)">✓ Verified</span></span><b style="display:block;font-weight:600;font-size:15.5px;margin-top:1px">${j.title}</b><small>${j.where} · ${j.pay}</small>${j.award?`<span class="award">${ic('grad',13,2.2)} ${j.award}</span>`:''}</span><span class="end">${st?`<span class="status st-pilot">${st}</span>`:`<small>Closes</small><b style="font-size:13px">${j.close}</b>`}</span></button>`; }
+const STAGES=['Saved','Applied','Interview','Offer'];
+function trackCard(j,st){ const n=STAGES.indexOf(st); return `<div class="card track"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-weight:600">${j.title}</b><span class="lbl">${j.emp}</span></div><div class="tsteps">${STAGES.map((s,i)=>`<div class="ts ${i<=n?'done':''} ${i===n?'cur':''}"><i></i><small>${s}</small></div>`).join('')}</div></div>`; }
+function jobScreen(a){ const j=JOBS.find(x=>x.k===a.k), st=APPS()[j.k], pool=(D.pools||{})[j.k];
+  return `<div class="flow">${header('')}<section class="od-hero" style="background:linear-gradient(140deg,${j.col}22,${j.col}0D)"><div style="display:flex;gap:12px;align-items:center"><span class="emp-ini" style="background:${j.col};width:56px;height:56px;font-size:18px">${j.ini}</span><div><b class="big" style="font-size:18px">${j.emp}</b><div class="lbl" style="color:var(--teal-d);font-weight:600">${ic('shield',14,2.2)} Verified employer</div></div></div>
+   <h2 class="big" style="font-size:26px;margin-top:16px;line-height:1.15">${j.title}</h2>${j.award?`<span class="award" style="margin-top:10px">${ic('grad',13,2.2)} ${j.award}</span>`:''}</section>
+   <div class="pad"><div class="facts">${[['pound','Pay',j.pay],['pin','Where',j.where],['calendar','When',j.dates],['ticket','Closes',j.close]].map(([i,l,v])=>`<div><span class="mt" style="background:var(--canvas);width:36px;height:36px">${ic(i,18)}</span><small>${l}</small><b>${v}</b></div>`).join('')}</div>
+    <div class="section-h"><h3>What you’ll do</h3></div><div class="feat-tags col">${j.desc.map(d=>`<span>${ic('check',14,2.6)} ${d}</span>`).join('')}</div>
+    <div class="card" style="margin-top:14px"><div class="row" style="padding:0;min-height:0"><span class="mid"><b style="white-space:normal">Join ${j.emp.split(' ')[0]}’s talent pool</b><small style="white-space:normal">They can invite you to future roles. Lasts 12 months, leave any time.</small></span><button class="toggle ${pool?'on':''}" data-act="pool" data-k="${j.k}" role="switch" aria-checked="${!!pool}" aria-label="Join talent pool"></button></div></div>
+    <p class="disclaim">Need adjustments to apply? The employer lists a contact on their site. Pay is shown as the employer states it.</p></div>
+   <div class="footer-cta">${st?`<button class="btn btn-teal" style="pointer-events:none">${ic('check',20,2.6)} ${st}</button>`:`<button class="btn btn-primary" data-act="apply" data-k="${j.k}">Apply on ${j.emp.split(' ')[0]}’s site</button>`}</div></div>`; }
+
+/* ---------- Progress hub additions ---------- */
+function hubTiles(){ const p=P_(), isP=p.key==='parent', ready=p.repayReady;
+  const t=isP? [['wallet','Your rewards',gbp(p.monthConfirmed)+' this month','wallet','#E9F1FE','#0B4FB3'],['network','People you support','Maya','network','#EFEDFD','#5B45C8'],['search','Missing a reward?','Claim it here','claim','#FFF2D6','#9A6A00']]
+   : [['wallet','Wallet and payments',gbp(p.quarterBen||0)+' in your pot','wallet','#E9F1FE','#0B4FB3'],['network','Supporters',(p.key==='graduate'?1:D.student.supporters)+' linked','network','#EFEDFD','#5B45C8'],[ready?'shield':'key','Loan details',ready?'Ready for payments':'1 step left','repay',ready?'#E3F6F2':'#FFF2D6',ready?'#0C8578':'#9A6A00'],['search','Missing a reward?','Claim it here','claim','#FDECEC','#B23A40']];
+  return `<div class="hub">${t.map(([i,a,b,go,bg,fg],k)=>`<button class="hub-t" data-go="${go}" data-push="1" style="animation-delay:${k*60}ms"><span class="mt" style="background:${bg};color:${fg}">${ic(i,22)}</span><b>${a}</b><small class="tn ${go==='repay'&&!ready?'warn':''}">${b}</small></button>`).join('')}</div>`; }
+
+/* ---------- Repayment-ready ---------- */
+function repayScreen(){ const p=P_(), done=p.repayReady;
+  if(done) return `${header('Loan details')}<div class="pad"><div class="card ready-card"><div class="success-burst" style="width:110px;height:110px;margin:4px auto 10px"><div class="c"></div><div class="c2" style="inset:16px">${ic('shield',40,2,'#fff')}</div></div><b class="big" style="font-size:20px;display:block;text-align:center">Ready for payments</b><p class="lbl" style="text-align:center">Your next quarterly payment goes on ${quarterInfo().label}.</p></div>
+   <div class="list-card" style="margin-top:14px">${[['Loan reference','•••• •••• '+(p.key==='graduate'?'8812':'6556')],['Plan',p.plan],['Payment authority','Given, cancel any time']].map(([a,b])=>`<div class="kv" style="padding:14px 0"><span>${a}</span><b>${b}</b></div>`).join('')}</div>
+   <button class="btn btn-ghost" style="margin-top:14px" data-act="toast" data-msg="Changing these details asks you to sign in again">Change details</button></div>`;
+  return `<div class="flow">${header('Loan details')}<div class="pad">
+   <p class="ob-sub" style="margin:0 0 6px;max-width:none">We need this once, before your first quarterly payment. We never ask for your Student Loans Company password.</p>
+   <label class="field"><span>Student loan customer reference</span><span class="inp">${ic('lock',18)}<input value="4027 1938 556" inputmode="numeric" aria-label="Student loan customer reference"></span></label>
+   <label class="field"><span>Repayment plan</span></label><div class="seg" data-seg>${['Plan 2','Plan 5','Not sure'].map((y,i)=>`<button class="${y===p.plan?'on':''}" data-act="seg">${y}</button>`).join('')}</div>
+   <div class="section-h"><h3>Before you confirm</h3></div>
+   ${[['If your loan is likely to be written off, paying extra may not save you money.','Many people never repay in full. Payments toward a loan that would be written off may not help you.'],['Voluntary payments can’t be refunded.','Once money reaches your loan it stays there.'],['It won’t lower your payroll deduction.','Your monthly deduction is set by your income, not your balance.']].map(([t,s],i)=>`<button class="ack" data-act="ack" data-i="${i}" aria-pressed="false"><span class="ackbox">${ic('check',16,3,'#fff')}</span><span><b>${t}</b><small>${s}</small></span></button>`).join('')}
+   <div class="card" style="margin-top:12px"><div class="row" style="padding:0;min-height:0"><span class="mid"><b style="white-space:normal">Send my rewards to my loan each quarter</b><small style="white-space:normal">You can cancel this authority any time</small></span><button class="toggle" data-act="ackauth" role="switch" aria-checked="false" aria-label="Payment authority"></button></div></div>
+   <p class="disclaim">This is general information, not advice about your own loan. MoneyHelper offers free guidance.</p></div>
+   <div class="footer-cta"><button class="btn btn-primary" id="repaygo" data-act="repaygo" disabled>Confirm details</button></div></div>`; }
+function repayCheck(){ const s=current(); const all=[...s.querySelectorAll('.ack')].every(a=>a.classList.contains('on')) && s.querySelector('[data-act=ackauth]').classList.contains('on'); const b=s.querySelector('#repaygo'); b.disabled=!all; b.classList.toggle('ready',all); }
+
+/* ---------- Missing reward claim ---------- */
+function claimScreen(){ return `<div class="flow">${header('Missing a reward?')}<div class="progress" id="cprog"><i class="done"></i><i></i><i></i></div><div class="pad" id="cbody">${claimStep(1)}</div><div class="footer-cta"><button class="btn btn-primary" id="cnext" data-act="cnext" data-s="1">Continue</button></div></div>`; }
+function claimStep(n){ if(n===1) return `<h2 class="ob-title" style="font-size:24px">Where did you shop?</h2><div class="mgrid">${OFFER_ORDER.slice(0,6).map((k,i)=>`<button class="mpick ${i===2?'sel':''}" data-act="mpick" data-k="${k}">${merchTile(k,46)}<small>${M[k].name}</small></button>`).join('')}</div>
+   <label class="field"><span>When?</span></label><div class="seg" data-seg>${['Today','This week','Earlier'].map((y,i)=>`<button class="${i===1?'on':''}" data-act="seg">${y}</button>`).join('')}</div>`;
+  if(n===2) return `<h2 class="ob-title" style="font-size:24px">What did you spend?</h2>${field('Amount paid','£64.00','pound','inputmode="decimal"')}
+   <button class="upload" data-act="upload"><span class="up-ico">${ic('upload',24)}</span><span class="up-txt"><b>Add your receipt</b><small>A photo or the email confirmation</small></span><i class="up-bar"></i></button><p class="disclaim">Don’t send your full card number. The last four digits are enough.</p>`;
+  return `<h2 class="ob-title" style="font-size:24px">Check and send</h2><div class="card" style="padding:4px 16px">${[['Shop','ThreadLab'],['When','This week'],['Amount','£64.00'],['Receipt','Attached'],['Expected reward','£4.48, then 75% to your pot']].map(([a,b])=>`<div class="kv"><span>${a}</span><b>${b}</b></div>`).join('')}</div><p class="disclaim">We check with the retailer. Most claims are answered within 30 days, and you can appeal any decision.</p>`; }
+function claimDone(){ return `<div style="text-align:center;padding-top:10px"><div class="success-burst"><div class="c"></div><div class="c2"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div></div><h2 class="ob-title" style="font-size:24px">Claim sent</h2><p class="lbl">Reference SF-CLM-2841</p></div>
+  <div class="card" style="margin-top:16px"><div class="steps">${[['Claim received','Today',1],['With ThreadLab','Usually 2 to 4 weeks','now'],['Decision','We’ll tell you either way',0]].map(s=>`<div class="step ${s[2]===1?'done':s[2]==='now'?'now':''}"><span class="sd">${s[2]===1?ic('check',14,3):''}</span><div><b>${s[0]}</b><small>${s[1]}</small></div></div>`).join('')}</div></div>`; }
+
+/* ---------- Help & Wellbeing ---------- */
+const WB=[['Stressed or anxious','heart','#EFEDFD','#5B45C8',[['Your university wellbeing service','Free and confidential for students'],['NHS mental health support','Talking therapies you can refer yourself to'],['Student Minds','Information written for students']]],
+ ['Lonely or homesick','family','#E3F6F2','#0C8578',[['Your college or hall welfare team','Someone nearby to talk to'],['NHS advice on loneliness','Practical ideas that help'],['Societies and events','A low-pressure way to meet people']]],
+ ['Money worries','pound','#FFF2D6','#9A6A00',[['Your university hardship fund','Grants you don’t pay back'],['MoneyHelper','Free, impartial money guidance'],['Citizens Advice','Help with bills and debts']]],
+ ['Housing problems','house','#E9F1FE','#0B4FB3',[['Your university accommodation office','Help with halls and landlords'],['Shelter','Housing advice and your rights'],['Citizens Advice','Deposits and tenancy problems']]]];
+function helpScreen(){ return `${header('Help & Wellbeing')}<div class="pad">
+  <div class="search" role="search">${ic('search',20)}<span>Search help</span></div>
+  <p class="lbl" style="margin-top:10px">${ic('lock',14,2.2)} Open to everyone. No sign-in needed and nothing here is used for offers.</p>
+  <div class="section-h"><h3>Your wellbeing</h3></div>
+  <div class="wbgrid">${WB.map(([t,i,bg,fg],k)=>`<button class="wb" data-act="wb" data-i="${k}" style="background:${bg};animation-delay:${k*60}ms"><span style="color:${fg}">${ic(i,26)}</span><b>${t}</b></button>`).join('')}</div>
+  <div class="card sos"><b>In an emergency, call 999.</b> Student Freedom isn’t a counselling or emergency service.</div>
+  <div class="section-h"><h3>Money tools</h3></div>
+  <div class="list-card">${[['calc','Budget planner','See what’s left each week','budget'],['book','How student loans work','Plans, interest and write-off','@loans']].map(([i,t,s,d])=>`<button class="row" ${d[0]==='@'?`data-act="${d.slice(1)}"`:`data-go="${d}" data-push="1"`}><span class="mt" style="background:var(--canvas)">${ic(i,22)}</span><span class="mid"><b>${t}</b><small>${s}</small></span><span class="chev">${ic('chev',20)}</span></button>`).join('')}</div>
+  <div class="section-h"><h3>Get help</h3></div>
+  <div class="list-card">${[['search','A reward didn’t track','claim'],['calendar','When do payments go out?','@faqpay'],['info','How the 75/25 split works','@splitinfo'],['shield','Trust centre','trust']].map(([i,t,d])=>`<button class="row" ${d[0]==='@'?`data-act="${d.slice(1)}"`:`data-go="${d}" data-push="1"`}><span class="mt" style="background:var(--canvas)">${ic(i,22)}</span><span class="mid"><b>${t}</b></span><span class="chev">${ic('chev',20)}</span></button>`).join('')}</div>
+  <button class="btn btn-primary" style="margin-top:16px" data-act="ticket">${ic('chat',20)} Talk to a person</button>
+  <p class="disclaim">Links are checked by our team. Last reviewed 1 October 2026.</p><div style="height:14px"></div></div>`; }
+function wbSheet(i){ const [t,ic_,bg,fg,list]=WB[i]; return `<div style="display:flex;gap:12px;align-items:center;margin-bottom:6px"><span class="mt" style="background:${bg};color:${fg}">${ic(ic_,22)}</span><h3 style="margin:0">${t}</h3></div><p class="lbl" style="line-height:1.5">You’re not the only one. These are good places to start.</p>
+  <div class="list-card" style="margin-top:12px">${list.map(([a,b])=>`<button class="row" data-act="toast" data-msg="Opens their website (demo)"><span class="mid"><b style="white-space:normal">${a}</b><small style="white-space:normal">${b}</small></span><span class="chev">${ic('chev',20)}</span></button>`).join('')}</div>
+  <div class="card sos" style="margin-top:12px"><b>If you’re in danger right now, call 999.</b></div><button class="btn btn-ghost" style="margin-top:14px" data-close>Close</button>`; }
+function budgetScreen(){ const b=D.budget; return `${header('Budget planner')}<div class="pad">
+  <div class="card budget-hero"><div class="lbl">Left each week</div><div class="big tn" id="bleft" style="font-size:40px">£0</div><div class="bbar"><i id="bin"></i><i id="bout"></i></div><div class="split-legend"><span><i style="background:var(--teal)"></i>Money in</span><span><i style="background:#F2A0A4"></i>Money out</span></div></div>
+  ${[['in','Money in each week',[['loan','Maintenance loan',0,300],['work','Part-time work',0,300]]],['out','Money out each week',[['rent','Rent',0,350],['food','Food',0,120],['travel','Travel',0,60],['other','Phone, fun and other',0,150]]]].map(([g,h,rows])=>`<div class="section-h"><h3>${h}</h3></div><div class="card">${rows.map(([k,l,mn,mx])=>`<div class="brow"><div style="display:flex;justify-content:space-between"><span>${l}</span><b class="tn" id="bv-${k}">£${b[k]}</b></div><input class="range" type="range" min="${mn}" max="${mx}" step="5" value="${b[k]}" data-b="${k}" aria-label="${l}"></div>`).join('')}</div>`).join('')}
+  <p class="disclaim">Saved on this phone only. This is a planning tool, not advice. You don’t need to connect a bank.</p><div style="height:14px"></div></div>`; }
+function budgetAfter(el){ const upd=()=>{ const b=D.budget, inn=b.loan+b.work, out=b.rent+b.food+b.travel+b.other, left=inn-out; const L=el.querySelector('#bleft'); L.textContent=(left<0?'−':'')+'£'+Math.abs(left); L.style.color=left<0?'var(--red)':'var(--teal-d)'; const mx=Math.max(inn,out,1); el.querySelector('#bin').style.width=(inn/mx*100)+'%'; el.querySelector('#bout').style.width=(out/mx*100)+'%'; };
+  el.querySelectorAll('[data-b]').forEach(r=>r.addEventListener('input',()=>{ D.budget[r.dataset.b]=+r.value; el.querySelector('#bv-'+r.dataset.b).textContent='£'+r.value; upd(); })); setTimeout(upd,120); }
+function trustScreen(){ return `${header('Trust centre')}<div class="pad">
+  <div class="card"><div class="lbl">Who you’re dealing with</div><b class="big" style="font-size:19px;display:block;margin-top:2px">Student Freedom Ltd</b><p class="lbl" style="margin-top:4px">Company details will be published here before launch.</p></div>
+  <div class="section-h"><h3>How your money moves</h3></div>
+  <div class="card">${moneyFlowSVG()}<p class="lbl" style="margin-top:8px;line-height:1.5">A shop pays a reward through its partner network. Once we receive it, 75% is set aside for your loan and sent each quarter after two people approve it.</p></div>
+  <div class="section-h"><h3>Our partners</h3></div>
+  <div class="list-card">${[['Card-linking provider','Holds your card details, not us','Proposed'],['Affiliate networks','Track online shopping','Proposed'],['Student Loans Company','Receives your quarterly payment','Proposed']].map(([a,b,c])=>`<div class="row"><span class="mid"><b>${a}</b><small>${b}</small></span>${statusPill(c)}</div>`).join('')}</div>
+  <div class="section-h"><h3>Promises we keep</h3></div>
+  <div class="feat-tags col">${['We never ask for your Student Loans Company password','We never store your full card number','We don’t sell your data','You can delete your account at any time'].map(t=>`<span>${ic('check',14,2.6)} ${t}</span>`).join('')}</div>
+  <p class="disclaim">We don’t claim certifications we don’t have. When we hold one, we’ll show who issued it and when it expires.</p><div style="height:14px"></div></div>`; }
+function moneyFlowSVG(){ const id='mf'+Math.random().toString(36).slice(2,6); const nodes=[['Shop',20,'#5B6884'],['Network',100,'#7C5AE0'],['Student Freedom',190,'#1167DF'],['Your loan',280,'#12A898']];
+  return `<svg viewBox="0 0 320 96" width="100%" aria-label="Shop, then partner network, then Student Freedom, then 75 percent to your loan"><path id="${id}" d="M28 40 H 292" stroke="#DCE4EF" stroke-width="3" stroke-dasharray="4 6"/>
+   ${[0,.6,1.2].map(b=>`<circle r="0" fill="#F6B92B"><set attributeName="r" to="5" begin="${b}s"/><animateMotion dur="2.4s" begin="${b}s" repeatCount="2" fill="freeze"><mpath href="#${id}"/></animateMotion></circle>`).join('')}
+   ${nodes.map(([t,x,c])=>`<circle cx="${x+8}" cy="40" r="16" fill="${c}"/><text x="${x+8}" y="76" text-anchor="middle" font-family="Figtree,sans-serif" font-size="11" font-weight="700" fill="#0D2457">${t}</text>`).join('')}
+   <text x="243" y="22" text-anchor="middle" font-family="Lexend,sans-serif" font-size="11" font-weight="600" fill="#0C8578">75%</text></svg>`; }
+function ticketSheet(pre){ return `<h3>Talk to a person</h3><p class="lbl">A member of our team replies within 2 working days. You’re not talking to a bot.</p>
+  <div class="cats" style="padding:12px 0 4px">${['Missing reward','Payments','Card linking','Something else'].map((c,i)=>`<button class="${(pre?i===0:i===3)?'on':''}" data-act="tcat">${c}</button>`).join('')}</div>
+  <label class="field"><span>Your message</span><span class="inp" style="align-items:flex-start;padding:12px 16px;min-height:96px"><span style="font-size:15px;line-height:1.45">${pre?`About ${pre.title} (ref ${pre.ref}): `:''}Hi, I’d like some help with…</span></span></label>
+  ${pre?`<p class="lbl" style="margin-top:8px">${ic('check',14,2.4)} We’ve attached the transaction details for you.</p>`:''}
+  <button class="btn btn-primary" style="margin-top:16px" data-act="ticketgo">Send message</button><button class="btn btn-text" style="width:100%" data-close>Cancel</button>`; }
+
+/* ---------- Supporter web invite page ---------- */
+function invitePage(){ return `<div class="flow web"><div class="webbar"><button class="icon-btn" data-back aria-label="Back" style="width:36px;height:36px">${ic('back',18,2.2)}</button><div class="url">${ic('lock',13,2.4)} studentfreedom.app/join/MAYA-7K2Q</div></div>
+  <div class="pad web-in" id="wpage">
+   <img src="${LOGO}" alt="Student Freedom" style="height:40px;display:block;margin:14px 0 18px">
+   <div class="web-hero"><span class="avatar" style="background:#1167DF;width:52px;height:52px;font-size:19px">M</span><div><b class="big" style="font-size:21px;line-height:1.2;display:block">Maya has invited you to help with her student loan</b><span class="lbl">No app needed. It takes about two minutes.</span></div></div>
+   ${[['card','Link the card you already use','A secure partner holds your card details'],['heart','Shop as normal','Partner shops pay a reward when you buy'],['grad','75% goes to Maya’s loan','Paid each quarter, and you never see her loan balance']].map(([i,t,s],k)=>`<div class="wstep rise2" style="animation-delay:${.1+k*.12}s"><span class="mt" style="background:var(--mint);color:var(--teal-d)">${ic(i,22)}</span><div><b>${t}</b><small>${s}</small></div></div>`).join('')}
+   ${field('Your name','Sarah Clarke','profile')}${field('Email','sarah@example.com','mail')}
+   <p class="lbl" style="margin-top:10px">Maya will see your totals only, never what you buy.</p>
+   <button class="btn btn-primary" style="margin:16px 0 30px" data-act="webjoin">Continue to link my card</button></div></div>`; }
+
+/* ---------- Home: Oxford events ---------- */
+function eventsRow(){ const saved=D.savedEv||{}; return `<div class="section-h"><h3>This week in Oxford</h3><button data-act="toast" data-msg="Event ideas are checked by our team before they appear">Suggest one</button></div>
+  <div class="feat evrow">${EVENTS.map(e=>`<div class="ev"><span class="ev-ico" style="background:${e.col}">${ic(e.icon,22,2,'#fff')}</span><b>${e.t}</b><small>${e.org} <span style="color:var(--teal-d)">✓</span></small><span class="ev-meta">${e.when} · ${e.cost}</span><button class="ev-heart ${saved[e.k]?'on':''}" data-act="evsave" data-k="${e.k}" aria-label="Save ${e.t}" aria-pressed="${!!saved[e.k]}">${ic('heart',18,2.2)}</button></div>`).join('')}</div>`; }
+
+/* ---------- Payment history (wallet) ---------- */
+function paymentsSection(){ const p=P_(); if(p.key==='parent') return '';
+  const rows=p.key==='graduate'? [['Jul to Sep 2026',45.00,'credited','Credited 6 Oct'],['Apr to Jun 2026',39.00,'credited','Credited 7 Jul']]
+   : [['Jul to Sep 2026',80.25,'credited','Credited 6 Oct'],['Apr to Jun 2026',41.25,'returned','Returned 3 Jul, resent and credited 15 Jul']];
+  return `<div class="section-h"><h3>Payments to your loan</h3></div><div class="list-card">${rows.map(([q,a,st,s],i)=>`<button class="row" data-act="paydetail" data-i="${i}"><span class="mt" style="background:${st==='returned'?'var(--sun)':'var(--mint)'};color:${st==='returned'?'var(--amber-d)':'var(--teal-d)'}">${ic(st==='returned'?'refresh':'check',22,2.2)}</span><span class="mid"><b>${q}</b><small style="white-space:normal">${s}</small></span><span class="end"><b class="tn">${gbp(a)}</b></span></button>`).join('')}</div>`; }
+function payDetailSheet(i){ const p=P_(), ret=p.key!=='graduate'&&i===1; const amt=p.key==='graduate'?[45,39][i]:[80.25,41.25][i];
+  const st=[['Approved by partners','All rewards confirmed by retailers',1],['Payment received','Partners paid Student Freedom',1],['Reserved in quarter batch','Locked so it can’t be used twice',1],['Sent','Sent to the Student Loans Company (proposed)',1]].concat(ret?[['Returned','The loan reference didn’t match',-1],['Resent','After you updated your reference',1]]:[]).concat([['Credited to your loan','Confirmed by the Student Loans Company',1]]);
+  return `<h3>${gbp(amt)} payment</h3><p class="lbl">${p.plan}, ${ret?'Apr to Jun 2026':i?'Apr to Jun 2026':'Jul to Sep 2026'}</p><div class="card" style="margin-top:14px"><div class="steps">${st.map(s=>`<div class="step ${s[2]===1?'done':''} ${s[2]===-1?'warn':''}"><span class="sd">${s[2]===1?ic('check',14,3):s[2]===-1?'!':''}</span><div><b>${s[0]}</b><small>${s[1]}</small></div></div>`).join('')}</div></div>
+   <p class="disclaim">“Sent” and “credited” are different. We only show credited once the Student Loans Company confirms it.</p><button class="btn btn-ghost" style="margin-top:12px" data-close>Close</button>`; }
+
+/* ---------- Consent centre ---------- */
+function consentSection(){ const c=D.consent; return `<div class="section-h"><h3>Your choices</h3></div><div class="list-card">${[['careers','Career matching','Use my course and interests to suggest opportunities'],['employer','Share with employers I apply to','Asked again each time you apply'],['location','Precise location','Only when you tap “near me”. Never in the background'],['analytics','Help improve the app','Anonymous usage statistics'],['marketing','Offers by email','We’ll never make this a condition of anything']].map(([k,t,s])=>`<div class="row"><span class="mid"><b style="white-space:normal">${t}</b><small style="white-space:normal">${s}</small></span><button class="toggle ${c[k]?'on':''}" data-act="consent" data-k="${k}" role="switch" aria-checked="${c[k]}" aria-label="${t}"></button></div>`).join('')}</div><p class="disclaim">Each change is recorded with the date and the wording you agreed to. Saying no never affects rewards you’ve earned.</p>`; }
+
+/* ---------- Actions ---------- */
+Object.assign(ACT,{
+  eseg:(a)=>{ const seg=a.dataset.s, scr=current(), top=S.stack[S.stack.length-1]; const prev=(top.args&&top.args.seg)||'cash'; if(prev===seg) return;
+    top.args={...(top.args||{}),seg}; const order=SEGS.map(x=>x[0]), dir=order.indexOf(seg)>order.indexOf(prev)?'r':'l';
+    scr.querySelectorAll('.pseg button').forEach(b=>{ b.classList.toggle('on',b.dataset.s===seg); b.setAttribute('aria-selected',b.dataset.s===seg); });
+    scr.querySelector('.pseg i').style.transform=`translateX(${order.indexOf(seg)*100}%)`;
+    const body=scr.querySelector('#ebody'); body.className=''; void body.offsetWidth; body.innerHTML=earnBody(top.args); body.className='seg-in-'+dir;
+    setupRanges(body); odoInit(body); scr.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); hap(4); setNotes(SCREENS.earn.note(top.args)); },
+  billans:(a)=>{ D.billAns=a.dataset.v||null; const b=current().querySelector('#billq'); b.innerHTML=billStep(D.billAns); b.classList.remove('qin'); void b.offsetWidth; b.classList.add('qin'); hap(4); },
+  bankgo:()=>openSheet(`<h3>You’re going to Northgate Bank</h3><p class="lbl" style="line-height:1.5">The bank decides whether to accept you, and its terms apply. We’ll track your application so we can tell you about the £15 for your loan pot.</p><div class="list-card" style="margin-top:12px">${[['Bonus from the bank','£100, paid to you'],['To your loan pot','£15, from our commission'],['Overdraft','Arranged overdraft available. Borrowing costs money']].map(([a,b])=>`<div class="kv" style="padding:12px 0"><span>${a}</span><b>${b}</b></div>`).join('')}</div><button class="btn btn-primary" style="margin-top:16px" data-act="toast2" data-msg="Opening Northgate Bank (demo)">Continue to the bank</button><button class="btn btn-text" style="width:100%" data-close>Not now</button>`),
+  perkcode:(a)=>{ if(S.guest) return ACT.guestgate(); const x=PERKS.find(p=>p.k===a.dataset.k); if(x.how==='Show your student ID') return go('sid');
+    openSheet(qrSheet(x), sh=>{ const ring=sh.querySelector('#qrr'), t=sh.querySelector('#qrt'); let left=60; ring.style.transition='stroke-dashoffset 1s linear';
+      const iv=setInterval(()=>{ if(!sh.classList.contains('on')||!t.isConnected){ clearInterval(iv); return; } left--; ring.style.strokeDashoffset=653.5*(1-left/60); t.textContent=left>0?`Valid for ${left} s`:'Expired. Get a new code'; if(left<=10) ring.style.stroke='#E5484D'; if(left<=0){ clearInterval(iv); t.className='status st-reversed'; sh.querySelector('[data-act=perkscan]').disabled=true; } },1000); }); },
+  perkscan:(a)=>{ const x=PERKS.find(p=>p.k===a.dataset.k); closeSheet(); D.perkUsed=D.perkUsed||{}; D.perkUsed[x.k]=1; D.savings[S.persona]=r2((D.savings[S.persona]||0)+x.save); hap([10,40,10]);
+    setTimeout(()=>{ const box=current().querySelector('#perkbox'); if(box){ box.innerHTML=perkDone(x); } const f=current().querySelector('.footer-cta'); if(f) f.innerHTML='<button class="btn btn-ghost" data-back>Back to perks</button>'; toast('Perk used. Saving added'); },350); },
+  hfilter:(a)=>go('homes',{tab:true,args:{f:a.dataset.f}}),
+  hsave:(a)=>{ D.savedHomes=D.savedHomes||{}; const k=a.dataset.k, on=!D.savedHomes[k]; D.savedHomes[k]=on; a.classList.toggle('on',on); a.setAttribute('aria-pressed',on); if(on){ emojiBurst(a,'❤️',5); hap(6); } },
+  enquire:(a)=>{ if(S.guest) return ACT.guestgate(); const h=HOMES.find(x=>x.k===a.dataset.k);
+    openSheet(`<h3>Enquire with ${h.op}</h3><p class="lbl" style="line-height:1.5">We’ll send only what’s below. ${h.op} replies to you directly.</p><div class="list-card" style="margin-top:12px">${[['Name',P_().full],['Email',P_().name.toLowerCase()+'@example.com'],['When you want to move in','September 2027']].map(([k,v])=>`<div class="kv" style="padding:12px 0"><span>${k}</span><b>${v}</b></div>`).join('')}</div><p class="lbl" style="margin-top:10px">${ic('lock',14,2.2)} Never shared: your rewards, loan or spending.</p><button class="btn btn-primary" style="margin-top:16px" data-act="enqsend" data-k="${h.k}">${ic('plane',20)} Send enquiry</button><button class="btn btn-text" style="width:100%" data-close>Cancel</button>`); },
+  enqsend:(a)=>{ const h=HOMES.find(x=>x.k===a.dataset.k); D.enq=D.enq||{}; D.enq[h.k]=1; if(!reduce){ const r=shellRect(a); const pl=document.createElement('div'); pl.className='plane'; pl.innerHTML=ic('plane',30,2,'#1167DF'); shell.appendChild(pl); pl.animate([{transform:`translate(${r.x+r.w/2-15}px,${r.y}px) rotate(0)`,opacity:1},{transform:`translate(${r.x+r.w/2+40}px,${r.y-180}px) rotate(-10deg) scale(1.1)`,opacity:1,offset:.5},{transform:`translate(${r.x+r.w+60}px,${r.y-420}px) rotate(-20deg) scale(.6)`,opacity:0}],{duration:900,easing:'cubic-bezier(.5,0,.7,1)'}).onfinish=()=>pl.remove(); }
+    hap([8,30,8]); closeSheet(); setTimeout(()=>{ const f=current().querySelector('.footer-cta'); if(f) f.innerHTML=`<button class="btn btn-teal" style="pointer-events:none"><span class="swapin">${ic('check',20,2.6)} Enquiry sent to ${h.op.split(' ')[0]}</span></button>`; pushNotif('Enquiry sent',`${h.op} usually replies within 2 working days.`); },450); },
+  optin:(a)=>{ D.consent.careers=!D.consent.careers; hap(6); go('opps',{tab:true}); },
+  ofilter:(a)=>go('opps',{tab:true,args:{f:a.dataset.f}}),
+  pool:(a)=>{ D.pools=D.pools||{}; const k=a.dataset.k; D.pools[k]=!D.pools[k]; a.classList.toggle('on',D.pools[k]); a.setAttribute('aria-checked',D.pools[k]); hap(6); toast(D.pools[k]?'You’ve joined the talent pool for 12 months':'You’ve left the talent pool'); },
+  apply:(a)=>{ if(S.guest) return ACT.guestgate(); const j=JOBS.find(x=>x.k===a.dataset.k);
+    openSheet(`<h3>Apply to ${j.emp}</h3><p class="lbl" style="line-height:1.5">You’ll finish on their website. Choose what we pass on to save you typing.</p><div class="list-card" style="margin-top:12px">${[['Name and email',1,1],['Course and graduation year',1,0],['Your CV',0,0]].map(([t,on,lock])=>`<div class="row"><span class="mid"><b>${t}</b>${lock?'<small>Needed to apply</small>':''}</span><button class="toggle ${on?'on':''}" ${lock?'style="opacity:.55"':'data-act="tgl"'} role="switch" aria-checked="${!!on}" aria-label="${t}"></button></div>`).join('')}</div><p class="lbl" style="margin-top:10px">${ic('lock',14,2.2)} Never shared: your spending, rewards, loan or wellbeing activity.</p><button class="btn btn-primary" style="margin-top:16px" data-act="applygo" data-k="${j.k}">Continue to ${j.emp.split(' ')[0]}</button><button class="btn btn-text" style="width:100%" data-close>Cancel</button>`); },
+  applygo:(a)=>{ const k=a.dataset.k; APPS()[k]='Applied'; closeSheet(); hap([8,30,8]); setTimeout(()=>{ const f=current().querySelector('.footer-cta'); if(f) f.innerHTML=`<button class="btn btn-teal ok-pulse" style="pointer-events:none"><span class="swapin">${ic('check',20,2.6)} Applied</span></button>`; pushNotif('Application started','We’ll track it in Opportunities. The employer will contact you directly.'); },350); },
+  ack:(a)=>{ a.classList.toggle('on'); a.setAttribute('aria-pressed',a.classList.contains('on')); hap(5); repayCheck(); },
+  ackauth:(a)=>{ a.classList.toggle('on'); a.setAttribute('aria-checked',a.classList.contains('on')); hap(5); repayCheck(); },
+  repaygo:(a)=>{ if(a.disabled) return; P_().repayReady=true; hap([10,40,10,40,20]); a.classList.add('btn-done'); a.innerHTML=ic('check',24,2.8); setTimeout(()=>go('repay',{fade:true}),420); setTimeout(()=>{ S.stack.splice(-2,1); },460); },
+  mpick:(a)=>{ a.parentElement.querySelectorAll('.mpick').forEach(x=>x.classList.remove('sel')); a.classList.add('sel'); hap(4); },
+  upload:(a)=>{ if(a.classList.contains('done')||a.classList.contains('busy')) return; a.classList.add('busy'); a.querySelector('.up-txt b').textContent='Uploading…'; setTimeout(()=>{ a.classList.remove('busy'); a.classList.add('done'); a.querySelector('.up-ico').innerHTML=ic('check',24,2.6); a.querySelector('.up-txt b').textContent='receipt.jpg added'; a.querySelector('.up-txt small').textContent='Tap to replace'; hap(6); }, reduce?50:1300); },
+  cnext:(a)=>{ const n=+a.dataset.s, scr=current(), body=scr.querySelector('#cbody');
+    if(n===3){ body.classList.remove('seg-in-r'); void body.offsetWidth; body.innerHTML=claimDone(); body.classList.add('seg-in-r'); scr.querySelector('.progress').style.visibility='hidden'; a.dataset.s=4; a.textContent='Done'; hap([10,40,10]); return; }
+    if(n===4){ back(); return; }
+    body.classList.remove('seg-in-r'); void body.offsetWidth; body.innerHTML=claimStep(n+1); body.classList.add('seg-in-r'); focusFx(body); scr.querySelectorAll('.progress i')[n].classList.add('done'); a.dataset.s=n+1; a.textContent=n+1===3?'Send claim':'Continue'; hap(4); },
+  wb:(a)=>openSheet(wbSheet(+a.dataset.i)),
+  loans:()=>openSheet(`<h3>How student loans work</h3><p class="lbl">Plain answers, checked against official sources.</p>${[['Plan 2 or Plan 5?','Plan 5 is for courses starting from August 2023. Your plan sets your repayment threshold and when any balance is written off.'],['How much do I repay?','9% of what you earn above your plan’s threshold, taken through payroll. Nothing if you earn less.'],['Does interest matter?','Interest is added to your balance. Whether it affects you depends on whether you’re likely to repay in full.'],['Is paying extra worth it?','Only if you’re likely to repay in full. If your loan would be written off, extra payments may not save you money.'],['Will it lower my monthly deduction?','No. Your monthly deduction depends on income, not on your balance.']].map(([q,a])=>`<details class="card faq"><summary>${q}</summary><p class="lbl" style="line-height:1.55;margin-top:8px">${a}</p></details>`).join('')}<p class="disclaim">General information, not advice. MoneyHelper offers free guidance.</p><button class="btn btn-ghost" style="margin-top:12px" data-close>Close</button>`),
+  faqpay:()=>openSheet(`<h3>When do payments go out?</h3><p class="lbl" style="line-height:1.5">Once a quarter: 31 March, 30 June, 30 September and 31 December. Only rewards that partners have actually paid are included.</p><div class="card" style="margin-top:12px"><div class="steps">${[['Retailer approves','Usually 30 to 60 days after you buy',1],['Partner pays us','Money received and checked',1],['Quarter-end batch','Two people approve the payment',1],['Sent, then credited','Credited usually within 5 working days',0]].map(s=>`<div class="step ${s[2]?'done':''}"><span class="sd">${s[2]?ic('check',14,3):''}</span><div><b>${s[0]}</b><small>${s[1]}</small></div></div>`).join('')}</div></div><button class="btn btn-ghost" style="margin-top:14px" data-close>Got it</button>`),
+  ticket:(a)=>{ const i=a&&a.dataset&&a.dataset.i; const p=P_(); const x=i!==undefined&&i!==null?p.ledger[+i]:null; openSheet(ticketSheet(x?{title:x.m?M[x.m].name:'a supporter boost',ref:x.ref}:null)); },
+  tcat:(a)=>{ a.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('on')); a.classList.add('on'); },
+  ticketgo:()=>{ closeSheet(); hap([8,30,8]); setTimeout(()=>pushNotif('Message sent','Ticket SF-4417. A person will reply within 2 working days.'),300); },
+  webjoin:(a)=>{ const w=current().querySelector('#wpage'); w.innerHTML=`<div style="text-align:center;padding-top:40px"><div class="success-burst"><div class="c"></div><div class="c2"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div></div><h2 class="ob-title">You’re now supporting Maya</h2><p class="ob-sub" style="margin:0 auto">Shop as normal. We’ll email you a monthly summary. No app needed.</p><button class="btn btn-ghost" style="margin-top:26px" data-back>Close page</button></div>`; hap([10,40,10]); confetti(); },
+  evsave:(a)=>{ D.savedEv=D.savedEv||{}; const k=a.dataset.k, on=!D.savedEv[k]; D.savedEv[k]=on; a.classList.toggle('on',on); a.setAttribute('aria-pressed',on); if(on){ emojiBurst(a,'❤️',5); hap(6); toast('Saved. We’ll remind you the day before'); } },
+  paydetail:(a)=>openSheet(payDetailSheet(+a.dataset.i)),
+  consent:(a)=>{ const k=a.dataset.k; D.consent[k]=!D.consent[k]; a.classList.toggle('on',D.consent[k]); a.setAttribute('aria-checked',D.consent[k]); hap(6); toast('Choice saved and recorded','shield'); },
+  browse:()=>openSheet(`<h3>Where do you study?</h3><p class="lbl">See local offers before you sign up.</p><div class="list-card" style="margin-top:12px">${[['University of Oxford',1],['Oxford Brookes University',1],['Other cities',0]].map(([t,on])=>`<button class="row" ${on?'data-act="browsego"':'disabled style="opacity:.5"'}><span class="mt" style="background:var(--sky);color:var(--blue)">${ic(on?'pin':'calendar',22)}</span><span class="mid"><b>${t}</b><small>${on?'Pilot city':'Coming later'}</small></span>${on?`<span class="chev">${ic('chev',20)}</span>`:''}</button>`).join('')}</div>`),
+  browsego:()=>{ closeSheet(); S.guest=true; S.persona='student'; S.ob=null; setTimeout(()=>go('earn',{tab:true,args:{seg:'perks'}}),200); },
+  joinnow:()=>{ S.guest=false; tabbar.classList.add('hidden'); go('role',{replace:true}); },
+  guestgate:()=>openSheet(`<div style="text-align:center"><span class="mt" style="background:var(--sky);color:var(--blue);width:64px;height:64px;margin:6px auto 10px">${ic('profile',30)}</span><h3>Create a free account</h3><p class="lbl" style="line-height:1.5">You can browse everything as a guest. To use a perk, earn rewards or see your progress, you’ll need an account. It takes about two minutes.</p></div><button class="btn btn-primary" style="margin-top:18px" data-act="joinnow">Create account</button><button class="btn btn-text" style="width:100%" data-close>Keep browsing</button>`)
+});
 
 /* ---------------- Presenter controls ---------------- */
 const PERSONAS=[['student','Maya','Current student, 20','#1167DF'],['graduate','Alex','Graduate repaying, 27','#12A898'],['parent','Sarah','Maya’s mum, supporter','#7C5AE0']];
@@ -2078,14 +2656,17 @@ function controlsHTML(){
     p: PERSONAS.map(([k,n,s,c])=>`<button class="pbtn" data-persona="${k}"><span class="av" style="background:${c}">${n[0]}</span><span><b>${n}</b><small>${s}</small></span></button>`).join(''),
     o: [['welcome','Welcome tour'],['ob:student','Student'],['ob:graduate','Graduate'],['ob:parent','Supporter']].map(([k,l])=>`<button data-ob="${k}">${l}</button>`).join(''),
     t: [['tt:1','+1 month'],['tt:6','+6 months'],['grad','Maya graduates'],['recap','Monthly recap'],['payout','Quarter-end'],['thanks','Say thanks']].map(([k,l])=>`<button data-tt="${k}">${l}</button>`).join(''),
-    j: [['home','Home'],['wallet','Wallet'],['earn','Earn'],['offer','Offer'],['impact','Impact'],['network','Network'],['notifications','Alerts'],['privacy','Privacy'],['status','What is live']].map(([k,l])=>`<button data-jump="${k}">${l}</button>`).join('')
+    j: [['home','Home'],['earn','Earn & Save'],['perks','Perks and ID'],['switch','Switch & save'],['homes','Housing'],['opps','Careers'],['impact','My Progress'],['wallet','Wallet'],['repay','Loan details'],['claim','Missing reward'],['help','Help & Wellbeing'],['network','Supporters'],['invitepage','Supporter web page'],['browse','Browse as guest'],['privacy','Privacy and choices'],['status','What is live']].map(([k,l])=>`<button data-jump="${k}">${l}</button>`).join('')
   };
 }
 function wireControls(root){
-  root.querySelectorAll('[data-persona]').forEach(b=>b.addEventListener('click',()=>{ S.persona=b.dataset.persona; S.ob=null; S.shared=null; hideSplash(); go('home',{tab:true,skel:true}); closeMobileCtrl(); }));
+  root.querySelectorAll('[data-persona]').forEach(b=>b.addEventListener('click',()=>{ S.persona=b.dataset.persona; S.ob=null; S.guest=false; S.shared=null; hideSplash(); go('home',{tab:true,skel:true}); closeMobileCtrl(); }));
   root.querySelectorAll('[data-ob]').forEach(b=>b.addEventListener('click',()=>{ hideSplash(); const v=b.dataset.ob; tabbar.classList.add('hidden'); if(v==='welcome') go('welcome',{replace:true}); else { S.stack=[]; go('role',{replace:true}); startOb(v.split(':')[1]); } closeMobileCtrl(); }));
   root.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>{ hideSplash(); const k=b.dataset.jump; S.ob=null;
-    if(['home','earn','impact','network'].includes(k)) go(k,{tab:true}); else if(k==='offer'){ go('earn',{tab:true}); setTimeout(()=>go('offer',{args:{k:'brew'}}),60);} else { go('home',{tab:true}); setTimeout(()=>go(k),60); } closeMobileCtrl(); }));
+    S.guest=false; if(k==='browse'){ go('welcome',{replace:true}); tabbar.classList.add('hidden'); setTimeout(()=>ACT.browse(),400); closeMobileCtrl(); return; }
+    if(k==='perks'){ go('earn',{tab:true,args:{seg:'perks'}}); closeMobileCtrl(); return; } if(k==='switch'){ go('earn',{tab:true,args:{seg:'switch'}}); closeMobileCtrl(); return; }
+    if(k==='invitepage'){ go('home',{tab:true}); setTimeout(()=>go('invitepage'),60); closeMobileCtrl(); return; }
+    if(['home','earn','impact','homes','opps'].includes(k)) go(k,{tab:true}); else if(k==='offer'){ go('earn',{tab:true}); setTimeout(()=>go('offer',{args:{k:'brew'}}),60);} else { go('home',{tab:true}); setTimeout(()=>go(k),60); } closeMobileCtrl(); }));
   root.querySelectorAll('[data-tt]').forEach(b=>b.addEventListener('click',()=>{ const v=b.dataset.tt; closeMobileCtrl(); hideSplash();
     if(v.startsWith('tt:')) return timeTravel(+v.split(':')[1]);
     if(v==='grad'){ S.persona='student'; if(D.student.graduated){ go('home',{tab:true}); return; } const n=Math.max(0,21-D.T); if(n) timeTravel(n); else { go('home',{tab:true}); setTimeout(openGraduation,500); } return; }
@@ -2119,6 +2700,9 @@ function layout(){
 }
 addEventListener('resize',layout); layout();
 
+
+/* Keep the phone frame itself from ever scrolling (focus or scrollIntoView can nudge overflow:hidden boxes) */
+shell.addEventListener('scroll',()=>{ if(shell.scrollTop||shell.scrollLeft){ shell.scrollTop=0; shell.scrollLeft=0; } });
 
 /* ---------------- Desktop: minimisable side panels ---------------- */
 (function(){
